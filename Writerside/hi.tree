@@ -7,5 +7,8 @@
                  start-page="Basics.md">
 
     <toc-element topic="Basics.md"/>
+    <toc-element toc-title="Data Types">
+        <toc-element topic="Numbers.md"/>
+    </toc-element>
 
 </instance-profile>
