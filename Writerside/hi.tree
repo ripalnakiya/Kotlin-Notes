@@ -12,6 +12,7 @@
         <toc-element topic="Booleans.md"/>
         <toc-element topic="Characters.md"/>
         <toc-element topic="Strings.md"/>
+        <toc-element topic="Arrays.md"/>
     </toc-element>
 
 </instance-profile>
