@@ -13,6 +13,7 @@
         <toc-element topic="Characters.md"/>
         <toc-element topic="Strings.md"/>
         <toc-element topic="Arrays.md"/>
+        <toc-element topic="Type-checks-and-casts.md"/>
     </toc-element>
 
 </instance-profile>
