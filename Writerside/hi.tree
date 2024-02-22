@@ -18,6 +18,7 @@
     <toc-element toc-title="Control Flow">
         <toc-element topic="Conditions-and-Loops.md"/>
         <toc-element topic="Returns-and-jumps.md"/>
+        <toc-element topic="Exceptions.md"/>
     </toc-element>
 
 </instance-profile>
