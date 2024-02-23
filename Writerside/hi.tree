@@ -20,5 +20,8 @@
         <toc-element topic="Returns-and-jumps.md"/>
         <toc-element topic="Exceptions.md"/>
     </toc-element>
+    <toc-element toc-title="Classes and Objects">
+        <toc-element topic="Classes.md"/>
+    </toc-element>
 
 </instance-profile>
