@@ -25,6 +25,7 @@
         <toc-element topic="Inheritance.md"/>
         <toc-element topic="Properties.md"/>
         <toc-element topic="Interfaces.md"/>
+        <toc-element topic="Functional-Interfaces.md"/>
     </toc-element>
 
 </instance-profile>
