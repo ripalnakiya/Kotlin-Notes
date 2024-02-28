@@ -26,6 +26,7 @@
         <toc-element topic="Properties.md"/>
         <toc-element topic="Interfaces.md"/>
         <toc-element topic="Functional-Interfaces.md"/>
+        <toc-element topic="Visibility-Modifiers.md"/>
     </toc-element>
 
 </instance-profile>
