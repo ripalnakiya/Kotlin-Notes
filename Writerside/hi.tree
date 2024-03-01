@@ -28,6 +28,7 @@
         <toc-element topic="Functional-Interfaces.md"/>
         <toc-element topic="Visibility-Modifiers.md"/>
         <toc-element topic="Extensions.md"/>
+        <toc-element topic="Data-Classes.md"/>
     </toc-element>
 
 </instance-profile>
