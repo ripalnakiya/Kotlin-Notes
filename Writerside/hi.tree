@@ -29,6 +29,7 @@
         <toc-element topic="Visibility-Modifiers.md"/>
         <toc-element topic="Extensions.md"/>
         <toc-element topic="Data-Classes.md"/>
+        <toc-element topic="Sealed-classes-and-interfaces.md"/>
     </toc-element>
 
 </instance-profile>
