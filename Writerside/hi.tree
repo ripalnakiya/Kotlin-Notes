@@ -32,6 +32,7 @@
         <toc-element topic="Sealed-classes-and-interfaces.md"/>
         <toc-element topic="Generics.md"/>
         <toc-element topic="Nested-and-Inner-Classes.md"/>
+        <toc-element topic="Enum-Classes.md"/>
     </toc-element>
 
 </instance-profile>
