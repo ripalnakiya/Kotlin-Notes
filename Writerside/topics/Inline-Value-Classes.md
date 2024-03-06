@@ -1,0 +1,263 @@
+# Inline Value Classes
+
+<show-structure depth="2"/>
+
+Sometimes it is useful to wrap a value in a class (similar to how primitive types like Int, Long, etc. are wrapped) to create a more domain-specific type. 
+
+However, it introduces runtime overhead due to additional heap allocations. 
+
+Moreover, if the wrapped type is primitive, the performance hit is significant, because primitive types are usually heavily optimized by the runtime, while their wrappers don't get any special treatment.
+
+Inline classes are a subset of value-based classes. 
+
+They don't have an identity and can only hold values.
+
+This means that two instances of an inline class with the same underlying value are considered equal.
+This is because the identity of an inline class instance is based solely on its value.
+
+<note>
+Inline classes are also restricted to holding only one value, which is the value they are wrapping. This restriction helps ensure that inline classes are used for specific purposes where a single value is sufficient.
+</note>
+
+To declare an inline class, use the value modifier before the name of the class:
+
+```Kotlin
+value class Password(private val s: String)
+```
+
+To declare an inline class for the JVM backend, use the value modifier along with the `@JvmInline` annotation before the class declaration:
+
+```Kotlin
+// For JVM backends
+@JvmInline
+value class Password(private val s: String)
+```
+
+An inline class must have a single property initialized in the primary constructor. At runtime, instances of the inline class will be represented using this single property.
+
+```Kotlin
+// No actual instantiation of class 'Password' happens
+// At runtime 'securePassword' contains just 'String'
+val securePassword = Password("Don't try this in production")
+```
+
+This is the main feature of inline classes, which inspired the name inline: data of the class is inlined into its usages.
+
+## Members
+
+Inline classes support some functionality of regular classes. In particular, they are allowed to declare properties and functions, have an init block and secondary constructors:
+
+```Kotlin
+@JvmInline
+value class Person(private val fullName: String) {
+    init {
+        // This will throw error if lastName is blank
+        require(fullName.isNotEmpty()) {
+            "Full name shouldn't be empty"
+        }
+    }
+
+    constructor(firstName: String, lastName: String) : this("$firstName $lastName") {
+        // This will throw error if lastName is blank
+        require(lastName.isNotBlank()) {
+            "Last name shouldn't be empty"
+        }
+    }
+
+    val length: Int
+        get() = fullName.length
+
+    fun greet() {
+        println("Hello, $fullName")
+    }
+}
+
+fun main() {
+    val name1 = Person("Kotlin", "Mascot")
+    val name2 = Person("Kodee")
+    name1.greet() // the `greet()` function is called as a static method
+    println(name2.length) // property getter is called as a static method
+}
+
+// Output:
+Hello, Kotlin Mascot
+5
+```
+
+Inline class properties cannot have backing fields. 
+
+They can only have simple computable properties (no `lateinit`/delegated properties).
+
+## Inheritance
+
+Inline classes are allowed to inherit from interfaces:
+
+```Kotlin
+interface Printable {
+    fun prettyPrint(): String
+}
+
+@JvmInline
+value class Name(val s: String) : Printable {
+    override fun prettyPrint(): String = "Let's $s!"
+}
+
+fun main() {
+    val name = Name("Kotlin")
+    println(name.prettyPrint()) // Still called as a static method
+}
+```
+
+It is forbidden for inline classes to participate in a class hierarchy. 
+
+This means that inline classes cannot extend other classes and are always `final`.
+
+## Representation
+
+In generated code, the Kotlin compiler keeps a **wrapper** for each inline class. 
+
+Inline class instances can be represented at runtime either as wrappers or as the underlying type. 
+
+This is similar to how `Int` can be represented either as a primitive `int` or as the wrapper `Integer`.
+
+<note>
+The Kotlin compiler will prefer using underlying types instead of wrappers to produce the most performant and optimized code. However, sometimes it is necessary to keep wrappers around.
+</note>
+
+As a rule of thumb, inline classes are boxed whenever they are used as another type.
+
+```Kotlin
+interface I
+
+@JvmInline
+value class Foo(val i: Int) : I
+
+fun asInline(f: Foo) {}
+fun <T> asGeneric(x: T) {}
+fun asInterface(i: I) {}
+fun asNullable(i: Foo?) {}
+
+fun <T> id(x: T): T = x
+
+fun main() {
+    val f = Foo(42)
+
+    asInline(f)    // unboxed: used as Foo itself
+    println(asGeneric(f))   // boxed: used as generic type T
+    asInterface(f) // boxed: used as type I
+    asNullable(f)  // boxed: used as Foo?, which is different from Foo
+
+    // below, 'f' first is boxed (while being passed to 'id')
+    // and then unboxed (when returned from 'id')
+    val c = id(f)
+    // In the end, 'c' contains unboxed representation (just '42'), as 'f'
+}
+```
+
+Because inline classes may be represented both as the underlying value and as a wrapper, referential equality is pointless for them and is therefore prohibited.
+
+Inline classes can also have a generic type parameter as the underlying type. In this case, the compiler maps it to Any? or, generally, to the upper bound of the type parameter.
+
+```Kotlin
+@JvmInline
+value class UserId<T>(val value: T)
+
+fun compute(s: UserId<String>) {} 
+// compiler generates fun compute-<hashcode>(s: Any?)
+```
+
+### Mangling
+
+Since inline classes are compiled to their underlying type, it may lead to various obscure errors, for example unexpected platform signature clashes:
+
+```Kotlin
+@JvmInline
+value class UInt(val x: Int)
+
+// Represented as 'public final void compute(int x)' on the JVM
+fun compute(x: Int) { }
+
+// Also represented as 'public final void compute(int x)' on the JVM!
+fun compute(x: UInt) { }
+```
+
+To mitigate such issues, functions using inline classes are mangled by adding some stable hashcode to the function name. 
+
+Therefore, `fun compute(x: UInt)` will be represented as `public final void compute-<hashcode>(int x)`, which solves the clash problem.
+
+### Calling from Java code
+
+You can call functions that accept inline classes from Java code. 
+
+To do so, you should manually disable mangling: add the `@JvmName` annotation before the function declaration:
+
+```Kotlin
+@JvmInline
+value class UInt(val x: Int)
+
+fun compute(x: Int) { }
+
+@JvmName("computeUInt")
+fun compute(x: UInt) { }
+```
+
+## Inline classes vs type aliases
+
+At first sight, inline classes seem very similar to type aliases. 
+
+Indeed, both seem to introduce a new type and both will be represented as the underlying type at runtime.
+
+However, the crucial difference is that type aliases are **assignment-compatible** with their underlying type (and with other type aliases with the same underlying type), while inline classes are not.
+
+In other words, inline classes introduce a truly new type, contrary to type aliases which only introduce an alternative name (alias) for an existing type:
+
+```Kotlin
+typealias NameTypeAlias = String
+
+@JvmInline
+value class NameInlineClass(val s: String)
+
+fun acceptString(s: String) {}
+fun acceptNameTypeAlias(n: NameTypeAlias) {}
+fun acceptNameInlineClass(p: NameInlineClass) {}
+
+fun main() {
+    val nameAlias: NameTypeAlias = ""
+    val nameInlineClass: NameInlineClass = NameInlineClass("")
+    val string: String = ""
+
+    acceptString(nameAlias) 
+    // OK: pass alias instead of underlying type
+    acceptString(nameInlineClass) 
+    // Not OK: can't pass inline class instead of underlying type
+
+    // And vice versa:
+    acceptNameTypeAlias(string) 
+    // OK: pass underlying type instead of alias
+    acceptNameInlineClass(string) 
+    // Not OK: can't pass underlying type instead of inline class
+}
+```
+
+## Inline classes and delegation
+
+Implementation by delegation to inlined value of inlined class is allowed with interfaces:
+
+```Kotlin
+interface MyInterface {
+    fun bar()
+    fun foo() = "foo"
+}
+
+@JvmInline
+value class MyInterfaceWrapper(val myInterface: MyInterface) : MyInterface by myInterface
+
+fun main() {
+    val my = MyInterfaceWrapper(object : MyInterface {
+        override fun bar() {
+            // body
+        }
+    })
+    println(my.foo()) // prints "foo"
+}
+```
