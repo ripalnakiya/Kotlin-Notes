@@ -34,6 +34,7 @@
         <toc-element topic="Nested-and-Inner-Classes.md"/>
         <toc-element topic="Enum-Classes.md"/>
         <toc-element topic="Inline-Value-Classes.md"/>
+        <toc-element topic="Object-Expressions-and-Declarations.md"/>
     </toc-element>
 
 </instance-profile>
