@@ -36,6 +36,7 @@
         <toc-element topic="Inline-Value-Classes.md"/>
         <toc-element topic="Object-Expressions-and-Declarations.md"/>
         <toc-element topic="Delegation.md"/>
+        <toc-element topic="Type-Aliases.md"/>
     </toc-element>
 
 </instance-profile>
