@@ -38,5 +38,8 @@
         <toc-element topic="Delegation.md"/>
         <toc-element topic="Type-Aliases.md"/>
     </toc-element>
+    <toc-element toc-title="Functions">
+        <toc-element topic="Functions.md"/>
+    </toc-element>
 
 </instance-profile>
