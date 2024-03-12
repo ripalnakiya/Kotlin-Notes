@@ -41,6 +41,7 @@
     <toc-element toc-title="Functions">
         <toc-element topic="Functions.md"/>
         <toc-element toc-title="Lambdas" topic="Higher-order-functions-and-lambdas.md"/>
+        <toc-element topic="Inline-Functions.md"/>
     </toc-element>
 
 </instance-profile>
