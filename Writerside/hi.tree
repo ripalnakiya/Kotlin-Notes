@@ -42,6 +42,7 @@
         <toc-element topic="Functions.md"/>
         <toc-element toc-title="Lambdas" topic="Higher-order-functions-and-lambdas.md"/>
         <toc-element topic="Inline-Functions.md"/>
+        <toc-element topic="Operator-Overloading.md"/>
     </toc-element>
 
 </instance-profile>
