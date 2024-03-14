@@ -44,5 +44,6 @@
         <toc-element topic="Inline-Functions.md"/>
         <toc-element topic="Operator-Overloading.md"/>
     </toc-element>
+    <toc-element topic="Null-safety.md"/>
 
 </instance-profile>
