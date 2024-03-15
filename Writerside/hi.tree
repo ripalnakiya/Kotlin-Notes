@@ -45,5 +45,6 @@
         <toc-element topic="Operator-Overloading.md"/>
     </toc-element>
     <toc-element topic="Null-safety.md"/>
+    <toc-element topic="Equality.md"/>
 
 </instance-profile>
