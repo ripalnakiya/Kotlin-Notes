@@ -47,5 +47,6 @@
     <toc-element topic="Null-safety.md"/>
     <toc-element topic="Equality.md"/>
     <toc-element topic="This-Expressions.md"/>
+    <toc-element topic="Asynchronous-Programming-Techniques.md"/>
 
 </instance-profile>
