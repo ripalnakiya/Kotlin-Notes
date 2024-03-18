@@ -48,5 +48,6 @@
     <toc-element topic="Equality.md"/>
     <toc-element topic="This-Expressions.md"/>
     <toc-element topic="Asynchronous-Programming-Techniques.md"/>
+    <toc-element topic="Annotations.md"/>
 
 </instance-profile>
