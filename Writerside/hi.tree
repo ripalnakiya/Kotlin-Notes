@@ -50,5 +50,6 @@
     <toc-element topic="Asynchronous-Programming-Techniques.md"/>
     <toc-element topic="Annotations.md"/>
     <toc-element topic="Destructuring-Declarations.md"/>
+    <toc-element topic="Reflection.md"/>
 
 </instance-profile>
