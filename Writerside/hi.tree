@@ -51,5 +51,8 @@
     <toc-element topic="Annotations.md"/>
     <toc-element topic="Destructuring-Declarations.md"/>
     <toc-element topic="Reflection.md"/>
+    <toc-element toc-title="Standard Library">
+        <toc-element topic="Collections-Overview.md"/>
+    </toc-element>
 
 </instance-profile>
