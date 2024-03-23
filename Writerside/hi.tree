@@ -54,6 +54,7 @@
     <toc-element toc-title="Standard Library">
         <toc-element topic="Collections-Overview.md"/>
         <toc-element topic="Constructing-Collections.md"/>
+        <toc-element topic="Iterators.md"/>
     </toc-element>
 
 </instance-profile>
