@@ -55,6 +55,7 @@
         <toc-element topic="Collections-Overview.md"/>
         <toc-element topic="Constructing-Collections.md"/>
         <toc-element topic="Iterators.md"/>
+        <toc-element topic="Ranges-and-Progressions.md"/>
     </toc-element>
 
 </instance-profile>
