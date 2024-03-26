@@ -57,6 +57,7 @@
         <toc-element topic="Iterators.md"/>
         <toc-element topic="Ranges-and-Progressions.md"/>
         <toc-element topic="Sequences.md"/>
+        <toc-element topic="Collection-Operations.md"/>
     </toc-element>
 
 </instance-profile>
