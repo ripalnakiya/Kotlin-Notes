@@ -58,6 +58,7 @@
         <toc-element topic="Ranges-and-Progressions.md"/>
         <toc-element topic="Sequences.md"/>
         <toc-element topic="Collection-Operations.md"/>
+        <toc-element topic="Transformations.md"/>
     </toc-element>
 
 </instance-profile>
