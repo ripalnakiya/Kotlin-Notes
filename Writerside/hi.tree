@@ -59,6 +59,7 @@
         <toc-element topic="Sequences.md"/>
         <toc-element topic="Collection-Operations.md"/>
         <toc-element topic="Transformations.md"/>
+        <toc-element toc-title="Filter" topic="Filtering-Collections.md"/>
     </toc-element>
 
 </instance-profile>
