@@ -61,6 +61,7 @@
         <toc-element topic="Transformations.md"/>
         <toc-element toc-title="Filter" topic="Filtering-Collections.md"/>
         <toc-element topic="Plus-and-Minus-Operators.md"/>
+        <toc-element toc-title="Group elements" topic="Grouping.md"/>
     </toc-element>
 
 </instance-profile>
