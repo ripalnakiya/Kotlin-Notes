@@ -62,6 +62,7 @@
         <toc-element toc-title="Filter" topic="Filtering-Collections.md"/>
         <toc-element topic="Plus-and-Minus-Operators.md"/>
         <toc-element toc-title="Group elements" topic="Grouping.md"/>
+        <toc-element topic="Retrieve-Collection-Parts.md"/>
     </toc-element>
 
 </instance-profile>
