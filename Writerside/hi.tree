@@ -64,6 +64,7 @@
         <toc-element toc-title="Group elements" topic="Grouping.md"/>
         <toc-element topic="Retrieve-Collection-Parts.md"/>
         <toc-element topic="Retrieve-Single-Elements.md"/>
+        <toc-element topic="Ordering.md"/>
     </toc-element>
 
 </instance-profile>
