@@ -67,6 +67,7 @@
         <toc-element topic="Ordering.md"/>
         <toc-element topic="Aggregate-operations.md"/>
         <toc-element topic="Write-operations.md"/>
+        <toc-element topic="List-specific-operations.md"/>
     </toc-element>
 
 </instance-profile>
