@@ -71,6 +71,7 @@
         <toc-element topic="Set-specific-operations.md"/>
         <toc-element topic="Map-specific-operations.md"/>
         <toc-element topic="Scope-functions.md"/>
+        <toc-element topic="Time-Measurement.md"/>
     </toc-element>
 
 </instance-profile>
