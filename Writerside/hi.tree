@@ -75,6 +75,7 @@
     </toc-element>
     <toc-element toc-title="Coroutines">
         <toc-element toc-title="Basics" topic="Coroutines-Basics.md"/>
+        <toc-element topic="Coroutine-Builders.md"/>
     </toc-element>
 
 </instance-profile>
