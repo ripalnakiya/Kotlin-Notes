@@ -78,6 +78,7 @@
         <toc-element topic="Coroutine-Builders.md"/>
         <toc-element toc-title="Other Notes" topic="Coroutine-Other-Notes.md"/>
         <toc-element topic="Cancellation-and-timeouts.md"/>
+        <toc-element topic="Composing-Suspending-Functions.md"/>
     </toc-element>
 
 </instance-profile>
