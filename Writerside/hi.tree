@@ -80,6 +80,7 @@
         <toc-element topic="Cancellation-and-timeouts.md"/>
         <toc-element topic="Composing-Suspending-Functions.md"/>
         <toc-element topic="Coroutine-context-and-Dispatchers.md"/>
+        <toc-element topic="Jobs-and-Cancellation.md"/>
     </toc-element>
 
 </instance-profile>
