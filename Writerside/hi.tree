@@ -6,6 +6,6 @@
                  name="Help Instance"
                  start-page="Basics.md">
 
-    <toc-element topic="Basics.md">
-    </toc-element>
+    <toc-element topic="Basics.md"/>
+    <toc-element topic="Kotlin-Basics.md"/>
 </instance-profile>
