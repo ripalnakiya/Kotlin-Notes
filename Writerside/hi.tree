@@ -16,4 +16,9 @@
         <toc-element topic="Arrays.md"/>
         <toc-element topic="Type-checks-and-casts.md"/>
     </toc-element>
+    <toc-element topic="Control-Flow.md">
+        <toc-element topic="Conditions-and-Loops.md"/>
+        <toc-element topic="Returns-and-jumps.md"/>
+        <toc-element topic="Exceptions.md"/>
+    </toc-element>
 </instance-profile>
