@@ -10,7 +10,7 @@
     <toc-element topic="Kotlin-Basics.md"/>
     <toc-element topic="Data-Types.md">
         <toc-element topic="Numbers.md"/>
-        <toc-element topic="Booleans.md">
+        <toc-element topic="Booleans.md"/>
         <toc-element topic="Characters.md"/>
         <toc-element topic="Strings.md"/>
         <toc-element topic="Arrays.md"/>
@@ -20,5 +20,10 @@
         <toc-element topic="Conditions-and-Loops.md"/>
         <toc-element topic="Returns-and-jumps.md"/>
         <toc-element topic="Exceptions.md"/>
+    </toc-element>
+    <toc-element topic="Classes-and-Objects.md">
+        <toc-element topic="Classes.md"/>
+        <toc-element topic="Inheritance.md"/>
+        <toc-element topic="Properties.md"/>
     </toc-element>
 </instance-profile>
