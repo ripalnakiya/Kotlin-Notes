@@ -119,3 +119,23 @@ When you choose which one to use in your code, consider your needs:
 - If your API needs to accept a function (any function) with some specific parameter and return types – use a simple functional type or define a type alias to give a shorter name to the corresponding functional type.
 
 - If your API accepts a more complex entity than a function – for example, it has non-trivial contracts and/or operations on it that can't be expressed in a functional type's signature – declare a separate functional interface for it.
+
+## Examples
+
+```Kotlin
+fun interface Printer {
+    fun print(first: Int, second: Int) : Unit
+}
+
+fun main() {
+    val first = 5
+    val second = 10
+    
+    val printer = Printer { first, second ->  println("Hello World ${first*second} ") }
+    printer.print(first, second)
+    
+    // OR
+    
+    Printer { first, second ->  println("Hello World ${first*second} ") }.print(first, second)
+}
+```
