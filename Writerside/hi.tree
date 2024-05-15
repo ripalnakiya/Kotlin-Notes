@@ -7,8 +7,7 @@
                  start-page="Basics.md">
 
     <toc-element topic="Basics.md"/>
-    <toc-element topic="Kotlin-Basics.md"/>
-    <toc-element topic="Data-Types.md">
+    <toc-element toc-title="Data Types">
         <toc-element topic="Numbers.md"/>
         <toc-element topic="Booleans.md"/>
         <toc-element topic="Characters.md"/>
@@ -16,12 +15,12 @@
         <toc-element topic="Arrays.md"/>
         <toc-element topic="Type-checks-and-casts.md"/>
     </toc-element>
-    <toc-element topic="Control-Flow.md">
+    <toc-element toc-title="Control Flow">
         <toc-element topic="Conditions-and-Loops.md"/>
         <toc-element topic="Returns-and-jumps.md"/>
         <toc-element topic="Exceptions.md"/>
     </toc-element>
-    <toc-element topic="Classes-and-Objects.md">
+    <toc-element toc-title="Classes and Objects">
         <toc-element topic="Classes.md"/>
         <toc-element topic="Inheritance.md"/>
         <toc-element topic="Properties.md"/>

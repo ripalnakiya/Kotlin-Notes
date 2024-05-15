@@ -1,3 +1,0 @@
-# Classes and Objects
-
-Start typing here...
