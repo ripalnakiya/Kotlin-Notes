@@ -1,5 +1,7 @@
 # Interfaces
 
+<show-structure levels="2"/>
+
 Interfaces in Kotlin can contain declarations of abstract methods, as well as method implementations. 
 
 What makes them different from abstract classes is that interfaces cannot store state. 

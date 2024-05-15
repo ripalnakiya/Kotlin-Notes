@@ -1,5 +1,7 @@
 # Properties
 
+<show-structure levels="2"/>
+
 ## Declaring properties
 
 ```Kotlin

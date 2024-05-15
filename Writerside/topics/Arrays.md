@@ -1,5 +1,7 @@
 # Arrays
 
+<show-structure levels="2"/>
+
 Internal working of Array
 
 ```Kotlin

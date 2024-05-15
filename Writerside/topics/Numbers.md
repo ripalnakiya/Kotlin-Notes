@@ -1,5 +1,7 @@
 # Numbers
 
+<show-structure levels="2"/>
+
 ## Integer types
 
 For integer numbers, there are four types:

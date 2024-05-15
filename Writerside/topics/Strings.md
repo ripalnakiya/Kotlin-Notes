@@ -1,5 +1,7 @@
 # Strings
 
+<show-structure levels="2"/>
+
 <note>
 On the JVM, an object of `String` type uses approximately 2 bytes per character.
 </note>
