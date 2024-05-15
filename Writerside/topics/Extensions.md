@@ -24,7 +24,7 @@ fun MutableList<Int>.swap(index1: Int, index2: Int) {
 
 The `this` keyword inside an extension function corresponds to the **receiver object** (the one that is passed before the dot). 
 
-Now, you can call such a function on any MutableList<Int>:
+Now, you can call such a function on any `MutableList<Int>`:
 
 ```Kotlin
 val list = mutableListOf(1, 2, 3)

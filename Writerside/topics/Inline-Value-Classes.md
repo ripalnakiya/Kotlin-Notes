@@ -183,7 +183,7 @@ fun compute(x: UInt) { }
 
 To mitigate such issues, functions using inline classes are mangled by adding some stable hashcode to the function name. 
 
-Therefore, fun compute(x: UInt) will be represented as public final void compute-<hashcode>(int x), which solves the clash problem.
+Therefore, `fun compute(x: UInt)` will be represented as `public final void compute-<hashcode>(int x)`, which solves the clash problem.
 
 ### Calling from Java code
 

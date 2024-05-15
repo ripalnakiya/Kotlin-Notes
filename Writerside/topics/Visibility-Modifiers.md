@@ -107,5 +107,5 @@ The `internal` visibility modifier means that the member is visible within the s
 
 - An IntelliJ IDEA module.
 - A Maven project.
-- A Gradle source set (with the exception that the test source set can access the internal declarations of main).
-- A set of files compiled with one invocation of the <kotlinc> Ant task.
+- A Gradle source set (with the exception that the `test` source set can access the internal declarations of `main`).
+- A set of files compiled with one invocation of the `<kotlinc>` Ant task.
