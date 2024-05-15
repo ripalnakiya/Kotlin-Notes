@@ -1,5 +1,12 @@
 # Basics
 
+Kotlin is a statically-typed language.
+
+>A programming language is said to use static typing when type checking is performed during compile-time as opposed to run-time.
+{style="note"}
+
+This means that the variable type is resolved at compile time and never changes.
+
 ## Program entry point
 
 An entry point of a Kotlin application is the `main` function:
@@ -16,24 +23,6 @@ Another form of `main` accepts a variable number of String arguments:
 fun main(args: Array<String>) {
     println(args.contentToString())
 }
-```
-
-## Print to the standard output
-
-```Kotlin
-print("Hello ")
-print("world!")
-
-println("Kotlin")
-println(42)
-```
-
-Output:
-
-```Console
-Hello world!
-Kotlin
-42
 ```
 
 ## Functions
