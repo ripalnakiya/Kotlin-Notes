@@ -244,20 +244,148 @@ val a = intArrayOf(1, 2, 3) // IntArray is a primitive type array
 val list = asList(-1, 0, *a.toTypedArray(), 4)
 ```
 
+### Infix notation
 
+Functions marked with the `infix` keyword can also be called using the infix notation (omitting the dot and the parentheses for the call). 
 
+Infix functions must meet the following requirements:
+- They must be member functions or [extension functions](Extensions.md#extension-functions).
+- They must have a single parameter.
+- The parameter must not accept variable number of arguments and must have no default value.
 
+```Kotlin
+infix fun Int.shl(x: Int): Int { ... }
 
+// calling the function using the infix notation
+1 shl 2
 
+// is the same as
+1.shl(2)
+```
 
+Infix function calls have lower precedence than arithmetic operators, type casts, and the `rangeTo` operator. 
 
+The following expressions are equivalent:
+- `1 shl 2 + 3` is equivalent to `1 shl (2 + 3)`
+- `0 until n * 2` is equivalent to `0 until (n * 2)`
+- `xs union ys as Set<*>` is equivalent to `xs union (ys as Set<*>)`
 
+On the other hand, an infix function call's precedence is higher than that of the boolean operators `&&` and `||,` `is`- and `in`-checks, and some other operators. 
 
+These expressions are equivalent as well:
+- `a && b xor c` is equivalent to `a && (b xor c)`
+- `a xor b in c` is equivalent to `(a xor b) in c`
 
+Note that infix functions always require both the receiver and the parameter to be specified. When you're calling a method on the current receiver using the infix notation, use `this` explicitly. 
 
+This is required to ensure unambiguous parsing.
 
+```Kotlin
+class MyStringCollection {
+    infix fun add(s: String) { /*...*/ }
 
+    fun build() {
+        this add "abc"   // Correct
+        add("abc")       // Correct
+        add "abc"        // Incorrect: the receiver must be specified
+    }
+}
+```
 
+## Function scope
 
+Kotlin functions can be declared at the top level in a file, meaning you do not need to create a class to hold a function.
 
+n addition to top level functions, Kotlin functions can also be declared locally as member functions and extension functions.
 
+### Local functions
+
+Kotlin supports local functions, which are functions inside other functions:
+
+```Kotlin
+fun dfs(graph: Graph) {
+    fun dfs(current: Vertex, visited: MutableSet<Vertex>) {
+        if (!visited.add(current)) return
+        for (v in current.neighbors)
+            dfs(v, visited)
+    }
+
+    dfs(graph.vertices[0], HashSet())
+}
+```
+
+A local function can access local variables of outer functions (the closure). In the case above, `visited` can be a local variable:
+
+```Kotlin
+fun dfs(graph: Graph) {
+    val visited = HashSet<Vertex>()
+    fun dfs(current: Vertex) {
+        if (!visited.add(current)) return
+        for (v in current.neighbors)
+            dfs(v)
+    }
+
+    dfs(graph.vertices[0])
+}
+```
+
+<note>
+Other programming languages like C++ and Java doesn't support function declaration inside another functions, though they do support a function call inside another function
+</note>
+
+### Member functions
+
+A member function is a function that is defined inside a class or object:
+
+```Kotlin
+class Sample {
+    fun foo() { print("Foo") }
+}
+```
+
+## Generic functions
+
+Functions can have generic parameters, which are specified using angle brackets before the function name:
+
+```Kotlin
+fun <T> singletonList(item: T): List<T> { /*...*/ }
+```
+
+## Tail recursive functions
+
+Kotlin supports a style of functional programming known as tail recursion. 
+
+For some algorithms that would normally use loops, you can use a recursive function instead without the risk of stack overflow. 
+
+When a function is marked with the `tailrec` modifier and meets the required formal conditions, the compiler optimizes out the recursion, leaving behind a fast and efficient loop based version instead:
+
+```Kotlin
+val eps = 1E-10 // "good enough", could be 10^-15
+
+tailrec fun findFixPoint(x: Double = 1.0): Double =
+    if (Math.abs(x - Math.cos(x)) < eps) 
+        x 
+    else 
+        findFixPoint(Math.cos(x))
+```
+
+The resulting code is equivalent to this more traditional style:
+
+```Kotlin
+val eps = 1E-10 // "good enough", could be 10^-15
+
+private fun findFixPoint(): Double {
+    var x = 1.0
+    while (true) {
+        val y = Math.cos(x)
+        if (Math.abs(x - y) < eps) return x
+        x = Math.cos(x)
+    }
+}
+```
+
+To be eligible for the `tailrec` modifier, a function must call itself as the last operation it performs. 
+
+You cannot use tail recursion when there is more code after the recursive call, within `try`/`catch`/`finally` blocks, or on open functions. 
+
+Currently, tail recursion is supported by Kotlin for the JVM and Kotlin/Native.
