@@ -34,8 +34,6 @@ print(helloWorld)
 Hello World
 ```
 
-<show-structure
-
 ### Inheriting anonymous objects from supertypes
 
 To create an object of an anonymous class that inherits from some type (or types), specify this type after `object` and a colon (`:`). 
