@@ -96,4 +96,6 @@ Message of Derived
 
 ## Delegated properties
 
-<a href="https://kotlinlang.org/docs/delegated-properties.html">Delegated properties (Official Kotlin Docs)</a>
+TODO:
+
+[Kotlin Docs](https://kotlinlang.org/docs/delegated-properties.html)

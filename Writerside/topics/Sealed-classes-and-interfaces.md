@@ -165,4 +165,6 @@ fun log(e: Error) = when(e) {
 
 ## Use case scenarios
 
-<a href="https://kotlinlang.org/docs/sealed-classes.html#use-case-scenarios">Kotlin Docs</a>
+TODO:
+
+[Kotlin Docs](https://kotlinlang.org/docs/sealed-classes.html#use-case-scenarios)

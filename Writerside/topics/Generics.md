@@ -1,3 +1,5 @@
 # Generics
 
-<a href="https://kotlinlang.org/docs/generics.html">Generics (Kotlin Docs)</a>
+TODO:
+
+[Kotlin Docs](https://kotlinlang.org/docs/generics.html)
