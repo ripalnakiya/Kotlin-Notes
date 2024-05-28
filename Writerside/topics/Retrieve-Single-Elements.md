@@ -1,0 +1,32 @@
+# Retrieve Single Elements
+
+Kotlin collections provide a set of functions for retrieving single elements from collections. Functions described on this page apply to both lists and sets.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

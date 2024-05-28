@@ -57,6 +57,12 @@
         <toc-element topic="Iterators.md"/>
         <toc-element topic="Ranges-and-Progressions.md"/>
         <toc-element topic="Sequences.md"/>
+        <toc-element topic="Collection-Operations.md"/>
         <toc-element topic="Transformations.md"/>
+        <toc-element toc-title="Filter" topic="Filtering-Collections.md"/>
+        <toc-element topic="Plus-and-Minus-Operators.md"/>
+        <toc-element toc-title="Group elements" topic="Grouping.md"/>
+        <toc-element topic="Retrieve-Collection-Parts.md"/>
+        <toc-element topic="Retrieve-Single-Elements.md"/>
     </toc-element>
 </instance-profile>

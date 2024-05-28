@@ -1,6 +1,6 @@
 # Collections Overview
 
-The Kotlin Standard Library provides a comprehensive set of tools for managing collections.
+The Kotlin Standard Library provides a comprehensive set of tools for managing [collections](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/).
 
 A collection usually contains a number of objects of the same type (and its subtypes). Objects in a collection are called elements or items.
 
