@@ -1,5 +1,19 @@
 # Composing Suspending Functions
 
+A suspendable function is a function that can be paused and resumed later, allowing for asynchronous operations without blocking a thread.
+
+```Kotlin
+suspend fun fetchData(): String {
+    delay(1000) // Simulates a network request
+    return "Data fetched!"
+}
+
+fun main() = runBlocking {
+    val result = fetchData()
+    println(result)
+}
+```
+
 ## Sequential by default
 
 Assume that we have two suspending functions defined elsewhere that do something useful like some kind of remote service call or computation. 
