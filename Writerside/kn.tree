@@ -2,8 +2,8 @@
 <!DOCTYPE instance-profile
         SYSTEM "https://resources.jetbrains.com/writerside/1.0/product-profile.dtd">
 
-<instance-profile id="hi"
-                 name="Help Instance"
+<instance-profile id="kn"
+                 name="Kotlin Notes"
                  start-page="Basics.md">
 
     <toc-element topic="Basics.md"/>
