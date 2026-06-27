@@ -27,10 +27,6 @@ class Bar { ... }
 * If you mark it as `internal`, it will be visible everywhere in the same [module](#modules).
 * The `protected` modifier is not available for top-level declarations.
 
->To use a visible top-level declaration from another package, you should [import](packages.md#imports) it.
->
-{style="note"}
-
 Examples:
 
 ```kotlin

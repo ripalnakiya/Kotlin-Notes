@@ -63,24 +63,6 @@ you allow them to call other suspending functions and run concurrent code inside
 While the `suspend` keyword is part of the core Kotlin language, 
 most coroutine features are available through the [`kotlinx.coroutines`](https://github.com/Kotlin/kotlinx.coroutines) library.
 
-
-## Add the kotlinx.coroutines library to your project
-
-To include the `kotlinx.coroutines` library in your project, 
-add the corresponding dependency configuration based on your build tool:
-
-```Kotlin
-// build.gradle.kts
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:%coroutinesVersion%")
-}
-```
-
-
 ## Create your first coroutines
 
 > The examples on this page use the explicit `this` expression 

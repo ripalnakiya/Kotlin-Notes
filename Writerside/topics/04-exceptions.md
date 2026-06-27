@@ -20,8 +20,8 @@ which is a subclass of the `Throwable` class.
 For more information about the hierarchy, see the [Exception hierarchy](#exception-hierarchy) section. 
 
 Since `Exception` is an `open class`, 
-you can create [custom exceptions](#create-custom-exceptions) to suit your application's specific needs.
-
+you can create [custom exceptions](https://kotlinlang.org/docs/extensions.html#generic-extension-functions) 
+to suit your application's specific needs.
 
 ## Throw exceptions
 

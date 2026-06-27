@@ -10,7 +10,7 @@ You can perform any operations on functions that are possible for other non-func
 To facilitate this, Kotlin, as a statically typed programming language, 
 uses a family of [function types](#function-types) to represent functions, 
 and provides a set of specialized language constructs, such as
-[lambda expressions](#lambda-expressions-and-anonymous-functions).
+[lambda expressions](03-lambdas.md).
 
 > **First-Class Functions**: A Programming language is said to have first-class functions if it treats functions as first-class citizens.
 >
