@@ -1,0 +1,427 @@
+# Conditions
+<show-structure depth="2"/>
+
+## `if` expression
+
+You can also write `if` as an expression, 
+which lets you assign its returned value directly to a variable. 
+In this form, an `else` branch is required. 
+
+The `if` expression serves the same purpose as 
+the ternary operator (`condition ? then : else`) found in other languages.
+
+For example:
+
+```Kotlin
+fun main() {
+    val heightAlice = 160
+    val heightBob = 175
+
+    var taller = heightAlice
+    if (heightAlice < heightBob) taller = heightBob
+
+    // Uses an else branch
+    if (heightAlice > heightBob) {
+        taller = heightAlice
+    } else {
+        taller = heightBob
+    }
+
+    // Uses if as an expression
+    taller = if (heightAlice > heightBob) heightAlice else heightBob
+
+    // Uses else if as an expression:
+    val heightLimit = 150
+    val heightOrLimit = if (heightLimit > heightAlice) heightLimit else if (heightAlice > heightBob) heightAlice else heightBob
+
+    println("Taller height is $taller")
+    // Taller height is 175
+    println("Height or limit is $heightOrLimit")
+    // Height or limit is 175
+}
+```
+
+Each branch in an if expression can be a block, 
+where the value of the last expression becomes the result:
+
+```Kotlin
+fun main() {
+    val heightAlice = 160
+    val heightBob = 175
+
+    val taller = if (heightAlice > heightBob) {
+        print("Choose Alice\n")
+        heightAlice
+    } else {
+        print("Choose Bob\n")
+        heightBob
+    }
+
+    println("Taller height is $taller")
+
+}
+```
+
+## `when` expressions and statements
+
+`when` is a conditional expression that 
+runs code based on multiple possible values or conditions. 
+
+It's similar to the `switch` statement in Java, C, and other languages. 
+
+`when` evaluates its argument and compares the result against each branch 
+in order until one branch condition is satisfied. 
+
+For example:
+
+```Kotlin
+val userRole = "Editor"
+when (userRole) {
+    "Viewer" -> print("User has read-only access")
+    "Editor" -> print("User can edit content")
+    else -> print("User role is not recognized")
+}
+// User can edit content
+```
+
+You can use when either as an **expression** or a **statement**. 
+
+As an expression, `when` returns a value you can use later in your code. 
+
+As a statement, `when` completes an action without returning a result:
+
+<table>
+  <tr>
+    <td>Expression</td>
+    <td>Statement</td>
+  </tr>
+
+<tr>
+  <td>
+
+```Kotlin
+// Returns a string
+val text = when (x) {
+    1 -> "x == 1"
+    2 -> "x == 2"
+    else -> "x is neither 1 nor 2"
+}
+```
+
+  </td>
+  <td>
+
+```Kotlin
+// Returns no result
+when (x) {
+    1 -> print("x == 1")
+    2 -> print("x == 2")
+    else -> print("x is neither 1 nor 2")
+}
+```
+
+  </td>
+</tr>
+</table>
+
+Secondly, you can use when with or without a subject. 
+The behavior stays the same either way. 
+Using a subject usually makes your code more readable and maintainable 
+because it clearly shows what you're checking.
+
+<table>
+   <tr>
+       <td>With subject <code>x</code></td>
+       <td>Without subject</td>
+   </tr>
+
+<tr>
+  <td>
+
+```Kotlin
+when(x) { ... }
+```
+
+  </td>
+  <td>
+
+```Kotlin
+when { ... }
+```
+
+  </td>
+</tr>
+</table>
+
+How you use `when` determines 
+whether you need to cover all possible cases in your branches. 
+Covering all possible cases is called being **exhaustive**.
+
+
+### Statements
+
+If you use `when` as a statement, you don't need to cover all possible cases. 
+
+In this example, some cases aren't covered, so no branch is triggered.
+However, no error occurs:
+
+```Kotlin
+val deliveryStatus = "OutForDelivery"
+when (deliveryStatus) {
+    // Not all cases are covered
+    "Pending" -> print("Your order is being prepared")
+    "Shipped" -> print("Your order is on the way")
+}
+```
+
+Just like with `if`, 
+each branch can be a block, and its value is the value of the last expression in the block.
+
+
+### Expressions
+
+If you use `when` as an expression, you **must** cover all possible cases. 
+The value of the first matching branch becomes the value of the overall expression. 
+If you don't cover all cases, the compiler throws an error.
+
+If your `when` expression has a subject, 
+you can use an `else` branch to make sure that all possible cases are covered, 
+but it isn't mandatory. 
+
+For example, if your subject is a `Boolean`, `enum` class, `sealed` class,
+or one of their nullable counterparts, you can cover all cases without an `else` branch:
+
+```Kotlin
+enum class Bit {
+    ZERO, ONE
+}
+
+fun getRandomBit(): Bit {
+    return if (Random.nextBoolean()) Bit.ONE else Bit.ZERO
+}
+
+fun main() {
+    val numericValue = when (getRandomBit()) {
+        // No else branch is needed because all cases are covered
+        Bit.ZERO -> 0
+        Bit.ONE -> 1
+    }
+
+    println("Random bit as number: $numericValue")
+    // Random bit as number: 0
+}
+```
+
+If your `when` expression **doesn't** have a subject, 
+you **must** have an `else` branch or the compiler throws an error.
+
+The `else` branch is evaluated when none of the other branch conditions are satisfied:
+
+```Kotlin
+    val localFileSize = 1200
+    val remoteFileSize = 1200
+
+    val message = when {
+        localFileSize > remoteFileSize -> "Local file is larger than remote file"
+        localFileSize < remoteFileSize -> "Local file is smaller than remote file"
+        else -> "Local and remote files are the same size"
+    }
+
+    println(message)
+    // Local and remote files are the same size
+    //sampleEnd
+```
+
+
+### Other ways to use when
+
+`when` expressions and statements offer different ways to simplify your code, 
+handle multiple conditions, and perform type checks.
+
+Group multiple conditions into a single branch using commas:
+
+```Kotlin
+    val ticketPriority = "High"
+
+    when (ticketPriority) {
+        "Low", "Medium" -> print("Standard response time")
+        else -> print("High-priority handling")
+    }
+```
+
+Use expressions that evaluate to `true` or `false` as branch conditions:
+
+```Kotlin
+    val storedPin = "1234"
+    val enteredPin = 1234
+  
+    when (enteredPin) {
+        // Expression
+        storedPin.toInt() -> print("PIN is correct")
+        else -> print("Incorrect PIN")
+    }
+```
+
+Check whether a value is or isn't contained in a range or collection 
+using the `in` or `!in` keywords:
+
+```Kotlin
+    val x = 7
+    val validNumbers = setOf(15, 16, 17)
+
+    when (x) {
+        in 1..10 -> print("x is in the range")
+        in validNumbers -> print("x is valid")
+        !in 10..20 -> print("x is outside the range")
+        else -> print("none of the above")
+    }
+```
+
+Check a value's type using the `is` or `!is` keywords. 
+Due to smart casts, you can access the member functions and properties 
+of the type directly:
+
+```Kotlin
+fun hasPrefix(input: Any): Boolean = when (input) {
+    is String -> input.startsWith("ID-")
+    else -> false
+}
+
+fun main() {
+    val testInput = "ID-98345"
+    println(hasPrefix(testInput))
+    // true
+}
+```
+
+Use `when` instead of a traditional `if`-`else` `if` chain.
+Without a subject, the branch conditions are simply boolean expressions. 
+The first branch with a `true` condition runs:
+
+```Kotlin
+fun Int.isOdd() = this % 2 != 0
+fun Int.isEven() = this % 2 == 0
+
+fun main() {
+    val x = 5
+    val y = 8
+
+    when {
+        x.isOdd() -> print("x is odd")
+        y.isEven() -> print("y is even")
+        else -> print("x+y is odd")
+    }
+    // x is odd
+}
+```
+
+Finally, capture the subject in a variable by using the following syntax:
+
+```Kotlin
+    val message = when (val input = "yes") {
+        "yes" -> "You said yes"
+        "no" -> "You said no"
+        else -> "Unrecognized input: $input"
+    }
+
+    println(message)
+    // You said yes
+```
+
+The scope of a variable introduced as the subject is 
+restricted to the body of the `when` expression or statement.
+
+### Guard conditions
+
+Guard conditions allow you to include more than one condition 
+to the branches of a `when` expression or statement, 
+making complex control flow more explicit and concise. 
+
+You can use guard conditions with `when` as long as it has a subject.
+
+Place a guard condition after the primary condition in the same branch, 
+separated by `if`:
+
+```Kotlin
+sealed interface Animal {
+    data class Cat(val mouseHunter: Boolean) : Animal
+    data class Dog(val breed: String) : Animal
+}
+
+fun feedDog() = println("Feeding a dog")
+fun feedCat() = println("Feeding a cat")
+
+fun feedAnimal(animal: Animal) {
+    when (animal) {
+        // Branch with only primary condition
+        // Calls feedDog() when animal is Dog
+        is Animal.Dog -> feedDog()
+        // Branch with both primary and guard conditions
+        // Calls feedCat() when animal is Cat and not mouseHunter
+        is Animal.Cat if !animal.mouseHunter -> feedCat()
+        // Prints "Unknown animal" if none of the above conditions match
+        else -> println("Unknown animal")
+    }
+}
+
+fun main() {
+    val animals = listOf(
+        Animal.Dog("Beagle"),
+        Animal.Cat(mouseHunter = false),
+        Animal.Cat(mouseHunter = true)
+    )
+
+    animals.forEach { feedAnimal(it) }
+    // Feeding a dog
+    // Feeding a cat
+    // Unknown animal
+}
+```
+
+You can't use guard conditions when you have multiple conditions separated by a comma. 
+For example:
+
+```Kotlin
+0, 1 -> print("x == 0 or x == 1")
+```
+
+In a single `when` expression or statement, 
+you can combine branches with and without guard conditions.
+
+The code in a branch with a guard condition runs 
+only if both the primary condition and the guard condition evaluate to `true`.
+If the primary condition doesn't match, the guard condition isn't evaluated.
+
+Since `when` statements don't need to cover all cases, 
+using guard conditions in `when` statements without an
+`else` branch means that if no conditions match, no code is run.
+
+Unlike statements, `when` expressions must cover all cases. 
+If you use guard conditions in `when` expressions without an `else` branch,
+the compiler requires you to handle every possible case to avoid runtime errors.
+
+Combine multiple guard conditions within a single branch 
+using the boolean operators `&&` (AND) or `||` (OR).
+
+Use parentheses around the boolean expressions to avoid confusion:
+
+```Kotlin
+when (animal) {
+    is Animal.Cat if (!animal.mouseHunter && animal.hungry) -> feedCat()
+}
+```
+
+Guard conditions also support `else if`:
+
+```Kotlin
+when (animal) {
+    // Checks if `animal` is `Dog`
+    is Animal.Dog -> feedDog()
+    // Guard condition that checks if `animal` is `Cat` and not `mouseHunter`
+    is Animal.Cat   if !animal.mouseHunter -> feedCat()
+                    // Calls giveLettuce() if none of the above conditions match and animal.eatsPlants is true
+                    else if animal.eatsPlants -> giveLettuce()
+                    // Prints "Unknown animal" if none of the above conditions match
+    else -> println("Unknown animal")
+}
+```
