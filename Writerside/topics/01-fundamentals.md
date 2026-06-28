@@ -29,128 +29,232 @@ x = "hello"  # totally fine
 
 An entry point of a Kotlin application is the `main` function:
 
-```Kotlin
+```kotlin
 fun main() {
     println("Hello world!")
-    
-    print("Hello ")
-    print("world!")
 }
 ```
+{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-basic-syntax-hello-world"}
 
-Another form of `main` accepts a variable number of String arguments:
+Another form of `main` accepts a variable number of `String` arguments:
 
-```Kotlin
+```kotlin
 fun main(args: Array<String>) {
     println(args.contentToString())
 }
 ```
+{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
+## Print to the standard output
+
+`print` prints its argument to the standard output:
+
+```kotlin
+fun main() {
+//sampleStart
+    print("Hello ")
+    print("world!")
+//sampleEnd
+}
+```
+{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-basic-syntax-print"}
+
+`println` prints its arguments and adds a line break, so that the next thing you print appears on the next line:
+
+```kotlin
+fun main() {
+//sampleStart
+    println("Hello world!")
+    println(42)
+//sampleEnd
+}
+```
+{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-basic-syntax-println"}
+
+## Read from the standard input
+
+The `readln()` function reads from the standard input. This function reads the entire line the user enters as a string.
+
+You can use the `println()`, `readln()`, and `print()` functions together to print messages requesting
+and showing user input:
+
+```kotlin
+// Prints a message to request input
+println("Enter any word: ")
+
+// Reads and stores the user input. For example: Happiness
+val yourWord = readln()
+
+// Prints a message with the input
+print("You entered the word: ")
+print(yourWord)
+// You entered the word: Happiness
+```
+
+For more information, see [Read standard input](https://kotlinlang.org/docs/read-standard-input.html).
 
 ## Functions
 
 A function with two `Int` parameters and `Int` return type:
 
-```Kotlin
+```kotlin
+//sampleStart
 fun sum(a: Int, b: Int): Int {
     return a + b
 }
+//sampleEnd
+
+fun main() {
+    print("sum of 3 and 5 is ")
+    println(sum(3, 5))
+}
 ```
+{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-basic-syntax-return-int"}
 
 A function body can be an expression. Its return type is inferred:
 
-```Kotlin
+```kotlin
+//sampleStart
 fun sum(a: Int, b: Int) = a + b
+//sampleEnd
+
+fun main() {
+    println("sum of 19 and 23 is ${sum(19, 23)}")
+}
 ```
+{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-basic-syntax-function-expression"}
 
 A function that returns no meaningful value:
 
-```Kotlin
+```kotlin
+//sampleStart
 fun printSum(a: Int, b: Int): Unit {
     println("sum of $a and $b is ${a + b}")
 }
+//sampleEnd
+
+fun main() {
+    printSum(-1, 8)
+}
 ```
+{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-basic-syntax-return-unit"}
 
 `Unit` return type can be omitted:
 
-```Kotlin
+```kotlin
+//sampleStart
 fun printSum(a: Int, b: Int) {
     println("sum of $a and $b is ${a + b}")
 }
+//sampleEnd
+
+fun main() {
+    printSum(-1, 8)
+}
 ```
+{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-basic-syntax-function-omit-unit"}
+
+See [Functions](01-functions.md).
 
 ## Variables
 
-The `val` keyword is used to declare immutable, 
-read-only local variables that can’t be reassigned a different value after initialization.
+In Kotlin, you declare a variable starting with a keyword, `val` or `var`, followed by the name of the variable.
 
-```Kotlin
-val x: Int = 5
+Use the `val` keyword to declare variables that are assigned a value only once. These are immutable, read-only local variables that can't be reassigned a different value
+after initialization:
+
+```kotlin
+fun main() {
+//sampleStart
+    // Declares the variable x and initializes it with the value of 5
+    val x: Int = 5
+    // 5
+//sampleEnd
+    println(x)
+}
 ```
+{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-basic-syntax-val"}
 
-The `var` keyword is used to mutable variables, 
-and their values can be changed after initialization.
+Use the `var` keyword to declare variables that can be reassigned. These are mutable variables, and you can change their values after initialization:
 
-```Kotlin
-var x: Int = 5
-// Reassigns a new value of 6 to the variable x
-x += 1
+```kotlin
+fun main() {
+//sampleStart
+    // Declares the variable x and initializes it with the value of 5
+    var x: Int = 5
+    // Reassigns a new value of 6 to the variable x
+    x += 1
+    // 6
+//sampleEnd
+    println(x)
+}
 ```
+{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-basic-syntax-var"}
 
-Kotlin supports type inference and 
-automatically identifies the data type of a declared variable.
+Kotlin supports type inference and automatically identifies the data type of a declared variable. When declaring a variable, you can omit the type after the variable name:
 
-```Kotlin
-// Declares the variable x with the value of 5;`Int` type is inferred
-val x = 5
+```kotlin
+fun main() {
+//sampleStart
+    // Declares the variable x with the value of 5;`Int` type is inferred
+    val x = 5
+    // 5
+//sampleEnd
+    println(x)
+}
 ```
+{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-basic-syntax-inference"}
 
-> Type Inference: Kotlin compiler can infer the type based on the type of the assigned value.
-{style="note"}
+You can use variables only after initializing them. You can either initialize a variable at the moment of declaration or declare a variable first and initialize it later.
+In the second case, you must specify the data type:
 
-Variables can also be declared and initialized separately
-
-```Kotlin
-val c: Int
-// Initializes the variable c after declaration 
-c = 3
+```kotlin
+fun main() {
+//sampleStart
+    // Initializes the variable x at the moment of declaration; type is not required
+    val x = 5
+    // Declares the variable c without initialization; type is required
+    val c: Int
+    // Initializes the variable c after declaration 
+    c = 3
+    // 5 
+    // 3
+//sampleEnd
+    println(x)
+    println(c)
+}
 ```
+{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-basic-syntax-initialize"}
 
-## Console input
+You can declare variables at the top level:
 
-Read a full line:
+```kotlin
+//sampleStart
+val PI = 3.14
+var x = 0
 
-```Kotlin
-    val name = readLine()
-    println("Hello $name")
+fun incrementX() {
+    x += 1
+}
+// x = 0; PI = 3.14
+// incrementX()
+// x = 1; PI = 3.14
+//sampleEnd
+
+fun main() {
+    println("x = $x; PI = $PI")
+    incrementX()
+    println("incrementX()")
+    println("x = $x; PI = $PI")
+}
 ```
+{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-basic-syntax-variable-top-level"}
 
-Read an `Int`:
-
-```Kotlin
-    val num = readLine().toInt()
-```
-
-Read two numbers:
-
-```Kotlin
-    val a = readLine().toInt()
-    val b = readLine().toInt()
-```
-
-Keep reading numbers until user enters `0`:
-
-```Kotlin
-    while (true) {
-        val num = readLine().toInt()
-        if (num == 0) break
-        println(num)
-    }
-```
+For information about declaring properties, see [Properties](13-properties.md).
 
 ## Compilation
 
-![Compilation](01-compilation.png)
+![Compilation](compilation.png)
 
 ## Recommended way to learn Kotlin
 

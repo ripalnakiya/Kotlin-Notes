@@ -8,6 +8,8 @@
 
     <toc-element topic="01-fundamentals.md"/>
 
+    <toc-element topic="02-visibility-modifiers.md"/>
+
     <toc-element toc-title="Types">
         <toc-element topic="01-types-overview.md"/>
         <toc-element topic="02-numbers.md"/>
@@ -15,50 +17,55 @@
         <toc-element topic="04-characters.md"/>
         <toc-element topic="05-strings.md"/>
         <toc-element topic="06-arrays.md"/>
-        <toc-element topic="07-type-checks-and-casts.md"/>
+        <toc-element topic="07-typecasts.md"/>
         <toc-element topic="08-type-aliases.md"/>
     </toc-element>
 
     <toc-element toc-title="Control Flow">
         <toc-element topic="01-conditions.md"/>
         <toc-element topic="02-loops.md"/>
-        <toc-element topic="03-returns-and-jumps.md"/>
+        <toc-element topic="03-returns.md"/>
     </toc-element>
 
-    <toc-element topic="04-exceptions.md"/>
+    <toc-element topic="05-exceptions.md"/>
 
     <toc-element toc-title="Functions">
         <toc-element topic="01-functions.md"/>
         <toc-element topic="02-higher-order-functions.md"/>
-        <toc-element topic="03-lambdas.md"/>
-        <toc-element topic="04-inline-functions.md"/>
+        <toc-element topic="03-lambda-expressions-and-anonymous-functions.md"/>
+        <toc-element topic="04-this-expressions.md"/>
+        <toc-element topic="05-inline-functions.md"/>
+        <toc-element topic="06-operator-overloading.md"/>
     </toc-element>
 
     <toc-element toc-title="Classes and Objects">
         <toc-element topic="01-classes.md"/>
         <toc-element topic="02-data-classes.md"/>
-        <toc-element topic="03-interfaces.md"/>
-        <toc-element topic="04-delegation.md"/>
-        <toc-element topic="05-inheritance.md"/>
-        <toc-element topic="06-object-declarations-and-expressions.md" toc-title="Object Declarations"/>
+        <toc-element topic="03-extensions.md"/>
+        <toc-element topic="04-interfaces.md"/>
+        <toc-element topic="05-delegation.md"/>
+        <toc-element topic="06-inheritance.md"/>
+        <toc-element topic="07-object-declarations.md"/>
 
         <toc-element toc-title="Special Classes &amp; Interfaces">
-            <toc-element topic="07-sealed-classes-and-interfaces.md"/>
-            <toc-element topic="08-enum-classes.md"/>
-            <toc-element topic="09-nested-and-inner-classes.md"/>
-            <toc-element topic="10-functional-interfaces.md"/>
+            <toc-element topic="08-sealed-classes.md"/>
+            <toc-element topic="09-enum-classes.md"/>
+            <toc-element topic="10-inline-value-classes.md"/>
+            <toc-element topic="11-nested-classes.md"/>
+            <toc-element topic="12-functional-interfaces.md" toc-title="Functional (SAM) interfaces"/>
         </toc-element>
 
-        <toc-element topic="11-properties.md"/>
+        <toc-element topic="13-properties.md"/>
+        <toc-element topic="14-delegated-properties.md"/>
     </toc-element>
 
-    <toc-element topic="07-visibility-modifiers.md"/>
     <toc-element topic="08-null-safety.md"/>
     <toc-element topic="09-equality.md"/>
-    <toc-element topic="10-destructuring-declarations.md"/>
+    <toc-element topic="10-generics.md" toc-title="Generics"/>
+    <toc-element topic="11-destructuring-declarations.md"/>
 
     <toc-element toc-title="Coroutines">
-        <toc-element topic="01-coroutine-basics.md" toc-title="Basics"/>
+        <toc-element topic="01-coroutines-basics.md" toc-title="Basics"/>
         <toc-element topic="02-coroutine-builders.md"/>
         <toc-element topic="03-composing-suspending-functions.md"/>
         <toc-element topic="04-cancellation-and-timeouts.md" toc-title="Cancellation"/>
@@ -67,6 +74,7 @@
         <toc-element topic="07-coroutine-exception-handling.md" toc-title="Exception Handling"/>
     </toc-element>
 
-    <toc-element topic="12-additional-notes.md"/>
+    <toc-element topic="13-additional-notes.md"/>
+    <toc-element topic="14-scope-functions.md"/>
 
 </instance-profile>
