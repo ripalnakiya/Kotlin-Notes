@@ -143,7 +143,7 @@ Arrays are always mutable. To access and modify elements in an array, use the [i
 
 Arrays in Kotlin are _invariant_. This means that Kotlin doesn't allow you to assign an `Array<String>`
 to an `Array<Any>` to prevent a possible runtime failure. Instead, you can use `Array<out Any>`. For more information,
-see [Type Projections](10-generics.md#type-projections).
+see [Type Projections](https://kotlinlang.org/docs/generics.html#type-projections).
 
 ## Work with arrays
 

@@ -143,7 +143,7 @@ The `.endpoints()` function returns a pair containing the first and last element
 Inside the function body, it calls the `first()` and `last()` functions and combines their returned values into a `Pair`
 using the `to` infix function.
 
-For more information about generics, see [generic functions](10-generics.md).
+For more information about generics, see [generic functions](https://kotlinlang.org/docs/generics.html).
 
 ### Nullable receivers
 

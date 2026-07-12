@@ -4,7 +4,7 @@
 In Kotlin, you can do two things with types at runtime: check whether an object is a specific type, or convert it to another type.
 Type **checks** help you confirm the kind of object you're dealing with, while type **casts** attempt to convert the object to another type.
 
-> To learn specifically about **generics** type checks and casts, for example `List<T>`, `Map<K,V>`, see [Generics type checks and casts](10-generics.md#generics-type-checks-and-casts).
+> To learn specifically about **generics** type checks and casts, for example `List<T>`, `Map<K,V>`, see [Generics type checks and casts](https://kotlinlang.org/docs/generics.html#generics-type-checks-and-casts).
 >
 {style="tip"}
 

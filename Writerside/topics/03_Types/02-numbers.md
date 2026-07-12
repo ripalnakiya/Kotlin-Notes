@@ -421,7 +421,7 @@ Bitwise operations include:
 ## Boxing and caching numbers on the JVM
 
 On the JVM, non-nullable numeric values are usually stored using primitive types, such as `int`, `long`, or `double`.
-However, when you use [generic types](10-generics.md) or nullable numeric types like `Int?`, the value is boxed and
+However, when you use [generic types](https://kotlinlang.org/docs/generics.html) or nullable numeric types like `Int?`, the value is boxed and
 represented as an object.
 
 The JVM applies a [memory optimization technique](https://docs.oracle.com/javase/specs/jls/se22/html/jls-5.html#jls-5.1.7)

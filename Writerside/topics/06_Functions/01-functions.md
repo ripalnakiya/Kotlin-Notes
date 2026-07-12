@@ -578,7 +578,7 @@ You can specify generic parameters for a function by using angle brackets `<>` b
 fun <T> singletonList(item: T): List<T> { /*...*/ }
 ```
 
-For more information on generic functions, see [Generics](10-generics.md).
+For more information on generic functions, see [Generics](https://kotlinlang.org/docs/generics.html).
 
 ## Tail recursive functions
 
