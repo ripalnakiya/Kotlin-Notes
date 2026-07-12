@@ -65,7 +65,7 @@ fun foo() {
     println("this point is unreachable")
 }
 
-// Output: 12
+// 12
 ```
 
 > Note that such non-local returns are supported only for lambda expressions
@@ -78,7 +78,6 @@ fun foo() {
 To return from a lambda expression, label it and qualify the `return`:
 
 ```kotlin
-//sampleStart
 fun foo() {
     listOf(1, 2, 3, 4, 5).forEach lit@{
         if (it == 3) return@lit // local return to the caller of the lambda - the forEach loop
@@ -86,19 +85,14 @@ fun foo() {
     }
     print(" done with explicit label")
 }
-//sampleEnd
 
-fun main() {
-    foo()
-}
+// 1245 done with explicit label
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 Now, it returns only from the lambda expression. Often it is more convenient to use _implicit labels_, because such a label
 has the same name as the function to which the lambda is passed.
 
 ```kotlin
-//sampleStart
 fun foo() {
     listOf(1, 2, 3, 4, 5).forEach {
         if (it == 3) return@forEach // local return to the caller of the lambda - the forEach loop
@@ -106,33 +100,24 @@ fun foo() {
     }
     print(" done with implicit label")
 }
-//sampleEnd
 
-fun main() {
-    foo()
-}
+// 1245 done with implicit label
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 Alternatively, you can replace the lambda expression with an [anonymous function](03-lambda-expressions-and-anonymous-functions.md#anonymous-functions).
 A `return` statement in an anonymous function will return from the anonymous function itself.
 
 ```kotlin
-//sampleStart
 fun foo() {
     listOf(1, 2, 3, 4, 5).forEach(fun(value: Int) {
-        if (value == 3) return  // local return to the caller of the anonymous function - the forEach loop
+        if (value == 3) return // local return to the caller of the anonymous function - the forEach loop
         print(value)
     })
     print(" done with anonymous function")
 }
-//sampleEnd
 
-fun main() {
-    foo()
-}
+// 1245 done with anonymous function
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 > Note that the use of local returns in the previous three examples
 > is similar to the use of `continue` in regular loops.
@@ -142,7 +127,6 @@ There is no direct equivalent for `break`,
 but it can be simulated by adding another nesting lambda and non-locally returning from it:
 
 ```kotlin
-//sampleStart
 fun foo() {
     run loop@{
         listOf(1, 2, 3, 4, 5).forEach {
@@ -152,13 +136,9 @@ fun foo() {
     }
     print(" done with nested loop")
 }
-//sampleEnd
 
-fun main() {
-    foo()
-}
+// 12 done with nested loop
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 > `run` is a function in Kotlin that takes a lambda expression as an argument and executes the code inside the lambda.
 >
@@ -167,7 +147,6 @@ fun main() {
 Therefore, code can be rewritten as (using the implicit label):
 
 ```kotlin
-//sampleStart
 fun foo() {
     run{
         listOf(1, 2, 3, 4, 5).forEach {
@@ -177,13 +156,9 @@ fun foo() {
     }
     print(" done with nested loop")
 }
-//sampleEnd
 
-fun main() {
-    foo()
-}
+// 12 done with nested loop
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 The non-local return here is possible since the nested `forEach()` lambda acts as an [inline function](05-inline-functions.md).
 

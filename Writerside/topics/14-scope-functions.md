@@ -1,9 +1,12 @@
 # Scope functions
-<show-structure depth="2"/>
+<show-structure depth="3"/>
 
-The Kotlin standard library contains several functions whose sole purpose is to execute a block of code within the context
-of an object. When you call such a function on an object with a [lambda expression](03-lambda-expressions-and-anonymous-functions.md) provided, it forms a
-temporary scope. In this scope, you can access the object without its name. Such functions are called _scope functions_.
+The Kotlin standard library contains several functions 
+whose sole purpose is to execute a block of code within the context of an object. 
+
+When you call such a function on an object with a [lambda expression](03-lambda-expressions-and-anonymous-functions.md) provided, it forms a temporary scope. 
+In this scope, you can access the object without its name. Such functions are called **scope functions**.
+
 There are five of them: [`let`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/let.html), [`run`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/run.html)
 , [`with`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/with.html), [`apply`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/apply.html)
 , and [`also`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/also.html).
@@ -19,38 +22,23 @@ data class Person(var name: String, var age: Int, var city: String) {
     fun incrementAge() { age++ }
 }
 
-fun main() {
-//sampleStart
-    Person("Alice", 20, "Amsterdam").let {
-        println(it)
-        it.moveTo("London")
-        it.incrementAge()
-        println(it)
-    }
-//sampleEnd
+Person("Alice", 20, "Amsterdam").let {
+    println(it)
+    it.moveTo("London")
+    it.incrementAge()
+    println(it)
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 If you write the same without `let`, you'll have to introduce a new variable and repeat its name whenever you use it.
 
 ```kotlin
-data class Person(var name: String, var age: Int, var city: String) {
-    fun moveTo(newCity: String) { city = newCity }
-    fun incrementAge() { age++ }
-}
-
-fun main() {
-//sampleStart
-    val alice = Person("Alice", 20, "Amsterdam")
-    println(alice)
-    alice.moveTo("London")
-    alice.incrementAge()
-    println(alice)
-//sampleEnd
-}
+val alice = Person("Alice", 20, "Amsterdam")
+println(alice)
+alice.moveTo("London")
+alice.incrementAge()
+println(alice)
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 Scope functions don't introduce any new technical capabilities, but they can make your code more concise and readable.
 
@@ -94,24 +82,30 @@ easy to get confused about the current context object and value of `this` or `it
 ## Distinctions
 
 Because scope functions are similar in nature, it's important to understand the differences between them.
+
 There are two main differences between each scope function:
 * The way they refer to the context object.
 * Their return value.
 
 ### Context object: this or it
 
-Inside the lambda passed to a scope function, the context object is available by a short reference instead of its
-actual name. Each scope function uses one of two ways to reference the context object: as a lambda [receiver](03-lambda-expressions-and-anonymous-functions.md#function-literals-with-receiver)
-(`this`) or as a lambda argument (`it`). Both provide the same capabilities, so we describe the pros and cons of each
+Inside the lambda passed to a scope function, 
+the context object is available by a short reference instead of its actual name. 
+
+Each scope function uses one of two ways to reference the context object: as a lambda [receiver](03-lambda-expressions-and-anonymous-functions.md#function-literals-with-receiver)
+(`this`) or as a lambda argument (`it`). 
+
+Both provide the same capabilities, so we describe the pros and cons of each
 for different use cases and provide recommendations for their use.
 
 ```kotlin
 fun main() {
     val str = "Hello"
+    
     // this
     str.run {
         println("The string's length: $length")
-        //println("The string's length: ${this.length}") // does the same
+        println("The string's length: ${this.length}") // does the same
     }
 
     // it
@@ -120,40 +114,38 @@ fun main() {
     }
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 #### this
 
 `run`, `with`, and `apply` reference the context object as a lambda [receiver](03-lambda-expressions-and-anonymous-functions.md#function-literals-with-receiver) -
 by keyword `this`. Hence, in their lambdas, the object is available as it would be in ordinary class functions.
 
-In most cases, you can omit `this` when accessing the members of the receiver object, making the code shorter. On the
-other hand, if `this` is omitted, it can be hard to distinguish between the receiver members and external objects or
-functions. So having the context object as a receiver (`this`) is recommended for lambdas that mainly operate on the
+In most cases, you can omit `this` when accessing the members of the receiver object, making the code shorter. 
+
+On the other hand, if `this` is omitted, 
+it can be hard to distinguish between the receiver members and external objects or functions. 
+So having the context object as a receiver (`this`) is recommended for lambdas that mainly operate on the
 object's members by calling its functions or assigning values to properties.
 
 ```kotlin
 data class Person(var name: String, var age: Int = 0, var city: String = "")
 
-fun main() {
-//sampleStart
-    val adam = Person("Adam").apply { 
-        age = 20                       // same as this.age = 20
-        city = "London"
-    }
-    println(adam)
-//sampleEnd
+val adam = Person("Adam").apply { 
+    age = 20                       // same as this.age = 20
+    city = "London"
 }
+println(adam)
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 #### it
 
-In turn, `let` and `also` reference the context object as a lambda [argument](03-lambda-expressions-and-anonymous-functions.md#lambda-expression-syntax). If
-the argument name is not specified, the object is accessed by the implicit default name `it`. `it` is shorter than
-`this` and expressions with `it` are usually easier to read.
+In turn, `let` and `also` reference the context object as a lambda [argument](03-lambda-expressions-and-anonymous-functions.md#lambda-expression-syntax). 
+
+If the argument name is not specified, the object is accessed by the implicit default name `it`. 
+`it` is shorter than`this` and expressions with `it` are usually easier to read.
 
 However, when calling the object's functions or properties, you don't have the object available implicitly like `this`.
+
 Hence, accessing the context object via `it` is better when the object is mostly used as an argument in function calls.
 `it` is also better if you use multiple variables in the code block.
 
@@ -165,19 +157,17 @@ fun writeToLog(message: String) {
 }
 
 fun main() {
-//sampleStart
+
     fun getRandomInt(): Int {
         return Random.nextInt(100).also {
             writeToLog("getRandomInt() generated value $it")
         }
     }
     
-    val i = getRandomInt()
-    println(i)
-//sampleEnd
+    val i = getRandomInt() // INFO: getRandomInt() generated value 39
+    println(i) // 39
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 The example below demonstrates referencing the context object as a lambda argument with argument name: `value`.
 
@@ -189,7 +179,7 @@ fun writeToLog(message: String) {
 }
 
 fun main() {
-//sampleStart
+
     fun getRandomInt(): Int {
         return Random.nextInt(100).also { value ->
             writeToLog("getRandomInt() generated value $value")
@@ -198,10 +188,8 @@ fun main() {
     
     val i = getRandomInt()
     println(i)
-//sampleEnd
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 ### Return value
 
@@ -214,12 +202,13 @@ to choose the best scope function to use.
 
 #### Context object
 
-The return value of `apply` and `also` is the context object itself. Hence, they can be included into call chains as
-_side steps_: you can continue chaining function calls on the same object, one after another.
+The return value of `apply` and `also` is the context object itself. 
+
+Hence, they can be included into call chains as **side steps**: 
+you can continue chaining function calls on the same object, one after another.
 
 ```kotlin
 fun main() {
-//sampleStart
     val numberList = mutableListOf<Double>()
     numberList.also { println("Populating the list") }
         .apply {
@@ -229,11 +218,16 @@ fun main() {
         }
         .also { println("Sorting the list") }
         .sort()
-//sampleEnd
+    
     println(numberList)
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
+
+```text
+Populating the list
+Sorting the list
+[1.0, 2.71, 3.14]
+```
 
 They also can be used in return statements of functions returning the context object.
 
@@ -245,54 +239,41 @@ fun writeToLog(message: String) {
 }
 
 fun main() {
-//sampleStart
     fun getRandomInt(): Int {
         return Random.nextInt(100).also {
             writeToLog("getRandomInt() generated value $it")
         }
     }
     
-    val i = getRandomInt()
-//sampleEnd
+    val i = getRandomInt() // INFO: getRandomInt() generated value 13
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 #### Lambda result
 
-`let`, `run`, and `with` return the lambda result. So you can use them when assigning the result to a variable, chaining
-operations on the result, and so on.
+`let`, `run`, and `with` return the lambda result. 
+So you can use them when assigning the result to a variable, chaining operations on the result, and so on.
 
 ```kotlin
-fun main() {
-//sampleStart
     val numbers = mutableListOf("one", "two", "three")
     val countEndsWithE = numbers.run { 
         add("four")
         add("five")
         count { it.endsWith("e") }
     }
-    println("There are $countEndsWithE elements that end with e.")
-//sampleEnd
-}
+    println("There are $countEndsWithE elements that end with e.") // There are 3 elements that end with e.
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 Additionally, you can ignore the return value and use a scope function to create a temporary scope for local variables.
 
 ```kotlin
-fun main() {
-//sampleStart
     val numbers = mutableListOf("one", "two", "three")
     with(numbers) {
         val firstItem = first()
         val lastItem = last()        
-        println("First item: $firstItem, last item: $lastItem")
+        println("First item: $firstItem, last item: $lastItem") // First item: one, last item: three
     }
-//sampleEnd
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 ## Functions
 
@@ -309,44 +290,29 @@ conventions for using them.
 results of call chains. For example, the following code prints the results of two operations on a collection:
 
 ```kotlin
-fun main() {
-//sampleStart
     val numbers = mutableListOf("one", "two", "three", "four", "five")
     val resultList = numbers.map { it.length }.filter { it > 3 }
-    println(resultList)    
-//sampleEnd
-}
+    println(resultList) // [5, 4, 4]
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 With `let`, you can rewrite the above example so that you're not assigning the result of the list
 operations to a variable:
 
 ```kotlin
-fun main() {
-//sampleStart
     val numbers = mutableListOf("one", "two", "three", "four", "five")
     numbers.map { it.length }.filter { it > 3 }.let { 
-        println(it)
+        println(it) // [5, 4, 4]
         // and more function calls if needed
-    } 
-//sampleEnd
-}
+    }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 If the code block passed to `let` contains a single function with `it` as an argument, you can use the method reference
 (`::`) instead of the lambda argument:
 
 ```kotlin
-fun main() {
-//sampleStart
     val numbers = mutableListOf("one", "two", "three", "four", "five")
-    numbers.map { it.length }.filter { it > 3 }.let(::println)
-//sampleEnd
-}
+    numbers.map { it.length }.filter { it > 3 }.let(::println) // [5, 4, 4]
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 `let` is often used to execute a code block containing non-null values. To perform actions on a nullable object, use
 the [safe call operator `?.`](08-null-safety.md#safe-call-operator) on it and call `let` with the actions in its lambda.
@@ -355,36 +321,39 @@ the [safe call operator `?.`](08-null-safety.md#safe-call-operator) on it and ca
 fun processNonNullString(str: String) {}
 
 fun main() {
-//sampleStart
-    val str: String? = "Hello"   
-    //processNonNullString(str)       // compilation error: str can be null
+    val str: String? = "Hello"  
+
+    processNonNullString(str)       // compilation error: str can be null
+
     val length = str?.let { 
         println("let() called on $it")        
         processNonNullString(it)      // OK: 'it' is not null inside '?.let { }'
         it.length
     }
-//sampleEnd
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 You can also use `let` to introduce local variables with a limited scope to make your code easier to read.
-To define a new variable for the context object, provide its name as the lambda argument so that it can be used instead of
-the default `it`.
+To define a new variable for the context object, 
+provide its name as the lambda argument so that it can be used instead of the default `it`.
 
 ```kotlin
 fun main() {
-//sampleStart
     val numbers = listOf("one", "two", "three", "four")
+    
     val modifiedFirstItem = numbers.first().let { firstItem ->
         println("The first item of the list is '$firstItem'")
         if (firstItem.length >= 5) firstItem else "!" + firstItem + "!"
     }.uppercase()
+
     println("First item after modifications: '$modifiedFirstItem'")
-//sampleEnd
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
+
+```text
+The first item of the list is 'one'
+First item after modifications: '!ONE!'
+```
 
 ### with
 
@@ -398,33 +367,33 @@ We recommend using `with` for calling functions on the context object when you d
 In code, `with` can be read as "_with this object, do the following._"
 
 ```kotlin
-fun main() {
-//sampleStart
     val numbers = mutableListOf("one", "two", "three")
+
     with(numbers) {
         println("'with' is called with argument $this")
         println("It contains $size elements")
     }
-//sampleEnd
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
+
+```text
+'with' is called with argument [one, two, three]
+It contains 3 elements
+```
 
 You can also use `with` to introduce a helper object whose properties or functions are used for calculating a value.
 
 ```kotlin
-fun main() {
-//sampleStart
     val numbers = mutableListOf("one", "two", "three")
     val firstAndLast = with(numbers) {
         "The first element is ${first()}," +
         " the last element is ${last()}"
     }
     println(firstAndLast)
-//sampleEnd
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
+
+```text
+The first element is one, the last element is three
+```
 
 ### run
 
@@ -443,33 +412,37 @@ class MultiportService(var url: String, var port: Int) {
 }
 
 fun main() {
-//sampleStart
     val service = MultiportService("https://example.kotlinlang.org", 80)
 
     val result = service.run {
         port = 8080
         query(prepareRequest() + " to port $port")
     }
-    
+
     // the same code written with let() function:
     val letResult = service.let {
         it.port = 8080
         it.query(it.prepareRequest() + " to port ${it.port}")
     }
-//sampleEnd
+
     println(result)
     println(letResult)
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
-You can also invoke `run` as a non-extension function. The non-extension variant of `run` has no context object, but it
-still returns the lambda result. Non-extension `run` lets you execute a block of several statements where an expression
-is required. In code, non-extension `run` can be read as "_run the code block and compute the result._"
+```text
+Result for query 'Default request to port 8080'
+Result for query 'Default request to port 8080'
+```
+
+You can also invoke `run` as a non-extension function. 
+The non-extension variant of `run` has no context object, but it still returns the lambda result. 
+Non-extension `run` lets you execute a block of several statements where an expression
+is required. 
+In code, non-extension `run` can be read as "_run the code block and compute the result._"
 
 ```kotlin
 fun main() {
-//sampleStart
     val hexNumberRegex = run {
         val digits = "0-9"
         val hexDigits = "A-Fa-f"
@@ -481,10 +454,14 @@ fun main() {
     for (match in hexNumberRegex.findAll("+123 -FFFF !%*& 88 XYZ")) {
         println(match.value)
     }
-//sampleEnd
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
+
+```text
++123
+-FFFF
+88
+```
 
 ### apply
 
@@ -492,24 +469,23 @@ fun main() {
 - **The return value** is the object itself.
 
 As [`apply`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/apply.html) returns the context object itself, we
-recommend that you use it for code blocks that don't return a value and that mainly operate on the members of the
-receiver object. The most common use case for `apply` is for object configuration. Such calls can be read as "_apply
-the following assignments to the object._"
+recommend that you use it for code blocks that don't return a value 
+and that mainly operate on the members of the receiver object. 
+
+The most common use case for `apply` is for object configuration. 
+Such calls can be read as "_apply the following assignments to the object._"
 
 ```kotlin
 data class Person(var name: String, var age: Int = 0, var city: String = "")
 
 fun main() {
-//sampleStart
     val adam = Person("Adam").apply {
         age = 32
         city = "London"        
     }
     println(adam)
-//sampleEnd
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 Another use case for `apply` is to include `apply` in multiple call chains for more complex processing.
 
@@ -518,23 +494,23 @@ Another use case for `apply` is to include `apply` in multiple call chains for m
 - **The context object** is available as an argument (`it`).
 - **The return value** is the object itself.
 
-[`also`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/also.html) is useful for performing some actions that take
-the context object as an argument. Use `also` for actions that need a reference to the object rather than its properties
+[`also`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/also.html) is useful for performing some actions that take the context object as an argument. 
+
+Use `also` for actions that need a reference to the object rather than its properties
 and functions, or when you don't want to shadow the `this` reference from an outer scope.
 
 When you see `also` in code, you can read it as "_and also do the following with the object._"
 
 ```kotlin
-fun main() {
-//sampleStart
     val numbers = mutableListOf("one", "two", "three")
     numbers
         .also { println("The list elements before adding new one: $it") }
         .add("four")
-//sampleEnd
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
+
+```text
+The list elements before adding new one: [one, two, three]
+```
 
 ## takeIf and takeUnless
 
@@ -551,19 +527,12 @@ Otherwise, it returns `null`. So, `takeIf` is a filtering function for a single 
 When using `takeIf` or `takeUnless`, the object is available as a lambda argument (`it`).
 
 ```kotlin
-import kotlin.random.*
-
-fun main() {
-//sampleStart
     val number = Random.nextInt(100)
 
     val evenOrNull = number.takeIf { it % 2 == 0 }
     val oddOrNull = number.takeUnless { it % 2 == 0 }
     println("even: $evenOrNull, odd: $oddOrNull")
-//sampleEnd
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 > When chaining other functions after `takeIf` and `takeUnless`, don't forget to perform a null check or use a safe call
 > (`?.`) because their return value is nullable.
@@ -571,26 +540,23 @@ fun main() {
 {style="tip"}
 
 ```kotlin
-fun main() {
-//sampleStart
     val str = "Hello"
+
     val caps = str.takeIf { it.isNotEmpty() }?.uppercase()
-   //val caps = str.takeIf { it.isNotEmpty() }.uppercase() //compilation error
+    val caps = str.takeIf { it.isNotEmpty() }.uppercase() // Compilation Error
+
     println(caps)
-//sampleEnd
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 `takeIf` and `takeUnless` are especially useful in combination with scope functions. For example, you can chain
-`takeIf` and `takeUnless` with `let` to run a code block on objects that match the given predicate. To do this,
-call `takeIf` on the object and then call `let` with a safe call (`?`). For objects that don't match the predicate,
-`takeIf` returns `null` and `let` isn't invoked.
+`takeIf` and `takeUnless` with `let` to run a code block on objects that match the given predicate. 
+
+To do this, call `takeIf` on the object and then call `let` with a safe call (`?`). 
+For objects that don't match the predicate,`takeIf` returns `null` and `let` isn't invoked.
 
 ```kotlin
-fun main() {
-//sampleStart
     fun displaySubstringPosition(input: String, sub: String) {
+
         input.indexOf(sub).takeIf { it >= 0 }?.let {
             println("The substring $sub is found in $input.")
             println("Its start position is $it.")
@@ -599,16 +565,16 @@ fun main() {
 
     displaySubstringPosition("010000011", "11")
     displaySubstringPosition("010000011", "12")
-//sampleEnd
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
+
+```text
+The substring 11 is found in 010000011.
+Its start position is 7.
+```
 
 For comparison, below is an example of how the same function can be written without using `takeIf` or scope functions:
 
 ```kotlin
-fun main() {
-//sampleStart
     fun displaySubstringPosition(input: String, sub: String) {
         val index = input.indexOf(sub)
         if (index >= 0) {
@@ -619,7 +585,4 @@ fun main() {
 
     displaySubstringPosition("010000011", "11")
     displaySubstringPosition("010000011", "12")
-//sampleEnd
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}

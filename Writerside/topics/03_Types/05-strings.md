@@ -17,50 +17,32 @@ Elements of a string are characters that you can access via the indexing operati
 You can iterate over these characters with a `for` loop:
 
 ```kotlin
-fun main() {
-    val str = "abcd" 
-//sampleStart
+    val str = "abcd"
     for (c in str) {
         println(c)
     }
-//sampleEnd
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 Strings are immutable. Once you initialize a string, you can't change its value or assign a new value to it.
 All operations that transform strings return their results in a new `String` object, leaving the original string unchanged:
 
 ```kotlin
-fun main() {
-//sampleStart
     val str = "abcd"
    
     // Creates and prints a new String object
-    println(str.uppercase())
-    // ABCD
+    println(str.uppercase()) // ABCD
    
     // The original string remains the same
-    println(str) 
-    // abcd
-//sampleEnd
-}
+    println(str) // abcd
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 To concatenate strings, use the `+` operator. This also works for concatenating strings with values of other types, as long
 as the first element in the expression is a string:
 
 ```kotlin
-fun main() {
-//sampleStart
     val s = "abc" + 1
-    println(s + "def")
-    // abc1def    
-//sampleEnd
-}
+    println(s + "def") // abc1def
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 > In most cases using [string templates](#string-templates) or [multiline strings](#multiline-strings) is preferable to string concatenation.
 >
@@ -75,7 +57,7 @@ Kotlin has two types of string literals:
 
 ### Escaped strings
 
-_Escaped strings_ can contain escaped characters.  
+**Escaped strings** can contain escaped characters.  
 Here's an example of an escaped string:
 
 ```kotlin
@@ -117,33 +99,19 @@ When a template expression is processed, Kotlin automatically calls the `.toStri
 to convert it into a string. A template expression starts with a dollar sign (`$`) and consists of either a variable name:
 
 ```kotlin
-fun main() {
-//sampleStart
     val i = 10
-    println("i = $i") 
-    // i = 10
+    println("i = $i") // i = 10
     
     val letters = listOf("a","b","c","d","e")
-    println("Letters: $letters") 
-    // Letters: [a, b, c, d, e]
-
-//sampleEnd
-}
+    println("Letters: $letters") // Letters: [a, b, c, d, e]
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 or an expression in curly braces:
 
 ```kotlin
-fun main() {
-//sampleStart
     val s = "abc"
-    println("$s.length is ${s.length}") 
-    // abc.length is 3
-//sampleEnd
-}
+    println("$s.length is ${s.length}") // abc.length is 3
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 You can use templates both in multiline and escaped strings. However, multiline strings don't support backslash escaping.
 To insert the dollar sign `$` in a multiline string
@@ -179,8 +147,6 @@ to reference the same argument multiple times within the format string in differ
 Let's look at an example:
 
 ```kotlin
-fun main() { 
-//sampleStart
     // Formats an integer, adding leading zeroes to reach a length of seven characters
     val integerNumber = String.format("%07d", 31416)
     println(integerNumber)
@@ -200,10 +166,7 @@ fun main() {
     val negativeNumberInParentheses = String.format("%(d means %1\$d", -31416)
     println(negativeNumberInParentheses)
     //(31416) means -31416
-//sampleEnd    
-}
 ```
-{interpolate-variables="false" kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 The `String.format()` function provides similar functionality to string templates. However, the
 `String.format()` function is more versatile because there are more formatting options available.

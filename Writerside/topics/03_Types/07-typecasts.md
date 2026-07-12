@@ -13,23 +13,18 @@ Type **checks** help you confirm the kind of object you're dealing with, while t
 Use the `is` operator (or `!is` to negate it) to check if an object matches a type at runtime:
 
 ```kotlin
-fun main() {
     val input: Any = "Hello, Kotlin"
 
     if (input is String) {
-        println("Message length: ${input.length}")
-        // Message length: 13
+        println("Message length: ${input.length}") // Message length: 13
     }
 
     if (input !is String) { // Same as !(input is String)
         println("Input is not a valid message")
     } else {
-        println("Processing message: ${input.length} characters")
-        // Processing message: 13 characters
+        println("Processing message: ${input.length} characters") // Processing message: 13 characters
     }
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-typecasts-is-operator"}
 
 You can also use `is` and `!is` operators to check if an object matches a subtype:
 
@@ -46,7 +41,7 @@ class Dog(override val name: String) : Animal {
 class Cat(override val name: String) : Animal {
     override fun speak() = println("$name says: Meow!")
 }
-//sampleStart
+
 fun handleAnimal(animal: Animal) {
     println("Handling animal: ${animal.name}")
     animal.speak()
@@ -58,7 +53,7 @@ fun handleAnimal(animal: Animal) {
         println("Special care instructions: This is a cat.")
     }
 }
-//sampleEnd
+
 fun main() {
     val pets: List<Animal> = listOf(
         Dog("Buddy"),
@@ -70,21 +65,23 @@ fun main() {
         handleAnimal(pet)
         println("---")
     }
-    // Handling animal: Buddy
-    // Buddy says: Woof!
-    // Special care instructions: This is a dog.
-    // ---
-    // Handling animal: Whiskers
-    // Whiskers says: Meow!
-    // Special care instructions: This is a cat.
-    // ---
-    // Handling animal: Rex
-    // Rex says: Woof!
-    // Special care instructions: This is a dog.
-    // ---
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-typecasts-is-operator-subtype"}
+
+```text
+Handling animal: Buddy
+Buddy says: Woof!
+Special care instructions: This is a dog.
+---
+Handling animal: Whiskers
+Whiskers says: Meow!
+Special care instructions: This is a cat.
+---
+Handling animal: Rex
+Rex says: Woof!
+Special care instructions: This is a dog.
+---
+```
 
 This example uses the `is` operator to check if the `Animal` class instance has subtype `Dog` or `Cat` to print the relevant
 care instructions.
@@ -111,19 +108,16 @@ values and inserts implicit (safe) casts automatically:
 
 ```kotlin
 fun logMessage(data: Any) {
-    // data is automatically cast to String
-    if (data is String) {
+    if (data is String) { // data is automatically cast to String
         println("Received text: ${data.length} characters")
     }
 }
 
 fun main() {
-    logMessage("Server started")
-    // Received text: 14 characters
+    logMessage("Server started") // Received text: 14 characters
     logMessage(404)
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-typecasts-smartcast"}
 
 The compiler is even smart enough to know that a cast is safe if a negative check leads to a return:
 
@@ -136,12 +130,10 @@ fun logMessage(data: Any) {
 }
 
 fun main() {
-    logMessage("User signed in")
-    // Received text: 14 characters
+    logMessage("User signed in") // Received text: 14 characters
     logMessage(true)
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-typecasts-smartcast-negative"}
 
 ### Control flow
 
@@ -152,23 +144,21 @@ fun processInput(data: Any) {
     when (data) {
         // data is automatically cast to Int
         is Int -> println("Log: Assigned new ID ${data + 1}")
+        
         // data is automatically cast to String
         is String -> println("Log: Received message \"$data\"")
+        
         // data is automatically cast to IntArray
         is IntArray -> println("Log: Processed scores, total = ${data.sum()}")
     }
 }
 
 fun main() {
-    processInput(1001)
-    // Log: Assigned new ID 1002
-    processInput("System rebooted")
-    // Log: Received message "System rebooted"
-    processInput(intArrayOf(10, 20, 30))
-    // Log: Processed scores, total = 60
+    processInput(1001) // Log: Assigned new ID 1002
+    processInput("System rebooted") // Log: Received message "System rebooted"
+    processInput(intArrayOf(10, 20, 30)) // Log: Processed scores, total = 60
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-typecasts-smartcast-when"}
 
 And for [`while` loops](02-loops.md#while-loops):
 
@@ -192,26 +182,24 @@ class RobotVacuum(val rooms: List<String>) {
 }
 
 fun main() {
-    //sampleStart
     val robo = RobotVacuum(listOf("Living Room", "Kitchen", "Hallway"))
 
     var status: Status = robo.status()
-    while (status is Ok) {
-        // The compiler smart casts status to OK type, so the currentRoom
-        // property is accessible.
+    while (status is Ok) { // The compiler smart casts status to OK type, so the currentRoom property is accessible.
         println("Cleaning ${status.currentRoom}...")
         status = robo.clean()
     }
-    // Cleaning Living Room...
-    // Finished cleaning Living Room
-    // Cleaning Kitchen...
-    // Finished cleaning Kitchen
-    // Cleaning Hallway...
-    // Finished cleaning Hallway
-    //sampleEnd
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-typecasts-smartcast-while"}
+
+```text
+Cleaning Living Room...
+Finished cleaning Living Room
+Cleaning Kitchen...
+Finished cleaning Kitchen
+Cleaning Hallway...
+Finished cleaning Hallway
+```
 
 In this example, the sealed interface `Status` has two implementations: the data class `Ok` and the data object `Error`.
 Only the `Ok` data class has the `currentRoom` property. When the `while` loop condition evaluates to true, the
@@ -231,13 +219,11 @@ class Cat {
         println("Purr purr")
     }
 }
-//sampleStart
+
 fun petAnimal(animal: Any) {
     val isCat = animal is Cat
     if (isCat) {
-        // The compiler can access information about
-        // isCat, so it knows that animal was smart-cast
-        // to the type Cat.
+        // The compiler can access information about isCat, so it knows that animal was smart-cast to the type Cat.
         // Therefore, the purr() function can be called.
         animal.purr()
     }
@@ -245,12 +231,9 @@ fun petAnimal(animal: Any) {
 
 fun main(){
     val kitty = Cat()
-    petAnimal(kitty)
-    // Purr purr
+    petAnimal(kitty) // Purr purr
 }
-//sampleEnd
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="2.0" id="kotlin-smart-casts-local-variables" validate="false"}
 
 ### Logical operators
 
@@ -278,8 +261,7 @@ interface Postponed : Status
 interface Declined : Status
 
 fun signalCheck(signalStatus: Any) {
-    if (signalStatus is Postponed || signalStatus is Declined) {
-        // signalStatus is smart-cast to a common supertype Status
+    if (signalStatus is Postponed || signalStatus is Declined) { // signalStatus is smart-cast to a common supertype Status
         signalStatus.signal()
     }
 }
@@ -314,14 +296,12 @@ fun nextProcessor(): Processor? = null
 fun runProcessor(): Processor? {
     var processor: Processor? = null
     inlineAction {
-        // The compiler knows that processor is a local variable and inlineAction()
-        // is an inline function, so references to processor can't be leaked.
+        // The compiler knows that processor is a local variable and inlineAction() is an inline function, so references to processor can't be leaked.
         // Therefore, it's safe to smart-cast processor.
       
         // If processor isn't null, processor is smart-cast
         if (processor != null) {
-            // The compiler knows that processor isn't null, so no safe call 
-            // is needed
+            // The compiler knows that processor isn't null, so no safe call is needed
             processor.process()
         }
 
@@ -338,36 +318,26 @@ Smart cast information is passed on to `catch` and `finally` blocks. This makes 
 as the compiler tracks whether your object has a nullable type. For example:
 
 ```kotlin
-//sampleStart
-fun testString() {
     var stringInput: String? = null
     // stringInput is smart-cast to String type
     stringInput = ""
+
     try {
         // The compiler knows that stringInput isn't null
-        println(stringInput.length)
-        // 0
+        println(stringInput.length) // 0
 
-        // The compiler rejects previous smart cast information for 
-        // stringInput. Now stringInput has the String? type.
+        // The compiler rejects previous smart cast information for stringInput. Now stringInput has the String? type.
         stringInput = null
 
         // Trigger an exception
         if (2 > 1) throw Exception()
+
         stringInput = ""
     } catch (exception: Exception) {
-        // The compiler knows stringInput can be null
-        // so stringInput stays nullable.
-        println(stringInput?.length)
-        // null
+        // The compiler knows stringInput can be null so stringInput stays nullable.
+        println(stringInput?.length) // null
     }
-}
-//sampleEnd
-fun main() {
-    testString()
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="2.0" id="kotlin-smart-casts-exception-handling"}
 
 ### Smart cast prerequisites
 
@@ -417,41 +387,31 @@ If a cast fails with the `as` operator, a `ClassCastException` is thrown at runt
 You can use `as` when casting to a non-null type:
 
 ```kotlin
-fun main() {
     val rawInput: Any = "user-1234"
 
     // Casts to String successfully
     val userId = rawInput as String
-    println("Logging in user with ID: $userId")
-    // Logging in user with ID: user-1234
+    println("Logging in user with ID: $userId") // Logging in user with ID: user-1234
 
     // Triggers ClassCastException
     val wrongCast = rawInput as Int
-    println("wrongCast contains: $wrongCast")
-    // Exception in thread "main" java.lang.ClassCastException
-}
+    println("wrongCast contains: $wrongCast")  // Exception in thread "main" java.lang.ClassCastException
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="2.0" id="kotlin-unsafe-cast-operator" validate="false"}
 
 If you use the `as?` operator instead, and the cast fails, the operator returns `null`. That's why it's also
 called the **safe** operator:
 
 ```kotlin
-fun main() {
     val rawInput: Any = "user-1234"
 
     // Casts to String successfully
     val userId = rawInput as? String
-    println("Logging in user with ID: $userId")
-    // Logging in user with ID: user-1234
+    println("Logging in user with ID: $userId") // Logging in user with ID: user-1234
 
     // Assigns a null value to wrongCast
     val wrongCast = rawInput as? Int
-    println("wrongCast contains: $wrongCast")
-    // wrongCast contains: null
-}
+    println("wrongCast contains: $wrongCast") // wrongCast contains: null
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="2.0" id="kotlin-safe-cast-operator"}
 
 To cast a nullable type safely, use the `as?` operator to prevent triggering a `ClassCastException` if the cast fails.
 
@@ -459,7 +419,6 @@ You _can_ use `as` with a nullable type. This allows the result to be `null`, bu
 if the cast is unsuccessful. For this reason, `as?` is the safer option:
 
 ```kotlin
-fun main() {
     val config: Map<String, Any?> = mapOf(
         "username" to "kodee",
         "alias" to null,
@@ -468,26 +427,20 @@ fun main() {
 
     // Unsafely casts to a nullable String
     val username: String? = config["username"] as String?
-    println("Username: $username")
-    // Username: kodee
+    println("Username: $username") // Username: kodee
 
     // Unsafely casts a null value to a nullable String
     val alias: String? = config["alias"] as String?
-    println("Alias: $alias")
-    // Alias: null
+    println("Alias: $alias") // Alias: null
 
     // Fails to cast to nullable String and throws ClassCastException
-    // val unsafeAttempts: String? = config["loginAttempts"] as String?
-    // println("Login attempts (unsafe): $unsafeAttempts")
-    // Exception in thread "main" java.lang.ClassCastException
+     val unsafeAttempts: String? = config["loginAttempts"] as String?
+     println("Login attempts (unsafe): $unsafeAttempts") // Exception in thread "main" java.lang.ClassCastException
 
     // Fails to cast to nullable String and returns null
     val safeAttempts: String? = config["loginAttempts"] as? String
-    println("Login attempts (safe): $safeAttempts")
-    // Login attempts (safe): null
-}
+    println("Login attempts (safe): $safeAttempts") // Login attempts (safe): null
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="2.0" id="kotlin-cast-nullable-types"}
 
 ### Up and downcasting
 
@@ -502,7 +455,6 @@ interface Animal {
 }
 
 class Dog : Animal {
-    // Implements behavior for makeSound()
     override fun makeSound() {
         println("Dog says woof!")
     }
@@ -515,11 +467,9 @@ fun printAnimalInfo(animal: Animal) {
 fun main() {
     val dog = Dog()
     // Upcasts Dog instance to Animal
-    printAnimalInfo(dog)  
-    // Dog says woof!
+    printAnimalInfo(dog) // Dog says woof!
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="2.0" id="kotlin-upcast"}
 
 In this example, when the `printAnimalInfo()` function is called with a `Dog` instance, the compiler upcasts it
 to `Animal` because that's the expected parameter type. Since the actual object is still a `Dog` instance, the compiler dynamically
@@ -561,19 +511,16 @@ class Dog : Animal {
 }
 
 fun main() {
-    // Creates animal as a Dog instance with Animal
-    // type
+    // Creates animal as a Dog instance with Animal type
     val animal: Animal = Dog()
     
     // Safely downcasts animal to Dog type
     val dog: Dog? = animal as? Dog
 
     // Uses a safe call to call bark() if dog isn't null
-    dog?.bark()
-    // "BARK!"
+    dog?.bark() // "BARK!"
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="2.0" id="kotlin-downcast"}
 
 In this example, `animal` is declared as type `Animal`, but it holds a `Dog` instance. The code safely casts `animal` to
 `Dog` type and uses a [safe call](08-null-safety.md#safe-call-operator) (`?.`) to access the `bark()` function.

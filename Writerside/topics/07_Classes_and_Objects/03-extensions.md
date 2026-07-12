@@ -1,40 +1,41 @@
 # Extensions
 <show-structure depth="2"/>
 
-Kotlin _extensions_ let you extend a class or an interface with new functionality without using inheritance or
-design patterns like _Decorator_. They are useful when working with third-party libraries you can't modify
-directly. Once created, you call these extensions as if they were members of the original class or interface.
+Kotlin **extensions** let you extend a class or an interface with new functionality 
+without using inheritance or design patterns like _Decorator_. 
+
+They are useful when working with third-party libraries you can't modify directly. 
+Once created, you call these extensions as if they were members of the original class or interface.
 
 The most common forms of extensions are [_extension functions_](#extension-functions) and [_extension properties_](#extension-properties).
 
-Importantly, extensions don't modify the classes or interfaces they extend. When you define an extension, you don't add new members.
+Importantly, extensions **don't modify the classes or interfaces** they extend. 
+When you define an extension, you don't add new members.
 You make new functions callable or new properties accessible using the same syntax.
 
 ## Receivers
 
-Extensions are always called on a receiver. The receiver has to have the same type as the class or interface being extended.
+Extensions are always called on a receiver. 
+The receiver has to have the **same type as the class or interface being extended**.
+
 To use an extension, prefix it with the receiver followed by a `.` and the function or property name.
 
 For example, the [`.appendLine()`](https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.text/append-line.html) extension function from the standard library extends the `StringBuilder` class.
+
 So in this case, the receiver is a `StringBuilder` instance, and the _receiver type_ is `StringBuilder`:
 
 ```kotlin
-fun main() { 
-//sampleStart
     // builder is an instance of StringBuilder
     val builder = StringBuilder()
-        // Calls .appendLine() extension function on builder
-        .appendLine("Hello")
+        .appendLine("Hello") // Calls .appendLine() extension function on builder
         .appendLine()
         .appendLine("World")
+
     println(builder.toString())
     // Hello
     //
     // World
-}
-//sampleEnd
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-extension-function-stringbuilder"}
 
 ## Extension functions
 
@@ -57,13 +58,10 @@ fun main() {
     val shortUsername = "KotlinFan42"
     val longUsername = "JetBrainsLoverForever"
 
-    println("Short username: ${shortUsername.truncate(15)}") 
-    // KotlinFan42
-    println("Long username:  ${longUsername.truncate(15)}")
-    // JetBrainsLov...
+    println("Short username: ${shortUsername.truncate(15)}") // KotlinFan42
+    println("Long username:  ${longUsername.truncate(15)}") // JetBrainsLov...
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-extension-function-truncate"}
 
 The `.truncate()` function truncates any string that it's called on by the number in the `maxLength` argument and adds an ellipsis `...`.
 If the string is shorter than `maxLength`, the function returns the original string.
@@ -83,15 +81,13 @@ class RegularUser(override val name: String, override val email: String) : User
 
 fun main() {
     val user = RegularUser("Alice", "alice@example.com")
-    println(user.displayInfo()) 
-    // User(name=Alice, email=alice@example.com)
+    println(user.displayInfo()) // User(name=Alice, email=alice@example.com)
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-extension-function-interface"}
 
-The `.displayInfo()` function returns a string containing the `name` and `email` of a `RegularUser` instance. Defining
-an extension on an interface like this is useful when you want to add functionality to all types that implement an interface
-only once.
+The `.displayInfo()` function returns a string containing the `name` and `email` of a `RegularUser` instance. 
+Defining an extension on an interface like this is useful when you want to add functionality to all types 
+that implement an interface only once.
 
 In this example, the `.mostVoted()` function extends the `Map<String, Int>` class:
 
@@ -107,22 +103,24 @@ fun main() {
         "Birds" to 22
     )
 
-    println("Top choice: ${poll.mostVoted()}") 
-    // Dogs
+    println("Top choice: ${poll.mostVoted()}") // Dogs
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-extension-function-mostvoted"}
 
-The `.mostVoted()` function iterates through the key-value pairs of the map it's called on and uses the [`maxByOrNull()`](https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/max-by-or-null.html)
-function to return the key of the pair containing the highest value. If the map is empty, the `maxByOrNull()` function
-returns `null`. The `mostVoted()` function uses a safe call `?.` to only access the `key` property when the `maxByOrNull()` function
+The `.mostVoted()` function iterates through the key-value pairs of the map it's called on and 
+uses the [`maxByOrNull()`](https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/max-by-or-null.html) function to return the key of the pair containing the highest value. 
+
+If the map is empty, the `maxByOrNull()` function returns `null`. 
+
+The `mostVoted()` function uses a safe call `?.` to only access the `key` property when the `maxByOrNull()` function
 returns a non-null value.
 
 ### Generic extension functions
 
 To create generic extension functions, declare the generic type parameter before the function name
-to make it available in the receiver type expression. In this example, the `.endpoints()` function extends `List<T>`
-where `T` can be any type:
+to make it available in the receiver type expression. 
+
+In this example, the `.endpoints()` function extends `List<T>` where `T` can be any type:
 
 ```kotlin
 fun <T> List<T>.endpoints(): Pair<T, T> {
@@ -136,13 +134,10 @@ fun main() {
     val cityEndpoints = cities.endpoints()
     val tempEndpoints = temperatures.endpoints()
 
-    println("First and last cities: $cityEndpoints")
-    // (Paris, Prague)
-    println("First and last temperatures: $tempEndpoints") 
-    // (21.0, 22.3)
+    println("First and last cities: $cityEndpoints") // (Paris, Prague)
+    println("First and last temperatures: $tempEndpoints") // (21.0, 22.3)
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-extension-function-endpoints"}
 
 The `.endpoints()` function returns a pair containing the first and last elements of the list that it's called on.
 Inside the function body, it calls the `first()` and `last()` functions and combines their returned values into a `Pair`
@@ -153,15 +148,19 @@ For more information about generics, see [generic functions](10-generics.md).
 ### Nullable receivers
 
 You can define extension functions with a nullable receiver type, which allows you to call them on a variable
-even if its value is null. When the receiver is `null`, `this` is also `null`. Make sure to handle nullability correctly
-within your functions. For example, use `this == null` checks inside function bodies, [safe calls `?.`](08-null-safety.md#safe-call-operator), or the [Elvis operator `?:`](08-null-safety.md#elvis-operator).
+even if its value is null. 
+
+When the receiver is `null`, `this` is also `null`. 
+Make sure to handle nullability correctly within your functions. 
+
+For example, use `this == null` checks inside function bodies, [safe calls `?.`](08-null-safety.md#safe-call-operator), or the [Elvis operator `?:`](08-null-safety.md#elvis-operator).
 
 In this example, you can call the `.toString()` function without checking for `null` because the check already happens inside
 the extension function:
 
 ```kotlin
 fun main() {
-    //sampleStart
+    
     // Extension function on nullable Any
     fun Any?.toString(): String {
         if (this == null) return "null"
@@ -173,24 +172,21 @@ fun main() {
     val number: Int? = 42
     val nothing: Any? = null
     
-    println(number.toString())
-    // 42
-    println(nothing.toString()) 
-    // null
-    //sampleEnd
+    println(number.toString()) // 42
+    println(nothing.toString()) // null
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-extension-function-nullable-receiver"}
 
-### Extension or member functions?
+### Extension or member functions ?
 
-Since extension and member function calls have the same notation, how does the compiler know which one to use?
-Extension functions are dispatched _statically_, meaning the compiler determines which function to call based on the
+Since extension and member function calls have the same notation, how does the compiler know which one to use ?
+
+Extension functions are dispatched **statically**, meaning the compiler determines which function to call based on the
 receiver type at compile time. For example:
 
 ```kotlin
 fun main() {
-//sampleStart
+
     open class Shape
     class Rectangle: Shape()
     
@@ -201,15 +197,14 @@ fun main() {
         println(shape.getName())
     }
     
-    printClassName(Rectangle())
-    // Shape
-//sampleEnd
+    printClassName(Rectangle()) // Shape
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-extension-function-shape"}
 
-In this example, the compiler calls the `Shape.getName()` extension function because the parameter `shape` is declared
-as type `Shape`. Because extension functions are resolved statically, the compiler chooses the function based on the declared
+In this example, the compiler calls the `Shape.getName()` extension function 
+because the parameter `shape` is declared as type `Shape`. 
+
+Because extension functions are resolved statically, the compiler chooses the function based on the declared
 type, not the actual instance.
 
 So even though the example passes a `Rectangle` instance, the `.getName()` function resolves to `Shape.getName()` since the
@@ -220,25 +215,22 @@ the same name, and compatible arguments, the member function takes precedence. F
 
 ```kotlin
 fun main() {
-//sampleStart
+
     class Example {
         fun printFunctionType() { println("Member function") }
     }
     
     fun Example.printFunctionType() { println("Extension function") }
     
-    Example().printFunctionType()
-    // Member function
-//sampleEnd
+    Example().printFunctionType() // Member function
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-extension-function-member-function"}
 
-However, extension functions can overload member functions that have the same name but a _different_ signature:
+However, extension functions can overload member functions that have the same name but a **different** signature:
 
 ```kotlin
 fun main() {
-//sampleStart
+
     class Example {
         fun printFunctionType() { println("Member function") }
     }
@@ -246,12 +238,9 @@ fun main() {
     // Same name but different signature
     fun Example.printFunctionType(index: Int) { println("Extension function #$index") }
     
-    Example().printFunctionType(1)
-    // Extension function #1
-//sampleEnd
+    Example().printFunctionType(1) // Extension function #1
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-extension-function-member-function-overload"}
 
 In this example, since an `Int` is passed to the `.printFunctionType()` function, the compiler chooses the extension
 function because it matches the signature. The compiler ignores the member function, which takes no arguments.
@@ -265,35 +254,30 @@ For example, suppose you want to extend a data class with a one-time function to
 
 ```kotlin
 fun main() {
-    //sampleStart
+
     data class Order(val weight: Double)
     val calculateShipping = fun Order.(rate: Double): Double = this.weight * rate
     
     val order = Order(2.5)
     val cost = order.calculateShipping(3.0)
-    println("Shipping cost: $cost") 
-    // Shipping cost: 7.5
+    println("Shipping cost: $cost") // Shipping cost: 7.5
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-extension-function-anonymous"}
 
-To pass extension behavior as a parameter, use a [lambda expression](03-lambda-expressions-and-anonymous-functions.md#lambda-expression-syntax) with a type annotation.
+To pass extension behavior as a parameter, use a [lambda expression](03-lambda-expressions-and-anonymous-functions.md#lambda-expression-syntax) with a **type annotation**.
 For example, let's say you want to check if a number is within a range without defining a named function:
 
 ```kotlin
 fun main() {
     val isInRange: Int.(min: Int, max: Int) -> Boolean = { min, max -> this in min..max }
 
-    println(5.isInRange(1, 10))
-    // true
-    println(20.isInRange(1, 10))
-    // false
+    println(5.isInRange(1, 10)) // true
+    println(20.isInRange(1, 10)) // false
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-extension-function-anonymous-lambda"}
 
-In this example, the `isInRange` variable holds a function of type `Int.(min: Int, max: Int) -> Boolean`. The type is
-an extension function on the `Int` class that takes `min` and `max` parameters and returns a `Boolean`.
+In this example, the `isInRange` variable holds a function of type `Int.(min: Int, max: Int) -> Boolean`. 
+The **type** is an **extension function on the `Int` class** that takes `min` and `max` parameters and returns a `Boolean`.
 
 The lambda body `{ min, max -> this in min..max }` checks whether the `Int` value the function is called on falls within the
 range between `min` and `max` parameters. If the check is successful, the lambda returns `true`.
@@ -302,10 +286,11 @@ For more information, see [Lambda expressions and anonymous functions](03-lambda
 
 ## Extension properties
 
-Kotlin supports extension properties, which are useful for performing data transformations or creating UI display helpers
-without cluttering the class you're working with.
+Kotlin supports extension properties, which are useful for performing data transformations 
+or creating UI display helpers without cluttering the class you're working with.
 
-To create an extension property, write the name of the class that you want to extend, followed by a `.` and the name of your property.
+To create an extension property, write the name of the class that you want to extend, 
+followed by a `.` and the name of your property.
 
 For example, suppose you have a data class that represents a user with a first and last name, and you want to create a
 property that returns an email-style username when accessed. Your code might look like this:
@@ -320,11 +305,9 @@ val User.emailUsername: String
 fun main() {
     val user = User("Mickey", "Mouse")
     // Calls extension property
-    println("Generated email username: ${user.emailUsername}")
-    // Generated email username: mickey.mouse
+    println("Generated email username: ${user.emailUsername}") // Generated email username: mickey.mouse
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-extension-function-property"}
 
 Since extensions don't actually add members to classes, there's no efficient way for an extension
 property to have a [backing field](13-properties.md#backing-fields). That's why initializers are not allowed for
@@ -334,8 +317,7 @@ extension properties. You can define their behavior only by explicitly providing
 data class House(val streetName: String)
 
 // Doesn't compile because there is no getter and setter
-// var House.number = 1
-// Error: Initializers are not allowed for extension properties
+var House.number = 1 // Error: Initializers are not allowed for extension properties
 
 // Compiles successfully
 val houseNumbers = mutableMapOf<House, Int>()
@@ -350,18 +332,14 @@ fun main() {
     val house = House("Maple Street")
 
     // Shows the default
-    println("Default number: ${house.number} ${house.streetName}") 
-    // Default number: 1 Maple Street
+    println("Default number: ${house.number} ${house.streetName}") // Default number: 1 Maple Street
     
-    house.number = 99
-    // Setting house number for Maple Street to 99
+    house.number = 99 // Setting house number for Maple Street to 99
 
     // Shows the updated number
-    println("Updated number: ${house.number} ${house.streetName}") 
-    // Updated number: 99 Maple Street
+    println("Updated number: ${house.number} ${house.streetName}") // Updated number: 99 Maple Street
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-extension-function-property-error"}
 
 In this example, the getter uses the [Elvis operator](08-null-safety.md#elvis-operator) to return the house number if it exists in the `houseNumbers` map or
 `1`. To learn more about how to write getters and setters, see [Custom getters and setters](13-properties.md#custom-getters-and-setters).
@@ -383,21 +361,22 @@ fun Logger.Companion.logStartupMessage() {
 }
 
 fun main() {
-    Logger.logStartupMessage()
-    // Application started.
+    Logger.logStartupMessage() // Application started.
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-extension-function-companion-object"}
 
 ## Declaring extensions as members
 
-You can declare extensions for one class inside another. Extensions like this have multiple _implicit receivers_.
+You can declare extensions for one class inside another. 
+Extensions like this have multiple **implicit receivers**.
+
 An implicit receiver is an object whose members you can access without qualifying them with [`this`](04-this-expressions.md#qualified-this):
 
-* The class where you declare the extension is the _dispatch receiver_.
-* The extension function's receiver type is the _extension receiver_.
+* The class where you declare the extension is the **dispatch receiver**.
+* The extension function's receiver type is the **extension receiver**.
 
-Consider this example where the `Connection` class has an extension function for the `Host` class called `printConnectionString()`:
+Consider this example where the `Connection` class has an extension function 
+for the `Host` class called `printConnectionString()`:
 
 ```kotlin
 class Host(val hostname: String) {
@@ -405,6 +384,7 @@ class Host(val hostname: String) {
 }
 
 class Connection(val host: Host, val port: Int) {
+
     fun printPort() { print(port) }
 
     // Host is the extension receiver
@@ -425,15 +405,12 @@ class Connection(val host: Host, val port: Int) {
 }
 
 fun main() {
-    Connection(Host("kotl.in"), 443).connect()
-    // kotl.in:443
+    Connection(Host("kotl.in"), 443).connect() // kotl.in:443
     
     // Triggers an error because the extension function isn't available outside Connection
-    // Host("kotl.in").printConnectionString()
-    // Unresolved reference 'printConnectionString'.
+    Host("kotl.in").printConnectionString() // Unresolved reference 'printConnectionString'.
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-extension-function-members"}
 
 This example declares the `printConnectionString()` function inside the `Connection` class, so the `Connection` class is the
 dispatch receiver. The extension function's receiver type is the `Host` class, so the `Host` class is the extension receiver.
@@ -443,9 +420,12 @@ precedence. To access the dispatch receiver explicitly, use the [qualified `this
 
 ```kotlin
 class Connection {
+
     fun Host.getConnectionString() {
+        
         // Calls Host.toString()
         toString()
+
         // Calls Connection.toString()
         this@Connection.toString()
     }
@@ -472,6 +452,7 @@ open class User
 class Admin : User()
 
 open class NotificationSender {
+
     open fun User.sendNotification() {
         println("Sending user notification from normal sender")
     }
@@ -486,6 +467,7 @@ open class NotificationSender {
 }
 
 class SpecialNotificationSender : NotificationSender() {
+
     override fun User.sendNotification() {
         println("Sending user notification from special sender")
     }
@@ -499,28 +481,27 @@ fun main() {
     // Dispatch receiver is NotificationSender
     // Extension receiver is User
     // Resolves to User.sendNotification() in NotificationSender
-    NotificationSender().notify(User())
-    // Sending user notification from normal sender
+    NotificationSender().notify(User()) // Sending user notification from normal sender
     
     // Dispatch receiver is SpecialNotificationSender
     // Extension receiver is User
     // Resolves to User.sendNotification() in SpecialNotificationSender
-    SpecialNotificationSender().notify(User())
-    // Sending user notification from special sender 
+    SpecialNotificationSender().notify(User()) // Sending user notification from special sender 
     
     // Dispatch receiver is SpecialNotificationSender
     // Extension receiver is User NOT Admin
     // The notify() function declares user as type User
     // Statically resolves to User.sendNotification() in SpecialNotificationSender
-    SpecialNotificationSender().notify(Admin())
-    // Sending user notification from special sender 
+    SpecialNotificationSender().notify(Admin()) // Sending user notification from special sender 
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-extension-open"}
 
-The dispatch receiver is resolved at runtime using virtual dispatch, which makes the behavior in the `main()` function
-easier to follow. What may surprise you is that when you call the `notify()` function on an `Admin` instance, the
-compiler chooses the extension based on the declared type: `user: User`, because it resolves the extension receiver statically.
+The dispatch receiver is resolved at runtime using virtual dispatch, 
+which makes the behavior in the `main()` function easier to follow. 
+
+What may surprise you is that when you call the `notify()` function on an `Admin` instance, 
+the compiler chooses the extension based on the declared type: `user: User`, 
+because it resolves the extension receiver statically.
 
 ## Extensions and visibility modifiers
 
@@ -543,15 +524,12 @@ fun String.cleaned(): String {
 fun main() {
     val rawEmail = "  user @example. com  "
     val cleaned = rawEmail.cleaned()
-    println("Raw:     '$rawEmail'")
-    // Raw:     '  user @example. com  '
-    println("Cleaned: '$cleaned'")
-    // Cleaned: 'user@example.com'
-    println("Looks like an email: ${cleaned.contains("@") && cleaned.contains(".")}") 
-    // Looks like an email: true
+
+    println("Raw:     '$rawEmail'") // Raw:     '  user @example. com  '
+    println("Cleaned: '$cleaned'")  // Cleaned: 'user@example.com'
+    println("Looks like an email: ${cleaned.contains("@") && cleaned.contains(".")}")  // Looks like an email: true
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-extension-visibility-top-level"}
 
 And if an extension is declared outside its receiver type, it can't access the receiver's `private` or `protected` members:
 
@@ -564,7 +542,7 @@ class User(private val password: String) {
 // Extension declared outside the class
 fun User.isSecure(): Boolean {
     // Can't access password because it's private:
-    // return password.length >= 8
+    return password.length >= 8
 
     // Instead, we rely on public members:
     return passwordLength() >= 8 && isLoggedIn()
@@ -572,17 +550,17 @@ fun User.isSecure(): Boolean {
 
 fun main() {
     val user = User("supersecret")
-    println("Is user secure: ${user.isSecure()}") 
-    // Is user secure: true
+    println("Is user secure: ${user.isSecure()}") // Is user secure: true
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-extension-visibility-outside-receiver"}
 
 If an extension is marked as `internal`, it's only accessible within its [module](02-visibility-modifiers.md#modules):
 
 ```kotlin
 // Networking module
+
 // JsonParser.kt
+
 internal fun String.parseJson(): Map<String, Any> {
     return mapOf("fakeKey" to "fakeValue")
 }

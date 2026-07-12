@@ -53,7 +53,6 @@ fun main() {
     println(listOf(1, -2).filter(p)) // prints "[1]"
 }
 ```
-{kotlin-runnable="true"}
 
 ## Nested type aliases
 

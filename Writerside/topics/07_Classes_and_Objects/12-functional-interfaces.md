@@ -1,9 +1,10 @@
 # Functional Interfaces
 <show-structure depth="2"/>
 
-An interface with only one abstract member function is called a _functional interface_, or a _Single Abstract
-Method (SAM) interface_. The functional interface can have several non-abstract member functions but only one abstract
-member function.
+An interface with only one abstract member function is called a **functional interface**, or a **Single Abstract
+Method (SAM) interface**. 
+
+The functional interface can have several non-abstract member functions but only one abstract member function.
 
 To declare a functional interface in Kotlin, use the `fun` modifier.
 
@@ -58,10 +59,9 @@ fun interface IntPredicate {
 val isEven = IntPredicate { it % 2 == 0 }
 
 fun main() {
-    println("Is 7 even? - ${isEven.accept(7)}")
+    println("Is 7 even? - ${isEven.accept(7)}") // Is 7 even? - false
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.4"}
 
 You can also use [SAM conversions for Java interfaces](https://kotlinlang.org/docs/java-interop.html#sam-conversions).
 
@@ -118,8 +118,11 @@ fun main() {
 ```
 
 However, functional interfaces and [type aliases](08-type-aliases.md) serve different purposes.
+
 Type aliases are just names for existing types – they don't create a new type, while functional interfaces do.
-You can provide extensions that are specific to a particular functional interface to be inapplicable for plain functions or their type aliases.
+
+You can provide extensions that are specific to a particular functional interface 
+to be inapplicable for plain functions or their type aliases.
 
 Type aliases can have only one member, while functional interfaces can have multiple non-abstract member functions and one abstract member function.
 Functional interfaces can also implement and extend other interfaces.

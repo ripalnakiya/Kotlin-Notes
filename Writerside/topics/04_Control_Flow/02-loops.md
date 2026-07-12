@@ -12,89 +12,79 @@ for (item in collection) print(item)
 The body of a `for` loop can be a block with curly braces `{}`.
 
 ```kotlin
-fun main() {
     val shoppingList = listOf("Milk", "Bananas", "Bread")
-    //sampleStart
+
     println("Things to buy:")
     for (item in shoppingList) {
         println("- $item")
     }
-    // Things to buy:
-    // - Milk
-    // - Bananas
-    // - Bread
-    //sampleEnd
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-for-loop"}
+
+```text
+Things to buy:
+- Milk
+- Bananas
+- Bread
+```
 
 ### Ranges
 
 To iterate over a range of numbers, use a [range expression](https://kotlinlang.org/docs/ranges.html) with `..` and `..<` operators:
 
 ```kotlin
-fun main() {
-//sampleStart
-    println("Closed-ended range:")
+    // Closed-ended range:
     for (i in 1..6) {
         print(i)
     }
-    // Closed-ended range:
     // 123456
-  
-    println("\nOpen-ended range:")
+
+    // Open-ended range:
     for (i in 1..<6) {
         print(i)
     }
-    // Open-ended range:
     // 12345
-  
-    println("\nReverse order in steps of 2:")
+
+    // Reverse order in steps of 2:
     for (i in 6 downTo 0 step 2) {
         print(i)
     }
-    // Reverse order in steps of 2:
     // 6420
-//sampleEnd
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-for-loop-range"}
 
 ### Arrays
 
 If you want to iterate through an array or a list with an index, you can use the `indices` property:
 
 ```kotlin
-fun main() {
+
     val routineSteps = arrayOf("Wake up", "Brush teeth", "Make coffee")
-    //sampleStart
+
     for (i in routineSteps.indices) {
         println(routineSteps[i])
     }
-    // Wake up
-    // Brush teeth
-    // Make coffee
-    //sampleEnd
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-for-loop-array"}
+
+```text
+Wake up
+Brush teeth
+Make coffee
+```
 
 Alternatively, you can use the [`.withIndex()`](https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/with-index.html) function from the standard library:
 
 ```kotlin
-fun main() {
     val routineSteps = arrayOf("Wake up", "Brush teeth", "Make coffee")
-    //sampleStart
+
     for ((index, value) in routineSteps.withIndex()) {
         println("The step at $index is \"$value\"")
     }
-    // The step at 0 is "Wake up"
-    // The step at 1 is "Brush teeth"
-    // The step at 2 is "Make coffee"
-    //sampleEnd
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-for-loop-array-index"}
+
+```text
+The step at 0 is "Wake up"
+The step at 1 is "Brush teeth"
+The step at 2 is "Make coffee"
+```
 
 ### Iterators
 
@@ -109,6 +99,7 @@ The easiest way to create your own iterator for a class is to inherit from the [
 
 ```kotlin
 class Booklet(val totalPages: Int) : Iterable<Int> {
+
     override fun iterator(): Iterator<Int> {
         return object : Iterator<Int> {
             var current = 1
@@ -123,12 +114,14 @@ fun main() {
     for (page in booklet) {
         println("Reading page $page")
     }
-    // Reading page 1
-    // Reading page 2
-    // Reading page 3
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-for-loop-inherit-iterator"}
+
+```text
+Reading page 1
+Reading page 2
+Reading page 3
+```
 
 > Learn more about [interfaces](04-interfaces.md) and [inheritance](06-inheritance.md).
 >
@@ -137,8 +130,8 @@ fun main() {
 Alternatively, you can create the functions from scratch. In this case, add the `operator` keyword to the functions:
 
 ```kotlin
-//sampleStart
 class Booklet(val totalPages: Int) {
+
     operator fun iterator(): Iterator<Int> {
         return object {
             var current = 1
@@ -153,19 +146,20 @@ class Booklet(val totalPages: Int) {
         }
     }
 }
-//sampleEnd
 
 fun main() {
     val booklet = Booklet(3)
     for (page in booklet) {
         println("Reading page $page")
     }
-    // Reading page 1
-    // Reading page 2
-    // Reading page 3
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-for-loop-iterator-from-scratch"}
+
+```text
+Reading page 1
+Reading page 2
+Reading page 3
+```
 
 ## While loops
 
@@ -179,45 +173,41 @@ The difference between them is the condition checking time:
 For a `while` loop, place the condition to check in parentheses `()` and the body within curly braces `{}`:
 
 ```kotlin
-fun main() {
     var carsInGarage = 0
     val maxCapacity = 3
-//sampleStart
+
     while (carsInGarage < maxCapacity) {
         println("Car entered. Cars now in garage: ${++carsInGarage}")
     }
-    // Car entered. Cars now in garage: 1
-    // Car entered. Cars now in garage: 2
-    // Car entered. Cars now in garage: 3
 
     println("Garage is full!")
-    // Garage is full!
-//sampleEnd
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-while-loop"}
+
+```text
+Car entered. Cars now in garage: 1
+Car entered. Cars now in garage: 2
+Car entered. Cars now in garage: 3
+Garage is full!
+```
 
 For a `do-while` loop, place the body within curly braces `{}` first before the condition to check in parentheses `()`:
 
 ```kotlin
-import kotlin.random.Random
-
-fun main() {
     var roll: Int
-//sampleStart
+
     do {
         roll = Random.nextInt(1, 7)
         println("Rolled a $roll")
     } while (roll != 6)
-    // Rolled a 2
-    // Rolled a 6
     
     println("Got a 6! Game over.")
-    // Got a 6! Game over.
-//sampleEnd
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-do-while-loop"}
+
+```text
+Rolled a 2
+Rolled a 6
+Got a 6! Game over.
+```
 
 ## Break and continue in loops
 

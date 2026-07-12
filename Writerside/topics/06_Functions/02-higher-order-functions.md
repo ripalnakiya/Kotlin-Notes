@@ -45,8 +45,6 @@ and lambda expressions ([described in more detail](03-lambda-expressions-and-ano
 this purpose at higher-order function call sites:
 
 ```kotlin
-fun main() {
-    //sampleStart
     val items = listOf(1, 2, 3, 4, 5)
     
     // Lambdas are code blocks enclosed in curly braces.
@@ -62,15 +60,24 @@ fun main() {
     
     // Parameter types in a lambda are optional if they can be inferred:
     val joinedToString = items.fold("Elements:", { acc, i -> acc + " " + i })
+    println("joinedToString = $joinedToString")
     
     // Function references can also be used for higher-order function calls:
     val product = items.fold(1, Int::times)
-    //sampleEnd
-    println("joinedToString = $joinedToString")
     println("product = $product")
-}
 ```
-{kotlin-runnable="true"}
+
+```text
+acc = 0, i = 1, result = 1
+acc = 1, i = 2, result = 3
+acc = 3, i = 3, result = 6
+acc = 6, i = 4, result = 10
+acc = 10, i = 5, result = 15
+
+joinedToString = Elements: 1 2 3 4 5
+
+product = 120
+```
 
 ## Function types
 
@@ -212,4 +219,4 @@ println("Hello".repeatTimes(3))     // HelloHelloHello
 
 ### Inline functions
 
-Sometimes it is beneficial to use inline functions, which provide flexible control flow, for higher-order functions.
+Sometimes it is beneficial to use [inline functions](05-inline-functions.md), which provide flexible control flow, for higher-order functions.

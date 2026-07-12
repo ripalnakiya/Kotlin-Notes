@@ -51,25 +51,19 @@ fun main(args: Array<String>) {
 
 ```kotlin
 fun main() {
-//sampleStart
     print("Hello ")
     print("world!")
-//sampleEnd
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-basic-syntax-print"}
 
 `println` prints its arguments and adds a line break, so that the next thing you print appears on the next line:
 
 ```kotlin
 fun main() {
-//sampleStart
     println("Hello world!")
     println(42)
-//sampleEnd
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-basic-syntax-println"}
 
 ## Read from the standard input
 
@@ -98,61 +92,37 @@ For more information, see [Read standard input](https://kotlinlang.org/docs/read
 A function with two `Int` parameters and `Int` return type:
 
 ```kotlin
-//sampleStart
 fun sum(a: Int, b: Int): Int {
     return a + b
 }
-//sampleEnd
 
 fun main() {
     print("sum of 3 and 5 is ")
     println(sum(3, 5))
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-basic-syntax-return-int"}
 
 A function body can be an expression. Its return type is inferred:
 
 ```kotlin
-//sampleStart
 fun sum(a: Int, b: Int) = a + b
-//sampleEnd
-
-fun main() {
-    println("sum of 19 and 23 is ${sum(19, 23)}")
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-basic-syntax-function-expression"}
 
 A function that returns no meaningful value:
 
 ```kotlin
-//sampleStart
 fun printSum(a: Int, b: Int): Unit {
     println("sum of $a and $b is ${a + b}")
 }
-//sampleEnd
-
-fun main() {
-    printSum(-1, 8)
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-basic-syntax-return-unit"}
 
 `Unit` return type can be omitted:
 
 ```kotlin
-//sampleStart
 fun printSum(a: Int, b: Int) {
     println("sum of $a and $b is ${a + b}")
 }
-//sampleEnd
-
-fun main() {
-    printSum(-1, 8)
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-basic-syntax-function-omit-unit"}
 
 See [Functions](01-functions.md).
 
@@ -164,82 +134,54 @@ Use the `val` keyword to declare variables that are assigned a value only once. 
 after initialization:
 
 ```kotlin
-fun main() {
-//sampleStart
     // Declares the variable x and initializes it with the value of 5
     val x: Int = 5
-    // 5
-//sampleEnd
-    println(x)
-}
+    println(x) // 5
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-basic-syntax-val"}
 
 Use the `var` keyword to declare variables that can be reassigned. These are mutable variables, and you can change their values after initialization:
 
 ```kotlin
-fun main() {
-//sampleStart
     // Declares the variable x and initializes it with the value of 5
     var x: Int = 5
     // Reassigns a new value of 6 to the variable x
     x += 1
-    // 6
-//sampleEnd
-    println(x)
-}
+    println(x) // 6
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-basic-syntax-var"}
 
-Kotlin supports type inference and automatically identifies the data type of a declared variable. When declaring a variable, you can omit the type after the variable name:
+Kotlin supports type inference and automatically identifies the data type of a declared variable. 
+When declaring a variable, you can omit the type after the variable name:
 
 ```kotlin
-fun main() {
-//sampleStart
     // Declares the variable x with the value of 5;`Int` type is inferred
     val x = 5
     // 5
-//sampleEnd
-    println(x)
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-basic-syntax-inference"}
 
-You can use variables only after initializing them. You can either initialize a variable at the moment of declaration or declare a variable first and initialize it later.
+You can use variables only after initializing them. 
+You can either initialize a variable at the moment of declaration 
+or declare a variable first and initialize it later.
 In the second case, you must specify the data type:
 
 ```kotlin
-fun main() {
-//sampleStart
     // Initializes the variable x at the moment of declaration; type is not required
     val x = 5
+    
     // Declares the variable c without initialization; type is required
     val c: Int
     // Initializes the variable c after declaration 
     c = 3
-    // 5 
-    // 3
-//sampleEnd
-    println(x)
-    println(c)
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-basic-syntax-initialize"}
 
 You can declare variables at the top level:
 
 ```kotlin
-//sampleStart
 val PI = 3.14
 var x = 0
 
 fun incrementX() {
     x += 1
 }
-// x = 0; PI = 3.14
-// incrementX()
-// x = 1; PI = 3.14
-//sampleEnd
 
 fun main() {
     println("x = $x; PI = $PI")
@@ -247,8 +189,11 @@ fun main() {
     println("incrementX()")
     println("x = $x; PI = $PI")
 }
+
+// x = 0; PI = 3.14
+// incrementX()
+// x = 1; PI = 3.14
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-basic-syntax-variable-top-level"}
 
 For information about declaring properties, see [Properties](13-properties.md).
 

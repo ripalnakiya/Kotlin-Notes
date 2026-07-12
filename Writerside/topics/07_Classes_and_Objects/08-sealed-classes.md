@@ -1,9 +1,13 @@
 # Sealed classes and interfaces
 <show-structure depth="2"/>
 
-_Sealed_ classes and interfaces provide controlled inheritance of your class hierarchies.
-All direct subclasses of a sealed class are known at compile time. No other subclasses may appear outside the module and
-package within which the sealed class is defined. The same logic applies to sealed interfaces and their implementations:
+**Sealed** classes and interfaces provide controlled inheritance of your class hierarchies.
+
+All **direct subclasses** of a sealed class are known at compile time. 
+
+No other subclasses may appear outside the module and package within which the sealed class is defined. 
+
+The same logic applies to sealed interfaces and their implementations:
 once a module with a sealed interface is compiled, no new implementations can be created.
 
 > Direct subclasses are classes that immediately inherit from their superclass.
@@ -61,9 +65,11 @@ The hierarchy of the example looks like this:
 ### Constructors
 
 A sealed class itself is always an [abstract class](01-classes.md#abstract-classes), and as a result, can't be instantiated directly.
-However, it may contain or inherit constructors. These constructors aren't for creating instances of the sealed class itself
-but for its subclasses. Consider the following example with a sealed class called `Error` and its several subclasses,
-which we instantiate:
+
+However, it may contain or inherit constructors. 
+These constructors aren't for creating instances of the sealed class itself but for its subclasses. 
+
+Consider the following example with a sealed class called `Error` and its several subclasses, which we instantiate:
 
 ```kotlin
 sealed class Error(val message: String) {
@@ -76,15 +82,18 @@ fun main() {
     val errors = listOf(Error.NetworkError(), Error.DatabaseError(), Error.UnknownError())
     errors.forEach { println(it.message) }
 }
-// Network failure 
-// Database cannot be reached 
-// An unknown error has occurred
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.5"}
 
-You can use [`enum`](09-enum-classes.md) classes within your sealed classes to use enum constants to represent states and provide
-additional detail. Each enum constant exists only as a **single** instance, while subclasses of a sealed class may
-have **multiple** instances.
+```text
+Network failure
+Database cannot be reached
+An unknown error has occurred
+```
+
+You can use [`enum`](09-enum-classes.md) classes within your sealed classes to use enum constants to represent states and provide additional detail. 
+
+Each enum constant exists only as a **single** instance, while subclasses of a sealed class may have **multiple** instances.
+
 In the example, the `sealed class Error` along with its several subclasses, employs an `enum` to denote error severity.
 Each subclass constructor initializes the `severity` and can alter its state:
 
@@ -112,15 +121,17 @@ sealed class IOError {
     private constructor(description: String): this() { /*...*/ }
 
     // This will raise an error because public and internal constructors are not allowed in sealed classes
-    // public constructor(code: Int): this() {} 
+    public constructor(code: Int): this() {} 
 }
 ```
 
 ## Inheritance
 
-Direct subclasses of sealed classes and interfaces must be declared in the same package. They may be top-level or nested
-inside any number of other named classes, named interfaces, or named objects. Subclasses can have any [visibility](02-visibility-modifiers.md)
-as long as they are compatible with normal inheritance rules in Kotlin.
+Direct subclasses of sealed classes and interfaces must be declared in the same package. 
+
+They may be top-level or nested inside any number of other named classes, named interfaces, or named objects. 
+
+Subclasses can have any [visibility](02-visibility-modifiers.md) as long as they are compatible with normal inheritance rules in Kotlin.
 
 Subclasses of sealed classes must have a properly qualified name. They can't be local or anonymous objects.
 
@@ -138,7 +149,8 @@ Subclasses of sealed classes must have a properly qualified name. They can't be 
 >
 {style="note"}
 
-These restrictions don't apply to indirect subclasses. If a direct subclass of a sealed class is not marked as sealed,
+These restrictions don't apply to indirect subclasses. 
+If a direct subclass of a sealed class is not marked as sealed,
 it can be extended in any way that its modifiers allow:
 
 ```kotlin
@@ -152,22 +164,12 @@ sealed class IOError(): Error
 open class CustomError(): Error
 ```
 
-### Inheritance in multiplatform projects
-
-There is one more inheritance restriction in [multiplatform projects](https://kotlinlang.org/docs/multiplatform/get-started.html): direct subclasses of sealed classes must
-reside in the same [source set](https://kotlinlang.org/docs/multiplatform/multiplatform-discover-project.html#source-sets). It applies to sealed classes without the [expected and actual modifiers](https://kotlinlang.org/docs/multiplatform/multiplatform-expect-actual.html).
-
-If a sealed class is declared as `expect` in a common source set and have `actual` implementations in platform source sets,
-both `expect` and `actual` versions can have subclasses in their source sets. Moreover, if you use a hierarchical structure,
-you can create subclasses in any source set between the `expect` and `actual` declarations.
-
-[Learn more about the hierarchical structure of multiplatform projects](https://kotlinlang.org/docs/multiplatform/multiplatform-hierarchy.html).
-
 ## Use sealed classes with when expression
 
-The key benefit of using sealed classes comes into play when you use them in a [`when`](01-conditions.md#when-expressions-and-statements)
-expression.
-The `when` expression, used with a sealed class, allows the Kotlin compiler to check exhaustively that all possible cases are covered.
+The key benefit of using sealed classes comes into play when you use them in a [`when`](01-conditions.md#when-expressions-and-statements) expression.
+
+The `when` expression, used with a sealed class, allows the Kotlin compiler 
+to check exhaustively that all possible cases are covered.
 In such cases, you don't need to add an `else` clause:
 
 ```kotlin
@@ -178,7 +180,6 @@ sealed class Error {
     object RuntimeError : Error()
 }
 
-//sampleStart
 // Function to log errors
 fun log(e: Error) = when(e) {
     is Error.FileReadError -> println("Error while reading file ${e.file}")
@@ -186,7 +187,6 @@ fun log(e: Error) = when(e) {
     Error.RuntimeError -> println("Runtime error")
     // No `else` clause is required because all the cases are covered
 }
-//sampleEnd
 
 // List all errors
 fun main() {
@@ -199,17 +199,16 @@ fun main() {
     errors.forEach { log(it) }
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.5"}
 
-When using sealed classes with `when` expressions, you can also add guard conditions to include additional checks in a single branch.
+```text
+Error while reading file example.txt
+Error while reading from database usersDatabase
+Runtime error
+```
+
+When using sealed classes with `when` expressions, you can also add guard conditions 
+to include additional checks in a single branch.
 For more information, see [Guard conditions in when expressions](01-conditions.md#guard-conditions-in-when-expressions).
-
-> In multiplatform projects, if you have a sealed class with a `when` expression as an
-> [expected declaration](https://kotlinlang.org/docs/multiplatform/multiplatform-expect-actual.html) in your common code, you still need an `else` branch.
-> This is because subclasses of `actual` platform implementations may extend sealed classes that
-> aren't known in the common code.
->
-{style="note"}
 
 ## Use case scenarios
 
@@ -241,6 +240,7 @@ fun updateUI(state: UIState) {
 
 In practical business applications, handling various payment methods efficiently is a common requirement.
 You can use sealed classes with `when` expressions to implement such business logic.
+
 By representing different payment methods as subclasses of a sealed class, it establishes a clear and manageable
 structure for processing transactions:
 
@@ -271,11 +271,15 @@ methods to be added in the future.
 ### API request-response handling
 
 You can use sealed classes and sealed interfaces to implement a user authentication system that handles API requests and responses.
+
 The user authentication system has login and logout functionalities.
+
 The `ApiRequest` sealed interface defines specific request types: `LoginRequest` for login, and `LogoutRequest` for logout operations.
-The sealed class, `ApiResponse`, encapsulates different response scenarios: `UserSuccess` with user data, `UserNotFound`
-for absent users, and `Error` for any failures. The `handleRequest` function processes these requests in a type-safe manner
-using a `when` expression, while `getUserById` simulates user retrieval:
+
+The sealed class, `ApiResponse`, encapsulates different response scenarios: 
+`UserSuccess` with user data, `UserNotFound`for absent users, and `Error` for any failures. 
+
+The `handleRequest` function processes these requests in a type-safe manner using a `when` expression, while `getUserById` simulates user retrieval:
 
 ```kotlin
 // Import necessary modules

@@ -1,12 +1,13 @@
 # This expressions
 
-To denote the current _receiver_, you use `this` expressions:
+To denote the current **receiver**, you use `this` expressions:
 
 * In a member of a [class](01-classes.md#inheritance), `this` refers to the current object of that class.
 * In an [extension function](03-extensions.md) or a [function literal with receiver](03-lambda-expressions-and-anonymous-functions.md#function-literals-with-receiver)
-  `this` denotes the _receiver_ parameter that is passed on the left-hand side of a dot.
+  `this` denotes the **receiver** parameter that is passed on the left-hand side of a dot.
 
-If `this` has no qualifiers, it refers to the _innermost enclosing scope_. To refer to `this` in other scopes, _label qualifiers_ are used:
+If `this` has no qualifiers, it refers to the **innermost enclosing scope**. 
+To refer to `this` in other scopes, **label qualifiers** are used:
 
 ## Qualified this
 
@@ -41,31 +42,32 @@ class A { // implicit label @A
 ## Implicit this
 
 When you call a member function on `this`, you can omit the `this.` qualifier.
+
 However, if another callable with the same name is available in a closer lexical scope, Kotlin resolves
 the unqualified call to that callable instead of the member function. To explicitly call the member function,
 use the `this.` qualifier:
 
 ```kotlin
 fun main() {
+    
     class A {
+        
         fun printLine() {
             println("Member function")
         }
 
         fun invokePrintLine() {
+            
             fun printLine() {
                 println("Local function")
             }
          
-            printLine()
-            // Local function
+            printLine() // Local function
          
-            this.printLine()
-            // Member function
+            this.printLine() // Member function
         }
     }
 
     A().invokePrintLine()
 }
 ```
-{kotlin-runnable="true"}

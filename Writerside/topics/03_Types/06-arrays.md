@@ -24,19 +24,13 @@ Collections have the following benefits compared to arrays:
   add or remove elements from an array is to create a new array each time, which is very inefficient:
 
   ```kotlin
-  fun main() {
-  //sampleStart
       var riversArray = arrayOf("Nile", "Amazon", "Yangtze")
 
       // Using the += assignment operation creates a new riversArray,
       // copies over the original elements and adds "Mississippi"
       riversArray += "Mississippi"
-      println(riversArray.joinToString())
-      // Nile, Amazon, Yangtze, Mississippi
-  //sampleEnd
-  }
+      println(riversArray.joinToString()) // Nile, Amazon, Yangtze, Mississippi
   ```
-  {kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="arrays-rivers-array-kotlin"}
 
 * You can use the equality operator (`==`) to check if collections are structurally equal. You can't use this operator
   for arrays. Instead, you have to use a special function, which you can read more about in [Compare arrays](#compare-arrays).
@@ -53,31 +47,19 @@ This example uses the [`arrayOf()`](https://kotlinlang.org/api/latest/jvm/stdlib
 and passes item values to it:
 
 ```kotlin
-fun main() {
-//sampleStart
     // Creates an array with values [1, 2, 3]
     val simpleArray = arrayOf(1, 2, 3)
-    println(simpleArray.joinToString())
-    // 1, 2, 3
-//sampleEnd
-}
+    println(simpleArray.joinToString()) // 1, 2, 3
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="arrays-simple-array-kotlin"}
 
 This example uses the [`arrayOfNulls()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/array-of-nulls.html#kotlin$arrayOfNulls(kotlin.Int))
 function to create an array of a given size filled with `null` elements:
 
 ```kotlin
-fun main() {
-//sampleStart
     // Creates an array with values [null, null, null]
     val nullArray: Array<Int?> = arrayOfNulls(3)
-    println(nullArray.joinToString())
-    // null, null, null
-//sampleEnd
-}
+    println(nullArray.joinToString()) // null, null, null
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="arrays-null-array-kotlin"}
 
 This example uses the [`emptyArray()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/empty-array.html) function to
 create an empty array :
@@ -101,21 +83,14 @@ create an empty array :
 The `Array` constructor takes the array size and a function that returns values for array elements given its index:
 
 ```kotlin
-fun main() {
-//sampleStart
     // Creates an Array<Int> that initializes with zeros [0, 0, 0]
     val initArray = Array<Int>(3) { 0 }
-    println(initArray.joinToString())
-    // 0, 0, 0
+    println(initArray.joinToString()) // 0, 0, 0
 
     // Creates an Array<String> with values ["0", "1", "4", "9", "16"]
     val asc = Array(5) { i -> (i * i).toString() }
-    asc.forEach { print(it) }
-    // 014916
-//sampleEnd
-}
+    asc.forEach { print(it) } // 014916
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="arrays-array-constructor-kotlin"}
 
 > Like in most programming languages, indices start from 0 in Kotlin.
 >
@@ -126,21 +101,14 @@ fun main() {
 Arrays can be nested within each other to create multidimensional arrays:
 
 ```kotlin
-fun main() {
-//sampleStart
     // Creates a two-dimensional array
     val twoDArray = Array(2) { Array<Int>(2) { 0 } }
-    println(twoDArray.contentDeepToString())
-    // [[0, 0], [0, 0]]
+    println(twoDArray.contentDeepToString()) // [[0, 0], [0, 0]]
 
     // Creates a three-dimensional array
     val threeDArray = Array(3) { Array(3) { Array<Int>(3) { 0 } } }
-    println(threeDArray.contentDeepToString())
-    // [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]]
-//sampleEnd
-}
+    println(threeDArray.contentDeepToString()) // [[[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]], [[0, 0, 0], [0, 0, 0], [0, 0, 0]]]
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="arrays-multidimensional-array-kotlin"}
 
 > Nested arrays don't have to be the same type or the same size.
 >
@@ -161,8 +129,6 @@ Arrays are always mutable. To access and modify elements in an array, use the [i
 ```
 
 ```kotlin
-fun main() {
-//sampleStart
     val simpleArray = arrayOf(1, 2, 3)
     val twoDArray = Array(2) { Array<Int>(2) { 0 } }
 
@@ -173,10 +139,7 @@ fun main() {
     // Prints the modified element
     println(simpleArray[0].toString()) // 10
     println(twoDArray[0][0].toString()) // 2
-//sampleEnd
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="arrays-access-array-kotlin"}
 
 Arrays in Kotlin are _invariant_. This means that Kotlin doesn't allow you to assign an `Array<String>`
 to an `Array<Any>` to prevent a possible runtime failure. Instead, you can use `Array<out Any>`. For more information,
@@ -199,8 +162,7 @@ To pass an array containing a variable number of arguments to a function, use th
 ```kotlin
 fun main() {
     val lettersArray = arrayOf("c", "d")
-    printAllStrings("a", "b", *lettersArray)
-    // abcd
+    printAllStrings("a", "b", *lettersArray) // abcd
 }
 
 fun printAllStrings(vararg strings: String) {
@@ -209,7 +171,6 @@ fun printAllStrings(vararg strings: String) {
     }
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="arrays-vararg-array-kotlin"}
 
 For more information, see [Variable number of arguments (varargs)](01-functions.md#variable-number-of-arguments-varargs).
 
@@ -220,24 +181,16 @@ and [`.contentDeepEquals()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin
 functions:
 
 ```kotlin
-fun main() {
-//sampleStart
     val simpleArray = arrayOf(1, 2, 3)
     val anotherArray = arrayOf(1, 2, 3)
 
     // Compares contents of arrays
-    println(simpleArray.contentEquals(anotherArray))
-    // true
+    println(simpleArray.contentEquals(anotherArray)) // true
 
-    // Using infix notation, compares contents of arrays after an element 
-    // is changed
+    // Using infix notation, compares contents of arrays after an element is changed
     simpleArray[0] = 10
-    println(simpleArray contentEquals anotherArray)
-    // false
-//sampleEnd
-}
+    println(simpleArray contentEquals anotherArray) // false
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="arrays-compare-array-kotlin"}
 
 > Don't use equality (`==`) and inequality (`!=`) [operators](09-equality.md#structural-equality) to compare the contents
 > of arrays. These operators check whether the assigned variables point to the same object.
@@ -257,17 +210,11 @@ To return the sum of all elements in an array, use the [`.sum()`](https://kotlin
 function:
 
 ```Kotlin
-fun main() {
-//sampleStart
     val sumArray = arrayOf(1, 2, 3)
 
     // Sums array elements
-    println(sumArray.sum())
-    // 6
-//sampleEnd
-}
+    println(sumArray.sum()) // 6
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="arrays-sum-array-kotlin"}
 
 > The `.sum()` function can only be used with arrays of [numeric data types](02-numbers.md), such as `Int`.
 >
@@ -279,8 +226,6 @@ To randomly shuffle the elements in an array, use the [`.shuffle()`](https://kot
 function:
 
 ```Kotlin
-fun main() {
-//sampleStart
     val simpleArray = arrayOf(1, 2, 3)
 
     // Shuffles elements [3, 2, 1]
@@ -290,10 +235,7 @@ fun main() {
     // Shuffles elements again [2, 3, 1]
     simpleArray.shuffle()
     println(simpleArray.joinToString())
-//sampleEnd
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="arrays-shuffle-array-kotlin"}
 
 ### Convert arrays to collections
 
@@ -306,21 +248,14 @@ To convert an array to a `List` or `Set`, use the [`.toList()`](https://kotlinla
 and [`.toSet()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/to-set.html) functions.
 
 ```kotlin
-fun main() {
-//sampleStart
     val simpleArray = arrayOf("a", "b", "c", "c")
 
     // Converts to a Set
-    println(simpleArray.toSet())
-    // [a, b, c]
+    println(simpleArray.toSet()) // [a, b, c]
 
     // Converts to a List
-    println(simpleArray.toList())
-    // [a, b, c, c]
-//sampleEnd
-}
+    println(simpleArray.toList()) // [a, b, c, c]
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="arrays-convert-list-set-kotlin"}
 
 #### Convert to Map
 
@@ -328,25 +263,18 @@ To convert an array to a `Map`, use the [`.toMap()`](https://kotlinlang.org/api/
 function.
 
 Only an array of [`Pair<K,V>`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-pair/) can be converted to a `Map`.
-The first value of a `Pair` instance becomes a key, and the second becomes a value. This example uses the [infix notation](01-functions.md#infix-notation)
-to call the [`to`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/to.html) function to create tuples of `Pair`:
+
+The first value of a `Pair` instance becomes a key, and the second becomes a value. 
+This example uses the [infix notation](01-functions.md#infix-notation) to call the [`to`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/to.html) function to create tuples of `Pair`:
 
 ```kotlin
-fun main() {
-//sampleStart
     val pairArray = arrayOf("apple" to 120, "banana" to 150, "cherry" to 90, "apple" to 140)
 
     // Converts to a Map
     // The keys are fruits and the values are their number of calories
-    // Note how keys must be unique, so the latest value of "apple"
-    // overwrites the first
-    println(pairArray.toMap())
-    // {apple=140, banana=150, cherry=90}
-
-//sampleEnd
-}
+    // Note how keys must be unique, so the latest value of "apple" overwrites the first
+    println(pairArray.toMap()) // {apple=140, banana=150, cherry=90}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="arrays-convert-map-kotlin"}
 
 ## Primitive-type arrays
 
@@ -354,32 +282,26 @@ If you use the `Array` class with primitive values, these values are boxed into 
 As an alternative, you can use primitive-type arrays, which allow you to store primitives in an array without the
 side effect of boxing overhead:
 
-| Primitive-type array | Equivalent in Java |
-|---|----------------|
-| [`BooleanArray`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean-array/) | `boolean[]`|
-| [`ByteArray`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/) | `byte[]`|
-| [`CharArray`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char-array/) | `char[]`|
-| [`DoubleArray`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double-array/) | `double[]`|
-| [`FloatArray`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float-array/) | `float[]`|
-| [`IntArray`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int-array/) | `int[]`|
-| [`LongArray`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long-array/) | `long[]`|
-| [`ShortArray`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-short-array/) | `short[]`|
+| Primitive-type array                                                                  | Equivalent in Java |
+|---------------------------------------------------------------------------------------|--------------------|
+| [`BooleanArray`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean-array/) | `boolean[]`        |
+| [`ByteArray`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/)       | `byte[]`           |
+| [`CharArray`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char-array/)       | `char[]`           |
+| [`DoubleArray`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double-array/)   | `double[]`         |
+| [`FloatArray`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-float-array/)     | `float[]`          |
+| [`IntArray`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int-array/)         | `int[]`            |
+| [`LongArray`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long-array/)       | `long[]`           |
+| [`ShortArray`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-short-array/)     | `short[]`          |
 
 These classes have no inheritance relation to the `Array` class, but they have the same set of functions and properties.
 
 This example creates an instance of  the `IntArray` class:
 
 ```kotlin
-fun main() {
-//sampleStart
     // Creates an array of Int of size 5 with the values initialized to zero
     val exampleArray = IntArray(5)
-    println(exampleArray.joinToString())
-    // 0, 0, 0, 0, 0
-//sampleEnd
-}
+    println(exampleArray.joinToString()) // 0, 0, 0, 0, 0
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="arrays-primitive-type-array-kotlin"}
 
 > To convert primitive-type arrays to object-type arrays, use the [`.toTypedArray()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/to-typed-array.html)
 > function.

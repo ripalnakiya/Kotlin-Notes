@@ -157,7 +157,7 @@ fun main() {
 
 ## Destructuring in lambdas
 
-Destructuring in lambdas is described as a part of destructuring declarations.
+Destructuring in lambdas is described as a part of [destructuring declarations](11-destructuring-declarations.md).
 
 ## Anonymous functions
 

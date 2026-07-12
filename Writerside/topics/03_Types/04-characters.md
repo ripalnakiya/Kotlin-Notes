@@ -34,8 +34,6 @@ val invalid = 'AB' // Error
 val invalidEmpty = '' // Error
 ```
 
-{validate="false"}
-
 ### Nullable values
 
 To store a nullable value, use `Char?`:
@@ -75,13 +73,11 @@ cannot be represented by a single `Char`. In UTF-16, they are encoded as a _surr
 where two `Char` values together represent one Unicode character in a `String`:
 
 ```kotlin
-fun main() {
     val emoji = "🥦"
     
     println(emoji.length) // 2
     println(emoji[0])     // First surrogate
     println(emoji[1])     // Second surrogate
-}
 ```
 
 > To handle 32-bit symbols individually, use Unicode code points stored as `Int` values.
@@ -139,8 +135,6 @@ Kotlin provides functions for inspection and case conversion of character values
 For example:
 
 ```kotlin
-fun main() {
-//sampleStart
     val myChar = 'A'
     // Checks if the character represents a digit
     println(myChar.isDigit()) // false
@@ -148,10 +142,7 @@ fun main() {
     println(myChar.isUpperCase()) // true
     // Returns a lowercase version
     println(myChar.lowercaseChar()) // 'a'
-//sampleEnd
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 > Learn more about available functions in the
 > [API Reference](https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-char/).
@@ -163,17 +154,12 @@ fun main() {
 You can create another character value by adding or subtracting an integer:
 
 ```kotlin
-fun main() {
-//sampleStart
     val a = 'a'
 
     println(a + 1)  // b
     println(a + 2)  // c
     println(a - 32) // A
-//sampleEnd
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 > These operations follow Unicode values, not language-specific alphabet rules.
 >
@@ -183,8 +169,6 @@ You can also use the increment (`++`) and decrement (`--`) operators in the pref
 with mutable variables:
 
 ```kotlin
-fun main() {
-//sampleStart
     var a = 'A'
     
     a += 10
@@ -197,10 +181,7 @@ fun main() {
     println(--a) // 'L'  prefix decrement
     println(a--) // 'L'  postfix decrement
     println(a)   // 'K'
-//sampleEnd
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 ### Character conversion
 
@@ -209,25 +190,15 @@ To convert `Char` to a numeric type, use explicit conversion:
 * Use `.code` to get the numeric Unicode value of a character:
 
   ```kotlin
-  fun main() { 
-  //sampleStart
       val letter = 'A'
       println(letter.code) // 65
-  //sampleEnd
-  }
   ```
-  {kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 * If a character represents a decimal digit, use `digitToInt()`:
   ```kotlin
-  fun main() { 
-  //sampleStart
       val digit = '7'
       println(digit.digitToInt()) // 7
-  //sampleEnd
-  }
   ```
-  {kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
   > If the character may not be a valid digit, use `digitToIntOrNull()`.
   >

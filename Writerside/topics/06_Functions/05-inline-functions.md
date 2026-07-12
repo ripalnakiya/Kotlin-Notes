@@ -2,7 +2,10 @@
 <show-structure depth="2"/>
 
 Using higher-order functions imposes certain runtime penalties: each function is an object, and it captures a closure.
-A closure is a scope of variables that can be accessed in the body of the function.
+
+> A closure is a scope of variables that can be accessed in the body of the function.
+>
+{style="tip"}
 
 Memory allocations (both for function objects and classes) and virtual calls introduce runtime overhead.
 
@@ -25,14 +28,16 @@ fun main() {
 }
 ```
 
-The lambda `multiplyByMultiplier` is an object. When you pass it to `doOperation`, an object is created.
+The lambda `multiplyByMultiplier` is an object. When you pass it to `doOperation`, an **object is created**.
 
-Invoking the function object inside `doOperation` involves a virtual call, which is generally slower than direct method calls.
+Invoking the function object inside `doOperation` involves **a virtual call**, 
+which is generally slower than direct method calls.
 
-But it appears that in many cases this kind of overhead can be eliminated by inlining the lambda expressions.
+But it appears that in many cases this kind of **overhead can be eliminated** by **inlining the lambda expressions**.
 
 <note>
-Inlining is a compiler optimization that replaces a function call with the actual code of the function. This can eliminate the overhead of the function call and potentially allow for further optimizations.
+Inlining is a compiler optimization that <b>replaces a function call with the actual code</b> of the function. 
+This can eliminate the overhead of the function call and potentially allow for further optimizations.
 </note>
 
 Suppose you have a `lock` function that takes a lock and a lambda, like this:
@@ -115,18 +120,13 @@ inside a lambda because a lambda cannot make the enclosing function `return`:
 fun ordinaryFunction(block: () -> Unit) {
     println("hi!")
 }
-//sampleStart
+
 fun foo() {
     ordinaryFunction {
         return // ERROR: cannot make `foo` return here
     }
 }
-//sampleEnd
-fun main() {
-    foo()
-}
 ```
-{kotlin-runnable="true" validate="false"}
 
 But if the function the lambda is passed to is inlined, the return can be inlined, as well. So it is allowed:
 
@@ -134,20 +134,15 @@ But if the function the lambda is passed to is inlined, the return can be inline
 inline fun inlined(block: () -> Unit) {
     println("hi!")
 }
-//sampleStart
+
 fun foo() {
     inlined {
         return // OK: the lambda is inlined
     }
 }
-//sampleEnd
-fun main() {
-    foo()
-}
 ```
-{kotlin-runnable="true"}
 
-Such returns (located in a lambda, but exiting the enclosing function) are called *non-local* returns. This sort of
+Such returns (located in a lambda, but exiting the enclosing function) are called **non-local returns**. This sort of
 construct usually occurs in loops, which inline functions often enclose:
 
 ```kotlin
@@ -160,9 +155,11 @@ fun hasZeros(ints: List<Int>): Boolean {
 ```
 
 Note that some inline functions may call the lambdas passed to them as parameters not directly from the function body,
-but from another execution context, such as a local object or a nested function. In such cases, non-local control flow
-is also not allowed in the lambdas. To indicate that the lambda parameter of the inline function cannot use non-local
-returns, mark the lambda parameter with the `crossinline` modifier:
+but from another execution context, such as a local object or a nested function. 
+
+In such cases, non-local control flow is also not allowed in the lambdas. 
+To indicate that the lambda parameter of the inline function cannot use non-local returns, 
+mark the lambda parameter with the `crossinline` modifier:
 
 ```kotlin
 inline fun f(crossinline body: () -> Unit) {

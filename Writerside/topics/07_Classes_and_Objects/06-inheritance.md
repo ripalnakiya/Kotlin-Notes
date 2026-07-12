@@ -2,6 +2,7 @@
 <show-structure depth="2"/>
 
 > Before creating an inheritance hierarchy with classes, consider using [abstract classes](01-classes.md#abstract-classes) or [interfaces](04-interfaces.md).
+> 
 > You can inherit from abstract classes and interfaces by default. They are designed so that other classes can inherit their members and implement them.
 >
 {style="tip"}
@@ -49,14 +50,14 @@ class MyView : View {
 ## Open keyword
 
 In Kotlin, the `open` keyword indicates that a class or a member (function or property) can be overridden in subclasses.
-By default, Kotlin classes and their members are _final_, meaning they cannot be inherited from (for classes) or overridden
-(for members) unless you explicitly mark them as `open`:
+
+By default, Kotlin classes and their members are **final**, 
+meaning they cannot be inherited from (for classes) or overridden (for members) unless you explicitly mark them as `open`:
 
 ```kotlin
 // Base class with the open keyword to allow inheritance
-open class Person(
-    val name: String
-) {
+open class Person(val name: String) {
+    
     // Open function that can be overridden in a subclass
     open fun introduce() {
         println("Hello, my name is $name.")
@@ -64,10 +65,8 @@ open class Person(
 }
 
 // Subclass inheriting from Person and overriding the introduce() function
-class Student(
-    name: String,
-    val school: String
-) : Person(name) {
+class Student(name: String, val school: String) : Person(name) {
+
     override fun introduce() {
         println("Hi, I'm $name, and I study at $school.")
     }
@@ -82,6 +81,7 @@ member as `final`:
 ```kotlin
 // Base class with the open keyword to allow inheritance
 open class Person(val name: String) {
+
     // Open function that can be overridden in a subclass
     open fun introduce() {
         println("Hello, my name is $name.")
@@ -90,6 +90,7 @@ open class Person(val name: String) {
 
 //  A subclass that inherits from Person and overrides the introduce() function
 class Student(name: String, val school: String) : Person(name) {
+
     // The final keyword prevents further overrides in subclasses
     final override fun introduce() {
         println("Hi, I'm $name, and I study at $school.")
@@ -112,10 +113,13 @@ class Circle() : Shape() {
 }
 ```
 
-The `override` modifier is required for `Circle.draw()`. If it's missing, the compiler will complain. If there is no
-`open` modifier on a function, like `Shape.fill()`, declaring a method with the same signature in a subclass is not allowed,
-either with `override` or without it. The `open` modifier has no effect when added to members of a final class – a class
-without an `open` modifier.
+The `override` modifier is required for `Circle.draw()`. If it's missing, the compiler will complain. 
+
+If there is no `open` modifier on a function, like `Shape.fill()`, 
+declaring a method with the same signature in a subclass is not allowed,
+either with `override` or without it. 
+
+The `open` modifier has no effect when added to members of a final class – a class without an `open` modifier.
 
 A member marked `override` is itself open, so it may be overridden in subclasses. If you want to prohibit re-overriding,
 use `final`:
@@ -128,8 +132,11 @@ open class Rectangle() : Shape() {
 
 ## Overriding properties
 
-The overriding mechanism works on properties in the same way that it does on methods. Properties declared on a superclass
-that are then redeclared on a derived class must be prefaced with `override`, and they must have a compatible type.
+The overriding mechanism works on properties in the same way that it does on methods. 
+
+Properties declared on a superclass that are then redeclared on a derived class must be prefaced with `override`, 
+and they must have a compatible type.
+
 Each declared property can be overridden by a property with an initializer or by a property with a `get` method:
 
 ```kotlin
@@ -166,7 +173,6 @@ During the construction of a new instance of a derived class, the base class ini
 initialization logic of the derived class is run.
 
 ```kotlin
-//sampleStart
 open class Base(val name: String) {
 
     init { println("Initializing a base class") }
@@ -175,28 +181,36 @@ open class Base(val name: String) {
         name.length.also { println("Initializing size in the base class: $it") }
 }
 
-class Derived(
-    name: String,
-    val lastName: String,
-) : Base(name.replaceFirstChar { it.uppercase() }.also { println("Argument for the base class: $it") }) {
+class Derived(name: String, val lastName: String, ) : Base(name.replaceFirstChar { it.uppercase() }.also { println("Argument for the base class: $it") }) {
 
     init { println("Initializing a derived class") }
 
     override val size: Int =
         (super.size + lastName.length).also { println("Initializing size in the derived class: $it") }
 }
-//sampleEnd
 
 fun main() {
     println("Constructing the derived class(\"hello\", \"world\")")
     Derived("hello", "world")
 }
 ```
-{kotlin-runnable="true"}
+
+```text
+Constructing the derived class("hello", "world")
+Argument for the base class: Hello
+Initializing a base class
+Initializing size in the base class: 5
+Initializing a derived class
+Initializing size in the derived class: 10
+```
 
 This means that when the base class constructor is executed, the properties declared or overridden in the derived class
-have not yet been initialized. Using any of those properties in the base class initialization logic (either directly or
-indirectly through another overridden `open` member implementation) may lead to incorrect behavior or a runtime failure.
+have not yet been initialized. 
+
+Using any of those properties in the base class initialization logic (either directly or
+indirectly through another overridden `open` member implementation) 
+may lead to incorrect behavior or a runtime failure.
+
 When designing a base class, you should therefore avoid using `open` members in the constructors, property initializers,
 or `init` blocks.
 
@@ -226,7 +240,11 @@ fun main() {
     obj.introduce()
 }
 ```
-{kotlin-runnable="true"}
+
+```text
+Hi there! I am null and I love to dance!
+Hi there! I am Dancing Robot and I love to dance!
+```
 
 ## Calling the superclass implementation
 
@@ -234,17 +252,22 @@ Code in a derived class can call its superclass functions and property accessor 
 
 ```kotlin
 open class Rectangle {
+    
     open fun draw() { println("Drawing a rectangle") }
-    val borderColor: String get() = "black"
+    
+    val borderColor: String 
+        get() = "black"
 }
 
 class FilledRectangle : Rectangle() {
+    
     override fun draw() {
         super.draw()
         println("Filling the rectangle")
     }
 
-    val fillColor: String get() = super.borderColor
+    val fillColor: String 
+        get() = super.borderColor
 }
 ```
 
@@ -253,19 +276,24 @@ outer class name: `super@Outer`:
 
 ```kotlin
 open class Rectangle {
+    
     open fun draw() { println("Drawing a rectangle") }
-    val borderColor: String get() = "black"
+    
+    val borderColor: String 
+        get() = "black"
 }
 
-//sampleStart
 class FilledRectangle: Rectangle() {
+
     override fun draw() {
         val filler = Filler()
         filler.drawAndFill()
     }
     
     inner class Filler {
+        
         fun fill() { println("Filling") }
+        
         fun drawAndFill() {
             super@FilledRectangle.draw() // Calls Rectangle's implementation of draw()
             fill()
@@ -273,14 +301,18 @@ class FilledRectangle: Rectangle() {
         }
     }
 }
-//sampleEnd
 
 fun main() {
     val fr = FilledRectangle()
-        fr.draw()
+    fr.draw()
 }
 ```
-{kotlin-runnable="true"}
+
+```text
+Drawing a rectangle
+Filling
+Drawn a filled rectangle with color black
+```
 
 ## Overriding rules
 
@@ -301,6 +333,7 @@ interface Polygon {
 }
 
 class Square() : Rectangle(), Polygon {
+    
     // The compiler requires draw() to be overridden:
     override fun draw() {
         super<Rectangle>.draw() // call to Rectangle.draw()
@@ -310,5 +343,5 @@ class Square() : Rectangle(), Polygon {
 ```
 
 It's fine to inherit from both `Rectangle` and `Polygon`,
-but both of them have their implementations of `draw()`, so you need to override `draw()` in `Square` and provide a separate
-implementation for it to eliminate the ambiguity.
+but both of them have their implementations of `draw()`, 
+so you need to override `draw()` in `Square` and provide a separate implementation for it to eliminate the ambiguity.

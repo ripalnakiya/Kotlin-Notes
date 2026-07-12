@@ -154,16 +154,11 @@ Kotlin supports the standard arithmetic operations on numbers: `+`, `-`, `*`, `/
 Use these operators to perform common calculations:
 
 ```kotlin
-fun main() {
-//sampleStart
     println(1 + 2) // 3
     println(2_500_000_000L - 1L) // 2499999999
     println(3.14 * 2.71) // 8.5094
     println(10.0 / 3) // 3.3333333333333335
-//sampleEnd
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 The result type depends on the types of the operands. Learn more in [](#mixed-numeric-expressions).
 
@@ -177,32 +172,22 @@ The result type depends on the types of the operands. Learn more in [](#mixed-nu
 Division between integer values always returns an integer result. The compiler discards the fractional part:
 
 ```kotlin
-fun main() {
-//sampleStart
     val intValue = 5 / 2
     println(intValue) // 2
     
     val longValue = 5L / 2
     println(longValue) // 2
-//sampleEnd
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 To return a floating-point result, make at least one operand a `Float` or `Double`:
 
 ```kotlin
-fun main() {
-//sampleStart
     val a = 5 / 2.0
     println(a) // 2.5
     
     val b = 5 / 2.toDouble()
     println(b) // 2.5
-//sampleEnd
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 ## Type conversion
 
@@ -213,7 +198,6 @@ For example, a function that expects `Double` cannot accept an `Int` or a `Float
 
 ```kotlin
 fun main() {
-//sampleStart
     fun printDouble(x: Double) { 
         print(x) 
     }
@@ -226,10 +210,8 @@ fun main() {
     printDouble(x) // OK
     printDouble(xInt) // Error: argument type mismatch
     printDouble(xFloat) // Error: argument type mismatch
-//sampleEnd
 }
 ```
-{kotlin-runnable="true" validate="false"}
 
 All number types support conversions to other number types.
 To convert a number to another type, use an explicit conversion function:
@@ -244,30 +226,20 @@ To convert a number to another type, use an explicit conversion function:
 For example, the following code converts an `Int` value to `Double`:
 
 ```kotlin
-fun main() {
-//sampleStart
     val intValue: Int = 1
     val doubleValue = intValue.toDouble()
     
     println(doubleValue) // 1.0
-//sampleEnd
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 When you convert a floating-point value to an integer type, the compiler discards the fractional part:
 
 ```kotlin
-fun main() {
-//sampleStart
     val d: Double = 1.5
     val l: Long = d.toLong()
     
     println(l) // 1
-//sampleEnd    
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 ### Mixed numeric expressions
 
@@ -297,7 +269,6 @@ During type inference, Kotlin treats unsuffixed integer literals as a special [I
 until the surrounding context determines a specific type:
 
 ```kotlin
-//sampleStart
 fun List<Any>.log() {
     println(joinToString(" | ") { it::class.simpleName ?: "Unknown" })
 }
@@ -317,15 +288,12 @@ fun main() {
     listOf(1.toInt(), 2L).log()
     // Int | Long
 }
-//sampleEnd
 ```
-{kotlin-runnable="true"}
 
 It's especially easy to miss with the `Int` and `Long` values because they have the same string representation
 at runtime. To avoid this, specify the expected type or convert values explicitly:
 
 ```kotlin
-//sampleStart
 fun List<Any>.log() {
     println(joinToString(" | ") { it::class.simpleName ?: "Unknown" })
 }
@@ -339,21 +307,14 @@ fun main() {
     numberValues.log()
     // Int | Long
 }
-//sampleEnd
 ```
-{kotlin-runnable="true"}
 
 You can also use an explicit type to catch unintended type inference:
 
 ```kotlin
-fun main() {
-//sampleStart
     val intValues: List<Int> = listOf(1, 2L)
     // Error: initializer type mismatch
-//sampleEnd
-}
 ```
-{kotlin-runnable="true" validate="false"}
 
 > Learn more about [Integer literal types](https://kotlinlang.org/spec/type-system.html#integer-literal-types).
 >
@@ -395,15 +356,10 @@ Each integer type can store only values within its defined range. When the resul
 arithmetic operation exceeds that range, _data overflow_ occurs:
 
 ```kotlin
-fun main(){
-//sampleStart
     val intNumber: Int = 2147483647
     // Max Int value is 2147483647
     println(intNumber + 1) // -2147483648
-//sampleEnd    
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 Here, the result wraps around because the value no longer fits in `Int`.
 
@@ -417,14 +373,9 @@ Overflow can also occur during negation.
 For example, you cannot represent the positive counterpart of `Int.MIN_VALUE` as an `Int`.
 
 ```kotlin
-fun main(){
-//sampleStart
     val min = Int.MIN_VALUE
     println(-min) // -2147483648
-//sampleEnd    
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 ### Narrowing conversions
 
@@ -432,28 +383,18 @@ When you convert a value to a smaller integer type,
 the result may not preserve the original numeric value:
 
 ```kotlin
-fun main() {
-//sampleStart
     val large: Int = 130
     val narrowed: Byte = large.toByte()
 
     println(narrowed) // -126
-//sampleEnd
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 However, since floating-point types follow the
 [IEEE 754 Standard](https://en.wikipedia.org/wiki/IEEE_754), very large results can become `Infinity`:
 
 ```kotlin
-fun main() {
-//sampleStart
     println(Double.MAX_VALUE * 2) // Infinity
-//sampleEnd    
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 ## Bitwise operations
 
@@ -461,16 +402,11 @@ Kotlin provides _bitwise operations_ for `Int` and `Long`. These operations are 
 a set of [infix functions](01-functions.md#infix-notation) and `inv()`.
 
 ```kotlin
-fun main() {
-//sampleStart
     val x = 1
     
     println(x shl 2) // 4
     println(x and 0x000FF000) // 0
-//sampleEnd
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 Bitwise operations include:
 
@@ -496,32 +432,22 @@ For example, the JVM caches boxed `Integer` values in the range `-128` to `127`.
 code returns `true`:
 
 ```kotlin
-fun main() {
-//sampleStart
     val score: Int = 100
     val savedScore: Int? = score
     val displayedScore: Int? = score
     
     println(savedScore === displayedScore) // true
-//sampleEnd
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" validate="false"}
 
 For values outside the cached range, boxed values are separate objects. In that case,
 they are not referentially equal, even if their values are [structurally equal](09-equality.md#structural-equality).
 For this reason, use `==` to compare numeric values:
 
 ```kotlin
-fun main() {
-//sampleStart
     val score: Int = 10000
     val savedScore: Int? = score
     val displayedScore: Int? = score
 
     println(savedScore === displayedScore) // false
     println(savedScore == displayedScore) // true
-//sampleEnd
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" validate="false"}

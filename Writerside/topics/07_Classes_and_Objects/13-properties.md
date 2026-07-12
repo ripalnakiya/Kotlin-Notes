@@ -9,7 +9,7 @@ Every property has a name, a type, and an automatically generated `get()` functi
 to read the property's value. If the property is mutable, it also has a `set()` function called a setter, which allows
 you to change the property's value.
 
-> Getters and setters are called _accessors_.
+> Getters and setters are called **accessors**.
 >
 {style="tip"}
 
@@ -37,15 +37,15 @@ class Address {
     var city: String = "London"
 }
 
-// Interface with a property
-interface ContactInfo {
-    val email: String
-}
-
 // Object with properties
 object Company {
     var name: String = "Detective Inc."
     val country: String = "UK"
+}
+
+// Interface with a property
+interface ContactInfo {
+    val email: String
 }
 
 // Class implementing the interface
@@ -57,26 +57,6 @@ class PersonContact : ContactInfo {
 To use a property, refer to it by its name:
 
 ```kotlin
-class Address {
-    var name: String = "Holmes, Sherlock"
-    var street: String = "Baker"
-    var city: String = "London"
-}
-
-interface ContactInfo {
-    val email: String
-}
-
-object Company {
-    var name: String = "Detective Inc."
-    val country: String = "UK"
-}
-
-class PersonContact : ContactInfo {
-    override val email: String = "sherlock@example.com"
-}
-
-//sampleStart
 fun copyAddress(address: Address): Address {
     val result = Address()
     // Accesses properties in the result instance
@@ -89,22 +69,18 @@ fun copyAddress(address: Address): Address {
 fun main() {
     val sherlockAddress = Address()
     val copy = copyAddress(sherlockAddress)
+    
     // Accesses properties in the copy instance
-    println("Copied address: ${copy.name}, ${copy.street}, ${copy.city}")
-    // Copied address: Holmes, Sherlock, Baker, London
+    println("Copied address: ${copy.name}, ${copy.street}, ${copy.city}") // Copied address: Holmes, Sherlock, Baker, London
 
     // Accesses properties in the Company object
-    println("Company: ${Company.name} in ${Company.country}")
-    // Company: Detective Inc. in UK
-    
+    println("Company: ${Company.name} in ${Company.country}") // Company: Detective Inc. in UK
+
     val contact = PersonContact()
     // Access properties in the contact instance
-    println("Email: ${contact.email}")
-    // Email: sherlock@email.com
+    println("Email: ${contact.email}") // Email: sherlock@email.com
 }
-//sampleEnd
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-access-properties"}
 
 In Kotlin, we recommend initializing properties when you declare them to keep your code safe and easy to read. However,
 you can [initialize them later](#late-initialized-properties-and-variables) in special cases.
@@ -115,40 +91,41 @@ Declaring the property type is optional if the compiler can infer it from the in
 var initialized = 1 // The inferred type is Int
 var allByDefault    // ERROR: Property must be initialized.
 ```
-{validate="false"}
 
 ## Custom getters and setters
 
 By default, Kotlin automatically generates getters and setters. You can define your own custom accessors when
 you need extra logic, such as validation, formatting, or calculations based on other properties.
 
-A custom getter runs every time the property is accessed:
+A custom getter **runs every time** the property is accessed:
 
 ```kotlin
-//sampleStart
 class Rectangle(val width: Int, val height: Int) {
     val area: Int
         get() = this.width * this.height
 }
-//sampleEnd
+
 fun main() {
     val rectangle = Rectangle(3, 4)
-    println("Width=${rectangle.width}, height=${rectangle.height}, area=${rectangle.area}")
+    println("Width=${rectangle.width}, height=${rectangle.height}, area=${rectangle.area}") 
+    // Width=3, height=4, area=12
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-custom-getter"}
 
 You can omit the type if the compiler can infer it from the getter:
 
 ```kotlin
-val area get() = this.width * this.height
+val area 
+    get() = this.width * this.height
 ```
 
-A custom setter runs every time you assign a value to the property, except during initialization.
+A custom setter **runs every time** you assign a value to the property, **except during initialization**.
+
 By convention, the name of the setter parameter is `value`, but you can choose a different name:
 
 ```kotlin
 class Point(var x: Int, var y: Int) {
+
     var coordinates: String
         get() = "$x,$y"
         set(value) {
@@ -160,15 +137,12 @@ class Point(var x: Int, var y: Int) {
 
 fun main() {
     val location = Point(1, 2)
-    println(location.coordinates) 
-    // 1,2
+    println(location.coordinates) // 1,2
 
     location.coordinates = "10,20"
-    println("${location.x}, ${location.y}") 
-    // 10, 20
+    println("${location.x}, ${location.y}") // 10, 20
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-custom-setter"}
 
 ### Changing visibility or adding annotations
 
@@ -179,6 +153,7 @@ To change the visibility of an accessor, use the modifier before the `get` or `s
 
 ```kotlin
 class BankAccount(initialBalance: Int) {
+
     var balance: Int = initialBalance
         // Only the class can modify the balance
         private set 
@@ -194,22 +169,17 @@ class BankAccount(initialBalance: Int) {
 
 fun main() {
     val account = BankAccount(100)
-    println("Initial balance: ${account.balance}") 
-    // 100
+    println("Initial balance: ${account.balance}") // 100
 
     account.deposit(50)
-    println("After deposit: ${account.balance}") 
-    // 150
+    println("After deposit: ${account.balance}") // 150
 
     account.withdraw(70)
-    println("After withdrawal: ${account.balance}") 
-    // 80
+    println("After withdrawal: ${account.balance}") // 80
 
-    // account.balance = 1000  
-    // Error: cannot assign because setter is private
+    account.balance = 1000 // Error: cannot assign because setter is private
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-private-setter"}
 
 To annotate an accessor, use the annotation before the `get` or `set` keyword:
 
@@ -219,6 +189,7 @@ To annotate an accessor, use the annotation before the `get` or `set` keyword:
 annotation class Inject
 
 class Service {
+    
     var dependency: String = "Default Service"
         // Annotates the getter
         @Inject get 
@@ -226,24 +197,20 @@ class Service {
 
 fun main() {
     val service = Service()
-    println(service.dependency)
-    // Default service
-    println(service::dependency.getter.annotations)
-    // [@Inject()]
-    println(service::dependency.setter.annotations)
-    // []
+    println(service.dependency) // Default service
+    println(service::dependency.getter.annotations) // [@Inject()]
+    println(service::dependency.setter.annotations) // []
 }
 ```
-{validate="false"}
 
 This example uses [reflection](https://kotlinlang.org/docs/reflection.html) to show which annotations are present on the getter and setter.
 
 ## Backing fields
 
-The compiler automatically generates backing fields for properties when a value needs to be stored in memory.
+The compiler automatically generates backing fields for properties **when a value needs to be stored in memory**.
 
 For example, the compiler creates a backing field when you use the default `get()` and `set()` functions because they
-read and write the stored value:
+**read and write the _stored value_**:
 
 ```kotlin
 var count = 0
@@ -256,6 +223,7 @@ In this example, the `score` property uses the backing field inside the `set()` 
 
 ```kotlin
 class Scoreboard {
+
     var score: Int = 0
         set(value) {
             field = value
@@ -266,16 +234,14 @@ class Scoreboard {
 
 fun main() {
     val board = Scoreboard()
-    board.score = 10  
-    // Score updated to 10
-    board.score = 20  
-    // Score updated to 20
+    board.score = 10 // Score updated to 10
+    board.score = 20 // Score updated to 20
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-backing-field"}
 
-Backing fields aren't created by default for all properties because they might not need them. For example, the `isEmpty`
-property doesn't have a backing field because the value is calculated from the `size` property each time you access it:
+Backing fields **aren't created by default** for all properties because they might not need them. 
+For example, the `isEmpty` property doesn't have a backing field because 
+the value is calculated from the `size` property each time you access it:
 
 ```kotlin
 val isEmpty: Boolean
@@ -284,15 +250,19 @@ val isEmpty: Boolean
 
 ### Explicit backing fields
 
-Sometimes you might need more flexibility. For example, if you have an API where you want to be able to modify the property
-internally but not externally. In such cases, you can use an _explicit backing field_.
+Sometimes you might need more flexibility. 
+For example, if you have an API where you want to be able to modify the property internally but not externally. 
+In such cases, you can use an _explicit backing field_.
 
-In the following example, the `ShoppingCart` class has an `items` property that represents everything in the shopping cart.
-The class exposes the `items` property as a read-only list of strings, but internally it stores the data in a mutable list
-with an explicit backing field:
+In the following example, the `ShoppingCart` class has an `items` property 
+that represents everything in the shopping cart.
+
+The class exposes the `items` property as a read-only list of strings, 
+but internally it stores the data in a mutable list with an explicit backing field:
 
 ```kotlin
 class ShoppingCart {
+
     // Public read-only view with explicit backing field
     val items: List<String>
         field = mutableListOf()
@@ -311,15 +281,12 @@ fun main() {
     cart.addItem("Apple")
     cart.addItem("Banana")
 
-    println(cart.items) 
-    // [Apple, Banana]
+    println(cart.items) // [Apple, Banana]
     
     cart.removeItem("Apple")
-    println(cart.items) 
-    // [Banana]
+    println(cart.items) // [Banana]
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="2.4" id="kotlin-explicit-backing-field"}
 
 In this example, the compiler infers the type of the backing field from the `mutableListOf()` call: `MutableList<String>`.
 You can also declare the type of the backing field explicitly:
@@ -329,16 +296,16 @@ val items: List<String>
     // Explicit backing field with explicit type
     field: MutableList<String> = mutableListOf()
 ```
-{validate="false"}
 
 In the example of the `ShoppingCart` class, the compiler smart casts the `items` property to the `MutableList<String>` type, so the
-class can add and remove items from the cart through the `add()` and `remove()` functions. Outside the class, the compiler
-uses the public property type `List<String>`, so API users can only read what's in the `items` list.
+class can add and remove items from the cart through the `add()` and `remove()` functions. 
+
+Outside the class, the compiler uses the public property type `List<String>`, so API users can only read what's in the `items` list.
 
 #### Limitations
 
-To use explicit backing fields, their properties and the backing fields themselves must follow certain rules. Properties
-can have explicit backing fields only if they:
+To use explicit backing fields, their properties and the backing fields themselves must follow certain rules. 
+Properties can have explicit backing fields only if they:
 
 * Don't have a custom getter.
 * Are read-only (`val`).
@@ -352,12 +319,13 @@ You can work around these restrictions by using backing properties instead.
 
 ### Backing properties
 
-If explicit backing fields don't fit your use case, you can try using a coding pattern called a _backing property_.
+If explicit backing fields don't fit your use case, you can try using a coding pattern called a **backing property**.
 
 For example, if your property needs a custom getter:
 
 ```kotlin
 class UserDirectory {
+
     private val _users = mutableListOf(
         "sarah",
         "mike",
@@ -376,11 +344,9 @@ fun main() {
     val directory = UserDirectory()
 
     directory.addUser("alex")
-    println(directory.users)
-    // [alex, emma, mike, sarah]
+    println(directory.users) // [alex, emma, mike, sarah]
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-backing-property-custom-getter"}
 
 > Use a leading underscore when naming backing properties to follow Kotlin [coding conventions](https://kotlinlang.org/docs/coding-conventions.html#names-for-backing-properties).
 >
@@ -392,9 +358,11 @@ sorts the entries before returning them.
 
 ## Compile-time constants
 
-If the value of a read-only property is known at compile time, mark it as a _compile-time constant_ using the `const` modifier.
-Compile-time constants are inlined at compile time, so each reference is replaced with its actual value. They are accessed
-more efficiently because no getter is called:
+If the value of a read-only property is known at compile time, 
+mark it as a **compile-time constant** using the `const` modifier.
+
+Compile-time constants are inlined at compile time, so each reference is replaced with its actual value. 
+They are accessed more efficiently because no getter is called:
 
 ```kotlin
 // File: AppConfig.kt
@@ -430,6 +398,7 @@ To handle these situations, mark the property with the `lateinit` modifier:
 
 ```kotlin
 public class OrderServiceTest {
+    
     lateinit var orderService: OrderService
 
     @SetUp fun setup() {
@@ -462,11 +431,11 @@ property being accessed:
 
 ```kotlin
 class ReportGenerator {
+
     lateinit var report: String
 
     fun printReport() {
-        // Throws an exception as it's accessed before
-        // initialization
+        // Throws an exception as it's accessed before initialization
         println(report)
     }
 }
@@ -477,13 +446,13 @@ fun main() {
     // Exception in thread "main" kotlin.UninitializedPropertyAccessException: lateinit property report has not been initialized
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-lateinit-property" validate="false"}
 
 To check whether a `lateinit var` has already been initialized, use the [`isInitialized`](https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/is-initialized.html)
 property on the [reference to that property](https://kotlinlang.org/docs/reflection.html#property-references):
 
 ```kotlin
 class WeatherStation {
+    
     lateinit var latestReading: String
 
     fun printReading() {
@@ -499,17 +468,14 @@ class WeatherStation {
 fun main() {
     val station = WeatherStation()
 
-    station.printReading()
-    // No reading available
+    station.printReading() // No reading available
     station.latestReading = "22°C, sunny"
-    station.printReading()
-    // Latest reading: 22°C, sunny
+    station.printReading() // Latest reading: 22°C, sunny
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="kotlin-lateinit-property-check-initialization"}
 
-You can only use `isInitialized` on a property if you can already access that property in your code. The property must be declared
-in the same class, in an outer class, or as a top-level property in the same file.
+You can only use `isInitialized` on a property if you can already access that property in your code. 
+The property must be declared in the same class, in an outer class, or as a top-level property in the same file.
 
 ## Overriding properties
 
@@ -517,11 +483,11 @@ See [Overriding properties](06-inheritance.md#overriding-properties).
 
 ## Delegated properties
 
-To reuse logic and reduce code duplication, you can delegate the responsibility of getting and setting a property to a
-separate object.
+To reuse logic and reduce code duplication, 
+you can delegate the responsibility of getting and setting a property to a separate object.
 
-Delegating accessor behavior keeps the property's accessor logic centralized, making it easier to reuse. This approach
-is useful when implementing behaviors like:
+Delegating accessor behavior keeps the property's accessor logic centralized, making it easier to reuse. 
+This approach is useful when implementing behaviors like:
 
 * Computing a value lazily.
 * Reading from a map by a given key.

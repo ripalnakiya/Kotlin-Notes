@@ -34,8 +34,6 @@ val isEnabled: Boolean? = null
 You can use comparison expressions and functions to produce `Boolean` values:
 
 ```kotlin
-fun main() {
-//sampleStart
     val number = 10
     val isPositive = number > 0 
     println(isPositive) // true
@@ -43,26 +41,18 @@ fun main() {
     val language = "Kotlin"
     val isEmpty = language.isEmpty() 
     println(isEmpty) // false
-//sampleEnd
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 You can use the results in conditions and other expressions as well:
 
 ```kotlin
-fun main() {
-//sampleStart
     val number = 10
     val isPositive = number > 0 // true
 
     if (isPositive) {
         println("The number is positive.")
     }
-//sampleEnd    
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 ## `Boolean` operations
 
@@ -152,27 +142,16 @@ For the `Boolean` operations described in this section, the precedence order is 
 In the following example, the compiler evaluates `&&` before `||`:
 
 ```kotlin
-fun main() {
-//sampleStart
     val result = true || false && false
     println(result) // true
-//sampleEnd    
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" validate="false"}
 
 To make evaluation order explicit, use parentheses:
 
 ```kotlin
-fun main() {
-//sampleStart
     val result = (true || false) && false
     println(result) // false
-//sampleEnd    
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" validate="false"}
-
 
 ## `Boolean` in conditions
 
@@ -182,8 +161,6 @@ and [`while`](02-loops.md#while-loops) evaluate `Boolean` expressions to direct 
 ### `if` expressions
 
 ```kotlin
-fun main() {
-//sampleStart
     val number = 4
     val isEven = number % 2 == 0
 
@@ -194,16 +171,11 @@ fun main() {
     } else {
         println("The number is odd.")
     }
-//sampleEnd    
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 ### `when` expressions
 
 ```kotlin
-fun main() {
-//sampleStart
     val number = 3
 
     when {
@@ -211,23 +183,15 @@ fun main() {
         number < 0 -> println("The number is negative.")
         else -> println("The number is zero.")
     }
-//sampleEnd    
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 ### `while` loops
 
 ```kotlin
-fun main() {
-//sampleStart
     var isCalculating = true
     
     while (isCalculating) {
         println("Calculating...")
         isCalculating = false
     }
-//sampleEnd    
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}

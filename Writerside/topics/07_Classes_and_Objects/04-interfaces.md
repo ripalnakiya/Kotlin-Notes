@@ -3,7 +3,7 @@
 
 Interfaces in Kotlin can contain declarations of abstract methods, as well as method implementations. 
 
-What makes them different from abstract classes is that interfaces cannot store state. 
+What makes them different from abstract classes is that **interfaces cannot store state**. 
 
 They can have properties, but these need to be abstract or provide accessor implementations.
 
@@ -11,7 +11,9 @@ An interface is defined using the keyword `interface`:
 
 ```Kotlin
 interface MyInterface {
+    
     fun bar()
+    
     fun foo() {
       // optional body
     }
@@ -144,7 +146,7 @@ class Test : First {
 
 When a class inherits from more than one interface and those interfaces have the same method (with different implementations)
 
-Then we need to provide the implementation of those methods(methods that are present in different interfaces) in our class
+Then we **need** to provide the implementation of those methods (methods that are present in different interfaces) in our class
 
 ```Kotlin
 interface First {

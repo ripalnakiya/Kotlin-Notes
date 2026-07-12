@@ -43,15 +43,16 @@ If the enum class defines any members, separate the constant definitions from th
 
 ## Implementing interfaces in enum classes
 
-An enum class can implement an interface (but it cannot derive from a class), providing either a common implementation of
-interface members for all the entries, or separate implementations for each entry within its anonymous class.
+An enum class can implement an interface (but it cannot derive from a class), 
+providing either a common implementation of interface members for all the entries, 
+or separate implementations for each entry within its anonymous class.
+
 This is done by adding the interfaces you want to implement to the enum class declaration as follows:
 
 ```kotlin
 import java.util.function.BinaryOperator
 import java.util.function.IntBinaryOperator
 
-//sampleStart
 enum class IntArithmetics : BinaryOperator<Int>, IntBinaryOperator {
     PLUS {
         override fun apply(t: Int, u: Int): Int = t + u
@@ -62,7 +63,6 @@ enum class IntArithmetics : BinaryOperator<Int>, IntBinaryOperator {
     
     override fun applyAsInt(t: Int, u: Int) = apply(t, u)
 }
-//sampleEnd
 
 fun main() {
     val a = 13
@@ -72,15 +72,21 @@ fun main() {
     }
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.9"}
+
+```text
+PLUS(13, 31) = 44
+TIMES(13, 31) = 403
+```
 
 All enum classes implement the [Comparable](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-comparable/index.html)
 interface by default. Constants in the enum class are defined in the natural order. For more information, see [Ordering](https://kotlinlang.org/docs/collection-ordering.html).
 
 ## Working with enum constants
 
-Enum classes in Kotlin have synthetic properties and methods for listing the defined enum constants and getting an enum constant by
-its name. The signatures of these methods are as follows (assuming the name of the enum class is `EnumClass`):
+Enum classes in Kotlin have synthetic properties and methods 
+for listing the defined enum constants and getting an enum constant by its name. 
+
+The signatures of these methods are as follows (assuming the name of the enum class is `EnumClass`):
 
 ```kotlin
 EnumClass.valueOf(value: String): EnumClass
@@ -93,11 +99,19 @@ Below is an example of them in action:
 enum class RGB { RED, GREEN, BLUE }
 
 fun main() {
-    for (color in RGB.entries) println(color.toString()) // prints RED, GREEN, BLUE
-    println("The first color is: ${RGB.valueOf("RED")}") // prints "The first color is: RED"
+    for (color in RGB.entries) 
+        println(color.toString())
+
+    println("The first color is: ${RGB.valueOf("RED")}")
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.9" id="rgb-enums-kotlin"}
+
+```text
+RED
+GREEN
+BLUE
+The first color is: RED
+```
 
 The `valueOf()` method throws an `IllegalArgumentException` if the specified name does
 not match any of the enum constants defined in the class.
@@ -111,14 +125,9 @@ position (starting from 0) in the enum class declaration:
 ```kotlin
 enum class RGB { RED, GREEN, BLUE }
 
-fun main() {
-    //sampleStart
-    println(RGB.RED.name)    // prints RED
-    println(RGB.RED.ordinal) // prints 0
-    //sampleEnd
-}
+println(RGB.RED.name)    // prints RED
+println(RGB.RED.ordinal) // prints 0
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" id="rgb-enums-properties-kotlin"}
 
 You can access the constants in an enum class in a generic way using
 the [`enumValues<T>()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/enum-values.html) and [`enumValueOf<T>()`](https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/enum-value-of.html) functions.

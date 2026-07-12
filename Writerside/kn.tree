@@ -50,7 +50,6 @@
         <toc-element toc-title="Special Classes &amp; Interfaces">
             <toc-element topic="08-sealed-classes.md"/>
             <toc-element topic="09-enum-classes.md"/>
-            <toc-element topic="10-inline-value-classes.md"/>
             <toc-element topic="11-nested-classes.md"/>
             <toc-element topic="12-functional-interfaces.md" toc-title="Functional (SAM) interfaces"/>
         </toc-element>
@@ -61,7 +60,6 @@
 
     <toc-element topic="08-null-safety.md"/>
     <toc-element topic="09-equality.md"/>
-    <toc-element topic="10-generics.md" toc-title="Generics"/>
     <toc-element topic="11-destructuring-declarations.md"/>
 
     <toc-element toc-title="Coroutines">

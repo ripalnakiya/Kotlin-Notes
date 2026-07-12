@@ -3,13 +3,14 @@
 
 In Kotlin, there are two types of equality:
 
-* _Structural_ equality (`==`) - a check for the `equals()` function
-* _Referential_ equality (`===`) - a check for two references pointing to the same object
+* **Structural** equality (`==`) - a check for the `equals()` function
+* **Referential** equality (`===`) - a check for two references pointing to the same object
 
 ## Structural equality
 
-Structural equality verifies if two objects have the same content or structure. Structural equality is checked by the `==`
-operation and its negated counterpart `!=`.
+Structural equality verifies if two objects have the same content or structure. 
+Structural equality is checked by the `==`operation and its negated counterpart `!=`.
+
 By convention, an expression like `a == b` is translated to:
 
 ```kotlin
@@ -27,21 +28,18 @@ fun main() {
     var d = null
     var e = d
 
-    println(a == b)
-    // true
-    println(a == c)
-    // false
-    println(c == e)
-    // true
+    println(a == b) // true
+    println(a == c) // false
+    println(c == e) // true
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3" validate="false"}
 
 Note that there's no point in optimizing your code when comparing to `null` explicitly:
 `a == null` will be automatically translated to `a === null`.
 
-In Kotlin, the `equals()` function is inherited by all classes from the `Any` class. By default, the `equals()` function
-implements [referential equality](#referential-equality). However, classes in Kotlin can override the `equals()`
+In Kotlin, the `equals()` function is inherited by all classes from the `Any` class. 
+By default, the `equals()` function implements [referential equality](#referential-equality). 
+However, classes in Kotlin can override the `equals()`
 function to provide a custom equality logic and, in this way, implement structural equality.
 
 Value classes and data classes are two specific Kotlin types that automatically override the `equals()` function.
@@ -58,6 +56,7 @@ To provide a custom equals check implementation, override the
 
 ```kotlin
 class Point(val x: Int, val y: Int) {
+    
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is Point) return false
@@ -82,8 +81,9 @@ Structural equality has nothing to do with comparison defined by the `Comparable
 
 Referential equality verifies the memory addresses of two objects to determine if they are the same instance.
 
-Referential equality is checked by the `===` operation and its negated counterpart `!==`. `a === b` evaluates to
-true if and only if `a` and `b` point to the same object:
+Referential equality is checked by the `===` operation and its negated counterpart `!==`. 
+
+`a === b` evaluates to true if and only if `a` and `b` point to the same object:
 
 ```kotlin
 fun main() {
@@ -92,13 +92,9 @@ fun main() {
     var c = "world"
     var d = "world"
 
-    println(a === b)
-    // true
-    println(a === c)
-    // false
-    println(c === d)
-    // true
-
+    println(a === b) // true
+    println(a === c) // false
+    println(c === d) // true
 }
 ```
 {kotlin-runnable="true" kotlin-min-compiler-version="1.3" validate="false"}

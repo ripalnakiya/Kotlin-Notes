@@ -21,10 +21,7 @@ parameter that can be used to explicitly specify the dispatcher for the new coro
 Try the following example:
 
 ```kotlin
-import kotlinx.coroutines.*
-
 fun main() = runBlocking<Unit> {
-//sampleStart
     launch { // context of the parent, main runBlocking coroutine
         println("main runBlocking      : I'm working in thread ${Thread.currentThread().name}")
     }
@@ -37,10 +34,8 @@ fun main() = runBlocking<Unit> {
     launch(newSingleThreadContext("MyOwnThread")) { // will get its own new thread
         println("newSingleThreadContext: I'm working in thread ${Thread.currentThread().name}")
     }
-//sampleEnd    
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 It produces the following output (maybe in different order):
 
@@ -70,7 +65,9 @@ function, or stored in a top-level variable and reused throughout the applicatio
 
 The [Dispatchers.Unconfined] coroutine dispatcher starts a coroutine in the caller thread, but only until the
 first suspension point. After suspension it resumes the coroutine in the thread that is fully determined by the
-suspending function that was invoked. The unconfined dispatcher is appropriate for coroutines which neither
+suspending function that was invoked. 
+
+The unconfined dispatcher is appropriate for coroutines which neither
 consume CPU time nor update any shared data (like UI) confined to a specific thread.
 
 On the other side, the dispatcher is inherited from the outer [CoroutineScope] by default.
@@ -79,24 +76,22 @@ is confined to the invoker thread, so inheriting it has the effect of confining 
 this thread with predictable FIFO scheduling.
 
 ```kotlin
-import kotlinx.coroutines.*
-
 fun main() = runBlocking<Unit> {
-//sampleStart
+
     launch(Dispatchers.Unconfined) { // not confined -- will work with main thread
         println("Unconfined      : I'm working in thread ${Thread.currentThread().name}")
         delay(500)
         println("Unconfined      : After delay in thread ${Thread.currentThread().name}")
     }
+
     launch { // context of the parent, main runBlocking coroutine
         println("main runBlocking: I'm working in thread ${Thread.currentThread().name}")
         delay(1000)
         println("main runBlocking: After delay in thread ${Thread.currentThread().name}")
     }
-//sampleEnd    
+
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 Produces the output:
 
@@ -132,25 +127,23 @@ by logging frameworks. When using coroutines, the thread name alone does not giv
 `kotlinx.coroutines` includes debugging facilities to make it easier.
 
 ```kotlin
-import kotlinx.coroutines.*
-
 fun log(msg: String) = println("[${Thread.currentThread().name}] $msg")
 
 fun main() = runBlocking<Unit> {
-//sampleStart
+    
     val a = async {
         log("I'm computing a piece of the answer")
         6
     }
+   
     val b = async {
         log("I'm computing another piece of the answer")
         7
     }
+   
     log("The answer is ${a.await() * b.await()}")
-//sampleEnd    
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 There are three coroutines. The main coroutine (#1) inside `runBlocking`
 and two coroutines computing the deferred values `a` (#2) and `b` (#3).
@@ -172,18 +165,22 @@ is consecutively assigned to all created coroutines when the debugging mode is o
 Run the following code with the `-Dkotlinx.coroutines.debug` JVM option (see [debug](#debugging-coroutines-and-threads)):
 
 ```kotlin
-import kotlinx.coroutines.*
-
 fun log(msg: String) = println("[${Thread.currentThread().name}] $msg")
 
 fun main() {
+
     newSingleThreadContext("Ctx1").use { ctx1 ->
+        
         newSingleThreadContext("Ctx2").use { ctx2 ->
+            
             runBlocking(ctx1) {
+                
                 log("Started in ctx1")
+               
                 withContext(ctx2) {
                     log("Working in ctx2")
                 }
+               
                 log("Back to ctx1")
             }
         }
@@ -194,8 +191,10 @@ fun main() {
 The example above demonstrates new techniques in coroutine usage.
 
 The first technique shows how to use [runBlocking] with a specified context.  
+
 The second technique involves calling [withContext],
-which may suspend the current coroutine and switch to a new context—provided the new context differs from the existing one.
+which may suspend the current coroutine and 
+switch to a new context—provided the new context differs from the existing one.
 Specifically, if you specify a different [CoroutineDispatcher], extra dispatches are required:
 the block is scheduled on the new dispatcher, and once it finishes, execution returns to the original dispatcher.
 
@@ -216,15 +215,10 @@ The coroutine's [Job] is part of its context, and can be retrieved from it
 using the `coroutineContext[Job]` expression:
 
 ```kotlin
-import kotlinx.coroutines.*
-
 fun main() = runBlocking<Unit> {
-//sampleStart
     println("My job is ${coroutineContext[Job]}")
-//sampleEnd    
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 In [debug mode](#debugging-coroutines-and-threads), it outputs something like this:
 
@@ -240,7 +234,9 @@ Note that [isActive] in [CoroutineScope] is just a convenient shortcut for
 When a coroutine is launched in the [CoroutineScope] of another coroutine,
 it inherits its context via [CoroutineScope.coroutineContext] and
 the [Job] of the new coroutine becomes
-a **child** of the parent coroutine's job. When the parent coroutine is cancelled, all its children
+a **child** of the parent coroutine's job. 
+
+When the parent coroutine is cancelled, all its children
 are recursively cancelled, too.
 
 However, this parent-child relation can be explicitly overridden in one of two ways:
@@ -253,45 +249,41 @@ However, this parent-child relation can be explicitly overridden in one of two w
 In both cases, the launched coroutine is not tied to the scope it was launched from and operates independently.
 
 ```kotlin
-import kotlinx.coroutines.*
-
 fun main() = runBlocking<Unit> {
-//sampleStart
+
     // launch a coroutine to process some kind of incoming request
-    val request = launch {
-        // it spawns two other jobs
+    val request = launch { // it spawns two other jobs
+
         launch(Job()) { 
             println("job1: I run in my own Job and execute independently!")
             delay(1000)
             println("job1: I am not affected by cancellation of the request")
         }
-        // and the other inherits the parent context
-        launch {
+        
+        launch { // inherits the parent context
             delay(100)
             println("job2: I am a child of the request coroutine")
             delay(1000)
             println("job2: I will not execute this line if my parent request is cancelled")
         }
     }
+
     delay(500)
     request.cancel() // cancel processing of the request
     println("main: Who has survived request cancellation?")
     delay(1000) // delay the main thread for a second to see what happens
-//sampleEnd
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 The output of this code is:
 
 ```text
 job1: I run in my own Job and execute independently!
 job2: I am a child of the request coroutine
+
 main: Who has survived request cancellation?
 job1: I am not affected by cancellation of the request
 ```
-
-<!--- TEST -->
 
 ## Parental responsibilities
 
@@ -299,11 +291,10 @@ A parent coroutine always waits for the completion of all its children.
 A parent does not have to explicitly track
 all the children it launches, and it does not have to use [Job.join] to wait for them at the end:
 
-```kotlin
-import kotlinx.coroutines.*
 
+```kotlin
 fun main() = runBlocking<Unit> {
-//sampleStart
+    
     // launch a coroutine to process some kind of incoming request
     val request = launch {
         repeat(3) { i -> // launch a few children jobs
@@ -314,14 +305,38 @@ fun main() = runBlocking<Unit> {
         }
         println("request: I'm done and I don't explicitly join my children that are still active")
     }
-    request.join() // wait for completion of the request, including all its children
+
     println("Now processing of the request is complete")
-//sampleEnd
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
-The result is going to be:
+```text
+Now processing of the request is complete
+request: I'm done and I don't explicitly join my children that are still active
+Coroutine 0 is done
+Coroutine 1 is done
+Coroutine 2 is done
+```
+
+
+```kotlin
+fun main() = runBlocking<Unit> {
+    
+    // launch a coroutine to process some kind of incoming request
+    val request = launch {
+        repeat(3) { i -> // launch a few children jobs
+            launch  {
+                delay((i + 1) * 200L) // variable delay 200ms, 400ms, 600ms
+                println("Coroutine $i is done")
+            }
+        }
+        println("request: I'm done and I don't explicitly join my children that are still active")
+    }
+
+    request.join() // wait for completion of the request, including all its children
+    println("Now processing of the request is complete")
+}
+```
 
 ```text
 request: I'm done and I don't explicitly join my children that are still active
@@ -331,42 +346,44 @@ Coroutine 2 is done
 Now processing of the request is complete
 ```
 
-<!--- TEST -->
-
 ## Naming coroutines for debugging
 
-Automatically assigned ids are good when coroutines log often and you just need to correlate log records
-coming from the same coroutine. However, when a coroutine is tied to the processing of a specific request
+Automatically assigned ids are good when coroutines log often and 
+you just need to correlate log records coming from the same coroutine. 
+
+However, when a coroutine is tied to the processing of a specific request
 or doing some specific background task, it is better to name it explicitly for debugging purposes.
+
 The [CoroutineName] context element serves the same purpose as the thread name. It is included in the thread name that
 is executing this coroutine when the [debugging mode](#debugging-coroutines-and-threads) is turned on.
 
 The following example demonstrates this concept:
 
 ```kotlin
-import kotlinx.coroutines.*
-
 fun log(msg: String) = println("[${Thread.currentThread().name}] $msg")
 
 fun main() = runBlocking(CoroutineName("main")) {
-//sampleStart
+    
     log("Started main coroutine")
+   
     // run two background value computations
+   
     val v1 = async(CoroutineName("v1coroutine")) {
         delay(500)
         log("Computing v1")
         6
     }
+   
     val v2 = async(CoroutineName("v2coroutine")) {
         delay(1000)
         log("Computing v2")
         7
     }
+   
     log("The answer for v1 * v2 = ${v1.await() * v2.await()}")
-//sampleEnd    
+   
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 The output it produces with `-Dkotlinx.coroutines.debug` JVM option is similar to:
 
@@ -384,17 +401,14 @@ For example, we can launch a coroutine with an explicitly specified dispatcher a
 name at the same time:
 
 ```kotlin
-import kotlinx.coroutines.*
-
 fun main() = runBlocking<Unit> {
-//sampleStart
+    
     launch(Dispatchers.Default + CoroutineName("test")) {
         println("I'm working in thread ${Thread.currentThread().name}")
     }
-//sampleEnd    
+   
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 The output of this code with the `-Dkotlinx.coroutines.debug` JVM option is:
 
@@ -427,18 +441,18 @@ factory functions. The former creates a general-purpose scope, while the latter 
 ```kotlin
 class Activity {
     private val mainScope = MainScope()
-    
+
     fun destroy() {
         mainScope.cancel()
     }
     // to be continued ...
+}
 ```
 
 Now, we can launch coroutines in the scope of this `Activity` using the defined `mainScope`.
 For the demo, we launch ten coroutines that delay for a different time:
 
 ```kotlin
-    // class Activity continues
     fun doSomething() {
         // launch ten coroutines for a demo, each working for a different time
         repeat(10) { i ->
@@ -448,7 +462,6 @@ For the demo, we launch ten coroutines that delay for a different time:
             }
         }
     }
-} // class Activity ends
 ``` 
 
 In our main function we create the activity, call our test `doSomething` function, and destroy the activity after 500ms.
@@ -456,11 +469,7 @@ This cancels all the coroutines that were launched from `doSomething`.
 We can see that because after the destruction
 of the activity, no more messages are printed, even if we wait a little longer.
 
-<!--- CLEAR -->
-
 ```kotlin
-import kotlinx.coroutines.*
-
 class Activity {
     private val mainScope = CoroutineScope(Dispatchers.Default) // use Default for test purposes
     
@@ -480,7 +489,6 @@ class Activity {
 } // class Activity ends
 
 fun main() = runBlocking<Unit> {
-//sampleStart
     val activity = Activity()
     activity.doSomething() // run test function
     println("Launched coroutines")
@@ -488,10 +496,8 @@ fun main() = runBlocking<Unit> {
     println("Destroying activity!")
     activity.destroy() // cancels all coroutines
     delay(1000) // visually confirm that they don't work
-//sampleEnd    
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 The output of this example is:
 
@@ -501,8 +507,6 @@ Coroutine 0 is done
 Coroutine 1 is done
 Destroying activity!
 ```
-
-<!--- TEST -->
 
 As you can see, only the first two coroutines print a message and the others are cancelled
 by a single invocation of [`mainScope.cancel()`][CoroutineScope.cancel] in `Activity.destroy()`.

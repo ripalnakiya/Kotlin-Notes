@@ -1,13 +1,15 @@
 # Destructuring declarations
 <show-structure depth="2"/>
 
-Sometimes it is convenient to *destructure* an object into a number of variables, for example:
+Sometimes it is convenient to **destructure** an object into a number of variables, for example:
 
 ```kotlin
 val (name, age) = person 
 ```
 
-This syntax is called a *destructuring declaration*. A destructuring declaration creates multiple variables at once.
+This syntax is called a **destructuring declaration**. 
+A destructuring declaration creates multiple variables at once.
+
 You have declared two new variables: `name` and `age`, and can use them independently:
 
  ```kotlin
@@ -22,8 +24,9 @@ val name = person.component1()
 val age = person.component2()
 ```
 
-The `component1()` and `component2()` functions are another example of the *principle of conventions* widely used in Kotlin
-(see operators like `+` and `*`, `for`-loops as an example).
+The `component1()` and `component2()` functions are another example of the **principle of conventions** 
+widely used in Kotlin (see operators like `+` and `*`, `for`-loops as an example).
+
 Anything can be on the right-hand side of a destructuring declaration, as long as the required number of component
 functions can be called on it. And, of course, there can be `component3()` and `component4()` and so on.
 
@@ -47,9 +50,9 @@ A compact way of doing this in Kotlin is to declare a [data class](02-data-class
 
 ```kotlin
 data class Result(val result: Int, val status: Status)
+
 fun function(...): Result {
     // computations
-    
     return Result(result, status)
 }
 
@@ -102,8 +105,10 @@ The `componentN()` operator functions are not called for the components that are
 ## Destructuring in lambdas
 
 You can use the destructuring declarations syntax for lambda parameters.
-If a lambda has a parameter of the `Pair` type (or `Map.Entry`, or any other type that has the appropriate `componentN`
-functions), you can introduce several new parameters instead of one by putting them in parentheses:
+
+If a lambda has a parameter of the `Pair` type (or `Map.Entry`, 
+or any other type that has the appropriate `componentN` functions), 
+you can introduce several new parameters instead of one by putting them in parentheses:
 
 ```kotlin
 map.mapValues { entry -> "${entry.value}!" }

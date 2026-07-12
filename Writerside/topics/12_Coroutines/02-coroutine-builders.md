@@ -11,8 +11,9 @@ fun main() {
     }
     println("Hello")
 }
+```
 
-// Output:
+```text
 Hello
 ```
 
@@ -27,8 +28,9 @@ fun main() {
     println("Hello")
     Thread.sleep(2000)
 }
+```
 
-// Output:
+```text
 Hello
 World
 ```
@@ -47,8 +49,9 @@ fun main() {
         println("Hello")
     }
 }
+```
 
-// Output:
+```text
 Hello
 World
 ```
@@ -63,10 +66,6 @@ fun main() = runBlocking {
     }
     println("Hello")
 }
-
-// Output:
-Hello
-World
 ```
 
 ## launch vs async
@@ -74,11 +73,11 @@ World
 | `launch`                                                           | `aysnc`                                                       |
 |--------------------------------------------------------------------|---------------------------------------------------------------|
 | it is used when you don't want to return any value from coroutine. | it is used when you want to return some value from coroutine. |
-| it returns a job object                                            | it returns a deferred object                                  |
+| it returns a `Job` object                                          | it returns a `Deferred` object                                |
 
 ```Kotlin
 suspend fun myCoroutine(name: String, time: Long) : String {
-    println("$name started")
+    println("$name started") // Worker Started
     delay(time)
     return "$name completed"
 }
@@ -87,10 +86,10 @@ fun main() = runBlocking {
     var response = async {
         myCoroutine("Worker", 2000)
     }.await()
-    println(response)
+    println(response) // Worker completed
 }
-// Worker completed
 ```
+
 We cannot get a `return` value with `launch`.
 
 But similar functionality can be achieved using `let`.
@@ -123,8 +122,9 @@ fun main() = runBlocking {
     }
     println("main finished")
 }
+```
 
-// Output: 
+```text
 main finished
 54
 ```
@@ -151,8 +151,9 @@ fun main() = runBlocking {
     }
     println("main finished")
 }
+```
 
-// Output: 
+```text
 main finished
 0
 ```
@@ -174,7 +175,7 @@ suspend fun printFollowers() = runBlocking {
     val job = launch {
         fb = getFbFollowers()
     }
-    job.join()          // wait for job to complete then move ahead
+    job.join() // wait for job to complete then move ahead
     println(fb)
 }
 
@@ -184,8 +185,9 @@ fun main() = runBlocking {
     }
     println("main finished")
 }
+```
 
-// Output: 
+```text
 main finished
 54
 ```
@@ -213,11 +215,14 @@ fun main() = runBlocking {
 }
 ```
 
+```text
+main finished
+54
+```
 
 ### Scenario 3
 
 ```Kotlin
-
 suspend fun getFbFollowers(): Int {
     delay(1000)
     return 54

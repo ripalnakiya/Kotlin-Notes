@@ -130,22 +130,3 @@ More specifically, a module is a set of Kotlin files compiled together, for exam
 | `private`   |     ✅      |    ❌     |      ❌      |    ❌     |
 | `protected` |     ✅      |    ✅     |      ❌      |    ❌     |
 | `internal`  |     ✅      |    ✅     |      ✅      |    ❌     |
-
-| Modifier    | Top Level Declaration | Class Member  |
-|-------------|-----------------------|---------------|
-| `public`    | Everywhere            | Everywhere    |
-| `private`   | Within file           | Within class  |
-| `protected` | N/A                   | Sub classes   |
-| `internal`  | Within module         | Within module |
-
-### Private top-level declaration
-
-Kotlin allows functions and variables outside classes.
-
-```kotlin
-private fun helper() {
-    println("Hidden")
-}
-```
-
-Only code in the same file can call `helper()`. Other files cannot.

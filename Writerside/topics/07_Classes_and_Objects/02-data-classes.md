@@ -1,8 +1,11 @@
 # Data classes
 <show-structure depth="2"/>
 
-Data classes in Kotlin are primarily used to hold data. For each data class, the compiler automatically generates
-additional member functions that allow you to print an instance to readable output, compare instances, copy instances, and more.
+Data classes in Kotlin are primarily used to hold data. 
+
+For each data class, the compiler automatically generates additional member functions 
+that allow you to print an instance to readable output, compare instances, copy instances, and more.
+
 Data classes are marked with `data`:
 
 ```kotlin
@@ -32,7 +35,7 @@ Additionally, the generation of data class members follows these rules with rega
   supertype cannot be overridden due to incompatible signatures or due to their being final, an error is reported.
 * Providing explicit implementations for the `componentN()` and `copy()` functions is not allowed.
 
-Data classes may extend other classes (see [Sealed classes](08-sealed-classes.md) for examples).
+Data classes **may extend other classes** (see [Sealed classes](08-sealed-classes.md) for examples).
 
 > On the JVM, if the generated class needs to have a parameterless constructor, default values for the properties have
 > to be specified (see [Constructors](01-classes.md#constructors-and-initializer-blocks)):
@@ -45,8 +48,8 @@ Data classes may extend other classes (see [Sealed classes](08-sealed-classes.md
 
 ## Properties declared in the class body
 
-The compiler only uses the properties defined inside the primary constructor for the automatically generated
-functions. To exclude a property from the generated implementations, declare it inside the class body:
+The compiler only uses the properties defined inside the primary constructor for the automatically generated functions. 
+To exclude a property from the generated implementations, declare it inside the class body:
 
 ```kotlin
 data class Person(val name: String) {
@@ -56,16 +59,13 @@ data class Person(val name: String) {
 
 In the example below, only the `name` property is used by default inside the `toString()`, `equals()`, `hashCode()`,
 and `copy()` implementations, and there is only one component function, `component1()`.
+
 The `age` property is declared inside the class body and is excluded.
-Therefore, two `Person` objects with the same `name` but different `age` values are considered equal since `equals()`
-only evaluates properties from the primary constructor:
+
+Therefore, two `Person` objects with the same `name` but different `age` values are considered equal 
+since `equals()`only evaluates properties from the primary constructor:
 
 ```kotlin
-data class Person(val name: String) {
-    var age: Int = 0
-}
-fun main() {
-//sampleStart
     val person1 = Person("John")
     val person2 = Person("John")
     person1.age = 10
@@ -79,15 +79,12 @@ fun main() {
   
     println("person2 with age ${person2.age}: ${person2}")
     // person2 with age 20: Person(name=John)
-//sampleEnd
-}
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 ## Copying
 
 Use the `copy()` function to copy an object, allowing you to alter _some_ of its properties while keeping the rest unchanged.
-The implementation of this function for the `User` class above would be as follows:
+The implementation of this function for the `User` class above **would** be as follows:
 
 ```kotlin
 fun copy(name: String = this.name, age: Int = this.age) = User(name, age)
@@ -97,10 +94,11 @@ You can then write the following:
 
 ```kotlin
 val jack = User(name = "Jack", age = 1)
-val olderJack = jack.copy(age = 2)
+val elderJack = jack.copy(age = 2)
 ```
 
-The `copy()` function creates a _shallow_ copy of the instance. In other words, it doesn't copy components recursively.
+The `copy()` function creates a **shallow** copy of the instance. 
+In other words, it doesn't copy components recursively.
 As a result, references to other objects are shared.
 
 For example, if a property holds a mutable list, changes made through the "original" value are also visible through the copy,
@@ -115,28 +113,28 @@ fun main() {
 
     duplicate.roles.add("team lead")
 
-    println(original) 
-    // Employee(name=Jamie, roles=[developer, team lead])
-    println(duplicate) 
-    // Employee(name=Jamie, roles=[developer, team lead])
+    println(original) // Employee(name=Jamie, roles=[developer, team lead])
+    println(duplicate) // Employee(name=Jamie, roles=[developer, team lead])
 }
 ```
-{kotlin-runnable="true" kotlin-min-compiler-version="1.3"}
 
 As you can see, modifying the `duplicate.roles` property also changes the `original.roles` property because both properties share the same list reference.
 
 ## Data classes and destructuring declarations
 
-_Component functions_ generated for data classes make it possible to use them in [destructuring declarations](11-destructuring-declarations.md):
+**Component functions** generated for data classes make it possible to use them in [destructuring declarations](11-destructuring-declarations.md):
 
 ```kotlin
 val jane = User("Jane", 35)
+
 val (name, age) = jane
-println("$name, $age years of age") 
-// Jane, 35 years of age
+
+println("$name, $age years of age") // Jane, 35 years of age
 ```
 
 ## Standard data classes
 
-The standard library provides the `Pair` and `Triple` classes. In most cases, though, named data classes are a better design choice
-because they make the code easier to read by providing meaningful names for the properties.
+The standard library provides the `Pair` and `Triple` classes. 
+
+In most cases, though, named data classes are a better design choice because 
+they make the code easier to read by providing meaningful names for the properties.
