@@ -1,6 +1,38 @@
 # Sealed classes and interfaces
 <show-structure depth="2"/>
 
+> Why sealed class ?
+> 
+> Normal Inheritance:
+> ```kotlin
+> open class UiState
+> 
+> class Loading : UiState()
+> class Success : UiState()
+> class Error : UiState()
+> ```
+> 
+> Nothing stops someone from later creating:
+> 
+> ```kotlin
+> class SomethingElse : UiState()
+> ```
+> 
+> The compiler doesn't know what all possible UiStates are.
+> 
+> With a sealed class:
+> 
+> ```kotlin
+> sealed class UiState {
+>     class Loading : UiState()
+>     class Success : UiState()
+>     class Error : UiState()
+> }
+> ```
+> 
+> Now `UiState` has a restricted set of subclasses.
+> 
+
 **Sealed** classes and interfaces provide controlled inheritance of your class hierarchies.
 
 All **direct subclasses** of a sealed class are known at compile time. 
@@ -359,3 +391,32 @@ fun main() {
     println(userNotFoundResponse)
 }
 ```
+
+## What can be a direct child?
+
+```kotlin
+sealed class Result {
+
+    class Loading : Result() // it can be `object` type, since it doesn't carry any data
+
+    data class Success(val data: String) : Result()
+
+    object Error : Result()
+
+    data object Empty : Result()
+
+    sealed class NetworkError : Result() {
+        data object Timeout : NetworkError()
+        data object NoInternet : NetworkError()
+    }
+}
+```
+
+| Type               | Example                                           | Use                                                                 |
+|--------------------|---------------------------------------------------|---------------------------------------------------------------------|
+| `class`            | `class Loading : Result()`                        | State needs behavior/identity, but doesn't need data-class features |
+| `data class`       | `data class Success(val data: String) : Result()` | State carries data                                                  |
+| `object`           | `object Loading : Result()`                       | Exactly one instance                                                |
+| `data object`      | `data object Loading : Result()`                  | Singleton + proper `toString()`, `equals()`, `hashCode()`           |
+| `sealed class`     | `sealed class Error : Result()`                   | Group another finite set of states                                  |
+| `sealed interface` | possible in a hierarchy                           | Further categorization                                              |
