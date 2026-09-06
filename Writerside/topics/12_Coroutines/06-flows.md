@@ -1619,7 +1619,7 @@ User 1 observes the message senderId: 1, time: 2026-07-12T14:08:25.556965958Z, t
 User 1 observes the message senderId: 2, time: 2026-07-12T14:08:25.557365015Z, text: SGVsbG8gZnJvbSAyIQ==
 ```
 
-In this example, the [`.map()`](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/map.html) 
+**In this example**, the [`.map()`](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/map.html) 
 operator **creates a cold flow** that serializes each message.
 
 Without the `.shareIn()` function, each collector runs that serialization separately.
@@ -1628,95 +1628,67 @@ and then shared with all subscribers.
 
 Because `SharingStarted.Eagerly` starts upstream collection immediately, the derived hot flow starts collecting `chatroom.messages` as soon as `.shareIn()` is called.
 
-#### Example 1
-
-```kotlin
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
-
-data class Message(val senderId: Int, val text: String)
-
-fun main() = runBlocking {
-    val chatroom = MutableSharedFlow<Message>()
-
-    val sharedFlow = chatroom
-        .map { "User ${it.senderId} says: ${it.text}" }
-        .shareIn(this, SharingStarted.Eagerly, replay = 0)
-
-    // Three subscribers
-    repeat(3) { userId ->
-        launch {
-            sharedFlow.collect { println("Subscriber $userId sees: $it") }
-        }
-    }
-
-    // Send messages
-    repeat(3) { userId ->
-        chatroom.emit(Message(userId, "Hello from $userId!"))
-    }
-
-    delay(100)
-}
-```
-
-```text
-Subscriber 0 sees: User 0 says: Hello from 0!
-Subscriber 1 sees: User 0 says: Hello from 0!
-Subscriber 2 sees: User 0 says: Hello from 0!
-Subscriber 0 sees: User 1 says: Hello from 1!
-Subscriber 1 sees: User 1 says: Hello from 1!
-Subscriber 2 sees: User 1 says: Hello from 1!
-Subscriber 0 sees: User 2 says: Hello from 2!
-Subscriber 1 sees: User 2 says: Hello from 2!
-Subscriber 2 sees: User 2 says: Hello from 2!
-```
-
 **Key Idea** 🚀
 - Cold flow → each subscriber does the work separately.
 - Hot flow with `shareIn` → work is done once, results are shared.
 - In this chatroom, messages are serialized once and broadcast to all users.
 
-#### Example 2
+#### Example
 
 ```kotlin
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
 
-suspend fun main() = coroutineScope {
-    // Cold flow: generates a random number each time someone collects
-    val coldFlow = flow {
-        println("Generating number...")
-        emit((1..100).random())
+suspend fun main(): Unit = coroutineScope {
+
+  // Cold flow: generates a random number each time someone collects
+  val coldFlow = flow {
+    println("Generating number...")
+    emit((1..100).random())
+  }
+
+  println("Cold flow:")
+  coldFlow.collect {
+    println("Collector A got $it")
+  }
+  coldFlow.collect {
+    println("Collector B got $it")
+  }
+
+  // Hot flow: share the cold flow so the number is generated once
+  val hotFlow = coldFlow.shareIn(
+    scope = this,
+    started = SharingStarted.Eagerly,
+    replay = 1
+  )
+
+  println("Hot flow:")
+
+  launch {
+    hotFlow.collect {
+      println("Collector A got $it")
     }
+  }
 
-    println("Cold flow:")
-    coldFlow.collect { println("Collector A got $it") }
-    coldFlow.collect { println("Collector B got $it") }
+  launch {
+    hotFlow.collect {
+      println("Collector B got $it")
+    }
+  }
 
-    // Hot flow: share the cold flow so the number is generated once
-    val hotFlow = coldFlow.shareIn(
-        scope = this,
-        started = SharingStarted.Eagerly,
-        replay = 0
-    )
-
-    println("\nHot flow:")
-    hotFlow.collect { println("Collector A got $it") }
-    hotFlow.collect { println("Collector B got $it") }
+  delay(100)
 }
 ```
 
 ```text
 Cold flow:
 Generating number...
-Collector A got 42
+Collector A got 48
 Generating number...
-Collector B got 77
+Collector B got 7
 
 Hot flow:
 Generating number...
-Collector A got 15
-Collector B got 15
+Collector A got 35
+Collector B got 35
 ```
 
 #### Convert cold flow to `StateFlow`
